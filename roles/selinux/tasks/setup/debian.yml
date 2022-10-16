@@ -1,0 +1,63 @@
+---
+- name: "Setup | display message"
+  ansible.builtin.debug:
+    msg: "Setup role {{ system_selinux_role_name }} for {{ ansible_facts.distribution }}"
+
+- name: "Setup | import assert.yml"
+  ansible.builtin.include_tasks: "assert/{{ ansible_os_famliy|lower }}.yml"
+  run_once: true
+
+- name: "Setup | install required packages"
+  ansible.builtin.package:
+    name: "{{ system_selinux_requirements }}"
+    state: present
+  notify:
+    - gather facts
+
+- name: "Setup | flush handlers"
+  meta: flush_handlers
+
+- name: "Setup | stop service apparmor"
+  ansible.builtin.systemd:
+    name: apparmor
+    state: stopped
+
+- name: "Setup | remove apparmor"
+  ansible.builtin.apt:
+    name: apparmor
+    state: absent
+
+- name: "Setup | run selinux-activate"
+  ansible.builtin.command: sudo selinux-activate
+  become: true
+  notify:
+    - reboot
+
+- name: "Setup | run selinux-config-enforcing"
+  ansible.builtin.command: sudo selinux-config-enforcing
+  become: true
+
+- name: "Setup | configure selinux"
+  block:
+    - name: "Setup | manage selinux"
+      ansible.posix.selinux:
+        state: "{{ system_selinux_state }}"
+        policy: "{{ system_selinux_policy }}"
+      notify:
+        - reboot
+
+    - name: "Setup | manage selinux booleans"
+      ansible.posix.seboolean:
+        name: "{{ item.name }}"
+        state: "{{ item.state | default('yes') }}"
+        persistent: "{{ item.persistent }}"
+      loop: "{{ system_selinux_booleans }}"
+      loop_control:
+        label: "{{ item.name }}"
+      when:
+        - system_selinux_booleans is defined
+  when:
+    - ansible_selinux.status is defined
+    - ansible_connection not in [ "container", "docker", "community.docker.docker" ]
+
+...

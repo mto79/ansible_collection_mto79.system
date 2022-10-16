@@ -1,0 +1,52 @@
+---
+- name: "Main | import assert/main.yml"
+  ansible.builtin.import_tasks: assert/main.yml
+  run_once: true
+  delegate_to: localhost
+
+- name: "Main | include OS specific vars"
+  ansible.builtin.include_vars: "{{ lookup('ansible.builtin.first_found', find_vars) }}"
+  vars:
+    find_vars:
+      files:
+        - "{{ ansible_facts.distribution | lower }}-{{ ansible_facts.distribution_version | lower }}.yml"
+        - "{{ ansible_facts.distribution | lower }}-{{ ansible_facts.distribution_major_version | lower }}.yml"
+        - "{{ ansible_facts.distribution | lower }}.yml"
+        - "{{ ansible_facts.os_family | lower }}.yml"
+        - "{{ ansible_facts.system | lower }}.yml"
+        - "main.yml"
+      skip: true
+      paths:
+        - "vars"
+
+- name: "Main | include specific OS assert"
+  ansible.builtin.include_tasks: "{{ lookup('ansible.builtin.first_found', find_asserts) }}"
+  vars:
+    find_asserts:
+      files:
+        - "{{ ansible_facts.distribution | lower }}-{{ ansible_facts.distribution_version | lower }}.yml"
+        - "{{ ansible_facts.distribution | lower }}-{{ ansible_facts.distribution_major_version | lower }}.yml"
+        - "{{ ansible_facts.distribution | lower }}.yml"
+        - "{{ ansible_facts.os_family | lower }}.yml"
+        - "{{ ansible_system | lower }}.yml"
+        - "failover.yml"
+      skip: true
+      paths:
+        - "assert"
+
+- name: "Main | include OS specific tasks"
+  ansible.builtin.include_tasks: "{{ lookup('ansible.builtin.first_found', find_plays) }}"
+  vars:
+    find_plays:
+      files:
+        - "{{ ansible_facts.distribution | lower }}-{{ ansible_facts.distribution_version | lower }}.yml"
+        - "{{ ansible_facts.distribution | lower }}-{{ ansible_facts.distribution_major_version | lower }}.yml"
+        - "{{ ansible_facts.distribution | lower }}.yml"
+        - "{{ ansible_facts.os_family | lower }}.yml"
+        - "{{ ansible_facts.system | lower }}.yml"
+        - "failover.yml"
+      skip: true
+      paths:
+        - "setup"
+
+...

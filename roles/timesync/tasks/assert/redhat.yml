@@ -1,0 +1,10 @@
+---
+- name: "Assert | test if system_timesync_ntp_servers is set correctly"
+  ansible.builtin.assert:
+    that:
+      - system_timesync_ntp_servers is iterable
+    quiet: yes
+  when:
+    - system_timesync_ntp_servers is defined
+
+...

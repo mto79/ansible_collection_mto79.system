@@ -1,0 +1,27 @@
+---
+- name: "Setup | display message"
+  ansible.builtin.debug:
+    msg: "Setup role {{ system_timesync_role_name }} for {{ ansible_facts.distribution }}"
+
+- name: "Setup | install chrony package"
+  ansible.builtin.apt:
+    name: chrony
+    state: present
+
+- name: "Setup | start and enable chrony package"
+  ansible.builtin.service:
+    name: chrony
+    state: started
+    enabled: true
+
+- name: "Setup | configure chrony"
+  ansible.builtin.template:
+    src: templates/debian/chrony.conf.j2
+    dest: /etc/chrony/chrony.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart chrony
+  
+... 
+ 

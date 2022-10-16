@@ -1,0 +1,11 @@
+---
+timesync_ntp_servers: "{{ system_timesync_ntp_servers | default([]) }}"
+timesync_ptp_domains: "{{ system_timesync_ptp_domains | default([]) }}"
+timesync_dhcp_ntp_servers: "{{ system_timesync_dhcp_ntp_server | default(false) }}"
+timesync_step_threshold: "{{ system_timesync_step_threshold | default(-1.0) }}"
+timesync_min_sources: "{{ system_timesync_min_sources | default(1) }}"
+timesync_ntp_hwts_interfaces: "{{ system_timesync_ntp_hwts_interfaces | default([]) }}"
+timesync_ntp_provider: "{{ system_timesync_ntp_provider | default('chrony') }}"
+timesync_max_distance: "{{ system_timesync_max_distance | default(0) }}"
+
+...

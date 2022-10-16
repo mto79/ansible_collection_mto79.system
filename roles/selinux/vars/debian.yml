@@ -1,0 +1,30 @@
+---
+_system_selinux_requirements:
+  default: []
+  Debian-testing:
+    - auditd
+    - python3-selinux
+    - python3-semanage
+    - policycoreutils
+  Debian:
+    - auditd
+    - python3-selinux
+    - python3-semanage
+    - selinux-policy-default
+    - policycoreutils
+    - selinux-utils
+    - selinux-basics
+    - audispd-plugins
+  Ubuntu-16:
+    - auditd
+    - python-selinux
+    - python-semanage
+    - selinux-policy-default
+    - policycoreutils
+
+system_selinux_requirements: | 
+  "{{ _system_selinux_requirements[ansible_distribution ~ '-' ~ ansible_facts.distribution_major_version] | 
+  default (_system_selinux_requirements[ansible_facts.os_family ~ '-' ~ ansible_facts.distribution_major_version] | 
+  default(_system_selinux_requirements[ansible_facts.os_family] | default(_system_selinux_requirements['default'] ))) }}"
+
+...

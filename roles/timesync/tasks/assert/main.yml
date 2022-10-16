@@ -1,0 +1,10 @@
+---
+- name: "Assert | test if system_timesync_role_name is set correctly"
+  ansible.builtin.assert:
+    that:
+      - system_timesync_role_name is defined
+      - system_timesync_role_name is string
+      - system_timesync_role_name in ["system_timesync"]   
+    quiet: true
+
+...

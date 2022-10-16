@@ -1,0 +1,11 @@
+---
+# handlers file for selinux
+- name: reboot
+  ansible.builtin.reboot:
+  when:
+    - core_selinux_reboot | bool == true
+
+- name: gather facts
+  ansible.builtin.setup:
+
+...
