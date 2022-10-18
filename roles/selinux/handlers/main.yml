@@ -3,7 +3,7 @@
 - name: reboot
   ansible.builtin.reboot:
   when:
-    - core_selinux_reboot | bool == true
+    - system_selinux_reboot | bool == true
 
 - name: gather facts
   ansible.builtin.setup:
