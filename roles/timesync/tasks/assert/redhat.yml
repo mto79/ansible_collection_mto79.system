@@ -3,7 +3,7 @@
   ansible.builtin.assert:
     that:
       - system_timesync_ntp_servers is iterable
-    quiet: yes
+    quiet: true
   when:
     - system_timesync_ntp_servers is defined
 

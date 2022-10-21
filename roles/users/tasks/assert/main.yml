@@ -1,0 +1,201 @@
+---
+- name: "Assert | test if core_users_ssh_key_directory is set correctly"
+  ansible.builtin.assert:
+    that:
+      - core_users_ssh_key_directory is defined
+      - core_users_ssh_key_directory is string
+    quiet: true
+
+- name: "Assert | test if core_users_shell is set correctly"
+  ansible.builtin.assert:
+    that:
+      - core_users_shell is defined
+      - core_users_shell is string
+    quiet: true
+
+- name: "Assert | test if core_users_cron_allow is set correctly"
+  ansible.builtin.assert:
+    that:
+      - core_users_cron_allow is defined
+      - core_users_cron_allow is boolean
+    quiet: true
+
+- name: "Assert | test if core_users_create_home is set correctly"
+  ansible.builtin.assert:
+    that:
+      - core_users_create_home is defined
+      - core_users_create_home is boolean
+    quiet: true
+
+- name: "Assert | test if core_users_group_list is set correctly"
+  ansible.builtin.assert:
+    that:
+      - core_users_group_list is iterable
+    quiet: true
+  when:
+    - core_users_group_list is defined
+
+- name: "Assert | test if item.name in core_users_group_list is set correctly"
+  ansible.builtin.assert:
+    that:
+      - item.name is defined
+      - item.name is string
+    quiet: true
+  loop: "{{ core_users_group_list }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when:
+    - core_users_group_list is defined
+
+- name: "Assert | test if item.gid in core_users_group_list is set correctly"
+  ansible.builtin.assert:
+    that:
+      - item.gid is defined
+      - item.gid is number
+      - item.gid > 0
+    quiet: true
+  loop: "{{ core_users_group_list }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when:
+    - core_users_group_list is defined
+    - item.gid is defined
+
+- name: "Assert | test if item.state in core_users_group_list is set correctly"
+  ansible.builtin.assert:
+    that:
+      - item.state is defined
+      - item.state is string
+      - item.state in [ "absent", "present" ]
+    quiet: true
+  loop: "{{ core_users_group_list }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when:
+    - core_users_group_list is defined
+    - item.state is defined
+
+- name: "Assert | test if item.system in core_users_group_list is set correctly"
+  ansible.builtin.assert:
+    that:
+      - item.system is boolean
+    quiet: true
+  loop: "{{ core_users_group_list }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when:
+    - core_users_group_list is defined
+    - item.system is defined
+
+- name: "Assert | test if item.name in core_users_user_list is set correctly"
+  ansible.builtin.assert:
+    that:
+      - item.name is defined
+      - item.name is string
+    quiet: true
+  loop: "{{ core_users_user_list }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when:
+    - core_users_user_list is defined
+
+- name: "Assert | test if item.cron_allow in core_users_user_list is set correctly"
+  ansible.builtin.assert:
+    that:
+      - item.cron_allow is boolean
+    quiet: true
+  loop: "{{ core_users_user_list }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when:
+    - core_users_user_list is defined
+    - item.cron_allow is defined
+
+- name: "Assert | test if item.uid in core_users_user_list is set correctly"
+  ansible.builtin.assert:
+    that:
+      - item.uid is number
+      - item.uid >= 0
+    quiet: true
+  loop: "{{ core_users_user_list }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when:
+    - core_users_user_list is defined
+    - item.uid is defined
+
+- name: "Assert | test if item.authorized_keys in core_users_user_list is set correctly"
+  ansible.builtin.assert:
+    that:
+      - item.authorized_keys is iterable
+    quiet: true
+  loop: "{{ core_users_user_list }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when:
+    - core_users_user_list is defined
+    - item.authorized_keys is defined
+
+- name: "Assert | test if item.manage_ssh_key in core_users_user_list is set correctly"
+  ansible.builtin.assert:
+    that:
+      - item.manage_ssh_key is boolean
+    quiet: true
+  loop: "{{ core_users_user_list }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when:
+    - core_users_user_list is defined
+    - item.manage_ssh_key is defined
+
+- name: "Assert | test if item.update_password in core_users_user_list is set correctly"
+  ansible.builtin.assert:
+    that:
+      - item.update_password in [ "always", "on_create" ]
+    quiet: true
+  loop: "{{ core_users_user_list }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when:
+    - core_users_user_list is defined
+    - item.update_password is defined
+
+- name: "Assert | test if item.exipres in core_users_user_list is set correctly"
+  ansible.builtin.assert:
+    that:
+      - item.expires is number
+      - item.expires >= -1
+    quiet: true
+  loop: "{{ core_users_user_list }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when:
+    - core_users_user_list is defined
+    - item.expires is defined
+
+- name: "Assert | test if item.password_validity_days in core_users_user_list is set correctly"
+  ansible.builtin.assert:
+    that:
+      - item.password_validity_days is number
+      - item.password_validity_days >= -1
+    quiet: true
+  loop: "{{ core_users_user_list }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when:
+    - core_users_user_list is defined
+    - item.password_validity_days is defined
+
+- name: "Assert | test if item.system in core_users_user_list is set correctly"
+  ansible.builtin.assert:
+    that:
+      - item.system is boolean
+    quiet: true
+  loop: "{{ core_users_user_list }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when:
+    - core_users_user_list is defined
+    - item.system is defined
+
+...

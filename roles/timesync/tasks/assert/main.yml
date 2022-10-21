@@ -4,7 +4,7 @@
     that:
       - system_timesync_role_name is defined
       - system_timesync_role_name is string
-      - system_timesync_role_name in ["system_timesync"]   
+      - system_timesync_role_name in ["system_timesync"]
     quiet: true
 
 ...

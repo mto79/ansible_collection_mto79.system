@@ -1,0 +1,35 @@
+---
+- name: "Group | manage group {{ group.name }}"
+  ansible.builtin.group:
+    name: "{{ group.name }}"
+    state: "{{ group.state | default('present') }}"
+    gid: "{{ group.gid | default(omit) }}"
+    system: "{{ group.system | default(omit) }}"
+
+- name: "Group | set sudo options for {{ group.name }}"
+  ansible.builtin.template:
+    src: sudo_group.j2
+    dest: '/etc/sudoers.d/{{ group.name | replace(".", "dot") }}_group'
+    mode: "0640"
+    validate: /usr/sbin/visudo -cf %s
+  when:
+    - group.sudo_options is defined
+  loop_control:
+    label: "{{ group.name }}"
+
+- name: "Group | remove sudo options for {{ group.name }}"
+  ansible.builtin.file:
+    path: '/etc/sudoers.d/{{ group.name | replace(".", "dot") }}_group'
+    state: absent
+  when:
+    - group.sudo_options is not defined
+  loop_control:
+    label: "{{ group.name }}"
+
+- name: "Group | ensure the sudoers.d directory is checked for group sudoers files (will be put after EOF if not exists)"
+  ansible.builtin.lineinfile:
+    path: /etc/sudoers
+    state: present
+    line: '#includedir /etc/sudoers.d'
+
+...

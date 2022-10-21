@@ -30,9 +30,48 @@ The policy differs per distribution, mostly because Debian and Ubuntu use 'defau
 
 See for usage variable system_selinux_booleans the defaults.yml
 
+## [Pre-commit](#pre-commit)
+
+Install pre-commit
+
+```bash
+pip install pre-commit
+```
+
+Set hooks in .pre-commit-config.yaml
+
+```bash
+repos:
+- repo: https://github.com/ansible/ansible-lint.git
+  rev: v4.2.0
+  hooks:
+    - id: ansible-lint
+      files: \.(yaml|yml)$
+```
+
+Enable pre-commit for your git repository
+
+```bash
+$ pre-commit install
+pre-commit installed at .git/hooks/pre-commit
+```
+
+Testing pre-commit
+
+```bash
+pre-commit run --all-files
+Ansible-lint.............................................................Passed
+```
+
+or just type:
+
+```bash
+git commit
+```
+
 ## [Maintainers](#maintainers)
 
-Marc Ouwerkerk (https://github.com/mto79)
+Marc Ouwerkerk (<https://github.com/mto79>)
 
 ## [Todo](#todo)
 

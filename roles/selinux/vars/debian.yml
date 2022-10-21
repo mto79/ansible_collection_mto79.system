@@ -22,9 +22,9 @@ _system_selinux_requirements:
     - selinux-policy-default
     - policycoreutils
 
-system_selinux_requirements: | 
-  "{{ _system_selinux_requirements[ansible_distribution ~ '-' ~ ansible_facts.distribution_major_version] | 
-  default (_system_selinux_requirements[ansible_facts.os_family ~ '-' ~ ansible_facts.distribution_major_version] | 
+system_selinux_requirements: |
+  "{{ _system_selinux_requirements[ansible_distribution ~ '-' ~ ansible_facts.distribution_major_version] |
+  default (_system_selinux_requirements[ansible_facts.os_family ~ '-' ~ ansible_facts.distribution_major_version] |
   default(_system_selinux_requirements[ansible_facts.os_family] | default(_system_selinux_requirements['default'] ))) }}"
 
 ...

@@ -4,7 +4,7 @@
     that:
       - system_selinux_role_name is defined
       - system_selinux_role_name is string
-      - system_selinux_role_name in ["system_selinux"]   
+      - system_selinux_role_name in ["system_selinux"]
     quiet: true
 
 - name: "Assert | test if system_selinux_state is set correctly"

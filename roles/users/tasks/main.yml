@@ -1,0 +1,65 @@
+---
+- name: "Main | import assert/main.yml"
+  ansible.builtin.import_tasks: assert/main.yml
+  run_once: true
+  delegate_to: localhost
+
+- name: "Main | determine specific vars file"
+  ansible.builtin.set_fact:
+    _core_users_vars_file: "{{ lookup('ansible.builtin.first_found', find_vars) }}"
+  vars:
+    find_vars:
+      files:
+        - "{{ ansible_facts.distribution | lower }}-{{ ansible_facts.distribution_version | lower }}.yml"
+        - "{{ ansible_facts.distribution | lower }}-{{ ansible_facts.distribution_major_version | lower }}.yml"
+        - "{{ ansible_facts.distribution | lower }}.yml"
+        - "{{ ansible_facts.os_family | lower }}.yml"
+        - "{{ ansible_facts.system | lower }}.yml"
+        - "main.yml"
+      skip: true
+      paths:
+        - "vars"
+
+- name: "Main | include specific vars file"
+  ansible.builtin.include_vars: "{{ _core_users_vars_file }}"
+  when: _core_users_vars_file is defined
+
+- name: "Main | include assert specific tasks"
+  ansible.builtin.set_fact:
+    _core_users_assert_file: "{{ lookup('ansible.builtin.first_found', find_asserts) }}"
+  vars:
+    find_asserts:
+      files:
+        - "{{ ansible_facts.distribution | lower }}-{{ ansible_facts.distribution_version | lower }}.yml"
+        - "{{ ansible_facts.distribution | lower }}-{{ ansible_facts.distribution_major_version | lower }}.yml"
+        - "{{ ansible_facts.distribution | lower }}.yml"
+        - "{{ ansible_facts.os_family | lower }}.yml"
+        - "{{ ansible_facts.system | lower }}.yml"
+        - "main.yml"
+      paths:
+        - "assert"
+
+- name: "Main | include tasks for assert"
+  ansible.builtin.include_tasks: "{{ _core_users_assert_file }}"
+  when: _core_users_assert_file is defined
+
+- name: "Main | include setup specific tasks"
+  ansible.builtin.set_fact:
+    _core_users_setup_file: "{{ lookup('ansible.builtin.first_found', find_plays) }}"
+  vars:
+    find_plays:
+      files:
+        - "{{ ansible_facts.distribution | lower }}-{{ ansible_facts.distribution_version | lower }}.yml"
+        - "{{ ansible_facts.distribution | lower }}-{{ ansible_facts.distribution_major_version | lower }}.yml"
+        - "{{ ansible_facts.distribution | lower }}.yml"
+        - "{{ ansible_facts.os_family | lower }}.yml"
+        - "{{ ansible_facts.system | lower }}.yml"
+        - "main.yml"
+      paths:
+        - "setup"
+
+- name: "Main | include tasks for setup"
+  ansible.builtin.include_tasks: "{{ _core_users_setup_file }}"
+  when: _core_users_setup_file is defined
+
+...

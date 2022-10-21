@@ -4,7 +4,7 @@
     msg: "Setup role {{ system_selinux_role_name }} for {{ ansible_facts.distribution }}"
 
 - name: "Setup | import assert.yml"
-  ansible.builtin.include_tasks: "assert/{{ ansible_os_famliy|lower }}.yml"
+  ansible.builtin.include_tasks: "assert/{{ ansible_facts.os_famliy | lower }}.yml"
   run_once: true
 
 - name: "Setup | install required packages"
@@ -12,10 +12,10 @@
     name: "{{ system_selinux_requirements }}"
     state: present
   notify:
-    - gather facts
+    - Gather facts
 
 - name: "Setup | flush handlers"
-  meta: flush_handlers
+  ansible.builtin.meta: flush_handlers
 
 - name: "Setup | stop service apparmor"
   ansible.builtin.systemd:
@@ -29,22 +29,29 @@
 
 - name: "Setup | run selinux-activate"
   ansible.builtin.command: sudo selinux-activate
+  register: _system_selinux_activate_output
+  changed_when: _system_selinux_activate_output.rc != 0
   become: true
   notify:
-    - reboot
+    - Reboot
 
 - name: "Setup | run selinux-config-enforcing"
   ansible.builtin.command: sudo selinux-config-enforcing
+  register: _system_selinux_config_enforcing_output
+  changed_when: _system_selinux_config_enforcing_output.rc != 0
   become: true
 
 - name: "Setup | configure selinux"
+  when:
+    - ansible_selinux.status is defined
+    - ansible_connection not in [ "container", "docker", "community.docker.docker" ]
   block:
     - name: "Setup | manage selinux"
       ansible.posix.selinux:
         state: "{{ system_selinux_state }}"
         policy: "{{ system_selinux_policy }}"
       notify:
-        - reboot
+        - Reboot
 
     - name: "Setup | manage selinux booleans"
       ansible.posix.seboolean:
@@ -56,8 +63,4 @@
         label: "{{ item.name }}"
       when:
         - system_selinux_booleans is defined
-  when:
-    - ansible_selinux.status is defined
-    - ansible_connection not in [ "container", "docker", "community.docker.docker" ]
-
 ...
