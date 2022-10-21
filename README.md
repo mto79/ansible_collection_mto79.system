@@ -1,8 +1,8 @@
-# ansible_collection_mto79.system
+# [ansible_collection_mto79.system](#ansible_collection_mto79system)
 
 MTO79 - Ansible Collection - System
 
-## Description
+## [Description](#description)
 
 Ansible collection that provisions linux systems.
 
@@ -28,9 +28,9 @@ Name | Description | Tests
 [mto79.system.users](https://github.com/mto79/ansible_collection_mto79.system/blob/main/roles/users/README.md)| Install and configure Users.| Tests currently unavailable.
 <!--end collection content-->
 
-## Installing this collection
+## [Installing this collection](#installing-this-collection)
 
-### Locally
+### Local installation
 
 You can install the MTO79 System collection locally, if you acquired a tarball from the [releases page](https://github.com/mto79/ansible_collection_mto79.system/releases) as follows:
 
@@ -101,10 +101,10 @@ or just type:
 git commit
 ```
 
-## More information
+## [More information](#more-information)
 
 * [MTO Website](https://mto.nu)
 
-## Licensing
+## [Licensing](#licensing)
 
 See [LICENSE](LICENSE).
