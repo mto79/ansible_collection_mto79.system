@@ -4,8 +4,9 @@
   run_once: true
   delegate_to: localhost
 
-- name: "Main | include OS specific vars"
-  ansible.builtin.include_vars: "{{ lookup('ansible.builtin.first_found', find_vars) }}"
+- name: "Main | determine specific vars file"
+  ansible.builtin.set_fact:
+    _system_selinux_vars_file: "{{ lookup('ansible.builtin.first_found', find_vars) }}"
   vars:
     find_vars:
       files:
@@ -19,8 +20,13 @@
       paths:
         - "vars"
 
-- name: "Main | include specific OS assert"
-  ansible.builtin.include_tasks: "{{ lookup('ansible.builtin.first_found', find_asserts) }}"
+- name: "Main | include specific vars file"
+  ansible.builtin.include_vars: "{{ _system_selinux_vars_file }}"
+  when: _system_selinux_vars_file is defined
+
+- name: "Main | include assert specific tasks"
+  ansible.builtin.set_fact:
+    _system_selinux_assert_file: "{{ lookup('ansible.builtin.first_found', find_asserts) }}"
   vars:
     find_asserts:
       files:
@@ -29,13 +35,17 @@
         - "{{ ansible_facts.distribution | lower }}.yml"
         - "{{ ansible_facts.os_family | lower }}.yml"
         - "{{ ansible_facts.system | lower }}.yml"
-        - "failover.yml"
-      skip: true
+        - "main.yml"
       paths:
         - "assert"
 
-- name: "Main | include OS specific tasks"
-  ansible.builtin.include_tasks: "{{ lookup('ansible.builtin.first_found', find_plays) }}"
+- name: "Main | include tasks for assert"
+  ansible.builtin.include_tasks: "{{ _system_selinux_assert_file }}"
+  when: _system_selinux_assert_file is defined
+
+- name: "Main | include setup specific tasks"
+  ansible.builtin.set_fact:
+    _system_selinux_setup_file: "{{ lookup('ansible.builtin.first_found', find_plays) }}"
   vars:
     find_plays:
       files:
@@ -44,9 +54,12 @@
         - "{{ ansible_facts.distribution | lower }}.yml"
         - "{{ ansible_facts.os_family | lower }}.yml"
         - "{{ ansible_facts.system | lower }}.yml"
-        - "failover.yml"
-      skip: true
+        - "main.yml"
       paths:
         - "setup"
+
+- name: "Main | include tasks for setup"
+  ansible.builtin.include_tasks: "{{ _system_selinux_setup_file }}"
+  when: _system_selinux_setup_file is defined
 
 ...

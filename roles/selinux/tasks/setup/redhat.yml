@@ -10,15 +10,15 @@
         name: fedora.linux_system_roles.selinux
 
   rescue:
-    # Fail if failed for a different reason than selinux_reboot_required.
+    # Fail if failed for a different reason than system_selinux_reboot_required.
     - name: "Setup | handle errors"
       ansible.builtin.fail:
         msg: "role failed"
-      when: not selinux_reboot_required
+      when: not system_selinux_reboot_required
 
     - name: "Setup | restart managed host"
       ansible.builtin.reboot:
-      when: core_selinux_reboot
+      when: system_selinux_reboot
 
     - name: "Setup | wait for managed host to come back"
       ansible.builtin.wait_for_connection:
