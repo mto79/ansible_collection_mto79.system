@@ -48,7 +48,7 @@ collections:
 
 ### From the Galaxy
 
-You can install the Checkmk collection with the Ansible Galaxy CLI:
+You can install the System collection with the Ansible Galaxy CLI:
 
     ansible-galaxy collection install mto79.system
 
