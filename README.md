@@ -62,6 +62,45 @@ collections:
     version: X.Y.Z
 ```
 
+## [Pre-commit](#pre-commit)
+
+Install pre-commit
+
+```bash
+pip install pre-commit
+```
+
+Set hooks in .pre-commit-config.yaml
+
+```bash
+repos:
+- repo: https://github.com/ansible/ansible-lint.git
+  rev: v4.2.0
+  hooks:
+    - id: ansible-lint
+      files: \.(yaml|yml)$
+```
+
+Enable pre-commit for your git repository
+
+```bash
+$ pre-commit install
+pre-commit installed at .git/hooks/pre-commit
+```
+
+Testing pre-commit
+
+```bash
+pre-commit run --all-files
+Ansible-lint.............................................................Passed
+```
+
+or just type:
+
+```bash
+git commit
+```
+
 ## More information
 
 * [MTO Website](https://mto.nu)
