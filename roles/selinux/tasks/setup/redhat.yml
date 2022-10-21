@@ -3,10 +3,6 @@
   ansible.builtin.debug:
     msg: "Setup role {{ system_selinux_role_name }} for {{ ansible_facts.distribution }}"
 
-- name: "Setup | import assert.yml"
-  ansible.builtin.include_tasks: "assert/{{ ansible_facts.os_family | lower }}.yml"
-  run_once: true
-
 - name: "Setup | execute the role and catch errors"
   block:
     - name: "Setup | include selinux role"

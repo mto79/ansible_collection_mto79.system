@@ -2,7 +2,7 @@
 - name: Reboot
   ansible.builtin.reboot:
   when:
-    - core_selinux_reboot
+    - system_selinux_reboot
 
 - name: Gather facts
   ansible.builtin.setup:
