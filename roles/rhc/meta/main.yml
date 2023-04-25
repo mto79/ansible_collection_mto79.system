@@ -1,0 +1,21 @@
+---
+galaxy_info:
+  author: Marc Ouwerkerk.
+  role_name: system_rhc
+  description: Role to manage RH subscription management and Insights
+  license: Apache-2.0
+  min_ansible_version: "2.10"
+  standalone: true
+
+  platforms: []
+
+  galaxy_tags:
+    - mto79
+    - system
+    - linux
+    - subscription
+    - insights
+
+dependencies: []
+
+...

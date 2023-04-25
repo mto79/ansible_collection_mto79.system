@@ -1,6 +1,6 @@
 ---
-- name: "Assert | failover message"
+- name: "Assert | Failover message"
   ansible.builtin.debug:
-    msg: "Your system ({{ ansible_facts.system }}) is not supported."
+    msg: "Your system ({{ ansible_facts['system'] }}) is not supported."
 
 ...

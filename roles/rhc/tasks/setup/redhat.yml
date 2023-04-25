@@ -1,0 +1,24 @@
+---
+- name: "Setup | execute the role and catch errors"
+  block:
+    - name: "Setup | include rhc role"
+      ansible.builtin.include_role:
+        name: fedora.linux_system_roles.rhc
+      vars:
+        rhc_auth: "{{ system_rhc_auth | default(omit) }}"
+        rhc_baseurl: "{{ system_rhc_baseurl | default(omit) }}"
+        rhc_environments: "{{ system_rhc_environments | default(omit) }}"
+        rhc_insights: "{{ system_rhc_insights | default(omit) }}"
+        rhc_organization: "system_rhc_organization | default(omit) }}"
+        rhc_proxy: "{{ system_rhc_proxy | default(omit) }}"
+        rhc_release: "{{ system_rhc_release | default(omit) }}"
+        rhc_repositories: "{{ system_rhc_repositories | default(omit) }}"
+        rhc_server: "{{ system_rhc_server | default(omit) }}"
+        rhc_state: "{{ system_rhc_state | default(omit) }}"
+
+  rescue:
+    - name: "Setup | handle errors"
+      ansible.builtin.fail:
+        msg: "Include role fedora.linux_system_roles.rhc failed"
+
+...

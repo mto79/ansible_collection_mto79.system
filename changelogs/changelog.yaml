@@ -1,0 +1,9 @@
+ancestor: null
+releases:
+  0.0.1:
+    changes:
+      major_changes:
+        - Initial creation of collection structure and layout.
+    fragments:
+      - initial.yml
+    release_date: '2023-04-17'
