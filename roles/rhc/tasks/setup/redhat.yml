@@ -9,7 +9,7 @@
         rhc_baseurl: "{{ system_rhc_baseurl | default(omit) }}"
         rhc_environments: "{{ system_rhc_environments | default(omit) }}"
         rhc_insights: "{{ system_rhc_insights | default(omit) }}"
-        rhc_organization: "system_rhc_organization | default(omit) }}"
+        rhc_organization: "{{ system_rhc_organization | default(omit) }}"
         rhc_proxy: "{{ system_rhc_proxy | default(omit) }}"
         rhc_release: "{{ system_rhc_release | default(omit) }}"
         rhc_repositories: "{{ system_rhc_repositories | default(omit) }}"
