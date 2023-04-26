@@ -1,4 +1,8 @@
 ---
+- name: "Debug rhc_release"
+  ansible.builtin.debug:
+    msg: "rhc_release: {{ system_rhc_release }}"
+
 - name: "Setup | execute the role and catch errors"
   block:
     - name: "Setup | include rhc role"
