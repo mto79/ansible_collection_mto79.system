@@ -19,10 +19,7 @@
         - "default.yml"
       skip: true
       paths:
-        - "{{ item }}"
-  loop:
-    - "defaults"
-    - "vars"
+        - "vars"
 
 - name: "Debug system_rhc_release"
   ansible.builtin.debug:
