@@ -1,17 +1,3 @@
 ---
-system_rhc_auth: {}
-system_rhc_baseurl: null
-system_rhc_environments: []
-system_rhc_insights:
-  autoupdate: true
-  remediation: present
-  state: present
-  tags: {}
-system_rhc_organization: null
-system_rhc_proxy: {}
-system_rhc_release: null
-system_rhc_repositories: []
-system_rhc_server: {}
-system_rhc_state: "present"
 
 ...

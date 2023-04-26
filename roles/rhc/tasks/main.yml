@@ -19,7 +19,10 @@
         - "default.yml"
       skip: true
       paths:
-        - "vars"
+        - "{{ item }}"
+  loop:
+    - "defaults"
+    - "vars"
 
 - name: "Main | Assert platform/version specific variables"
   ansible.builtin.include_tasks: "{{ lookup('ansible.builtin.first_found', find_asserts) }}"

@@ -24,8 +24,10 @@ galaxy_info:
         - all
 
   galaxy_tags:
-    - selinux
+    - mto79
     - system
+    - linux
+    - selinux
 
 dependencies: []
 

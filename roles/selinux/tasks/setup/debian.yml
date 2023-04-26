@@ -1,29 +1,25 @@
 ---
-- name: "Setup | display message"
-  ansible.builtin.debug:
-    msg: "Setup role {{ system_selinux_role_name }} for {{ ansible_facts.distribution }}"
-
-- name: "Setup | install required packages"
+- name: "Setup | Install required packages"
   ansible.builtin.package:
     name: "{{ system_selinux_requirements }}"
     state: present
   notify:
     - Gather facts
 
-- name: "Setup | flush handlers"
+- name: "Setup | Flush handlers"
   ansible.builtin.meta: flush_handlers
 
-- name: "Setup | stop service apparmor"
+- name: "Setup | Stop service apparmor"
   ansible.builtin.systemd:
     name: apparmor
     state: stopped
 
-- name: "Setup | remove apparmor"
+- name: "Setup | Remove apparmor"
   ansible.builtin.apt:
     name: apparmor
     state: absent
 
-- name: "Setup | run selinux-activate"
+- name: "Setup | Run selinux-activate"
   ansible.builtin.command: sudo selinux-activate
   register: _system_selinux_activate_output
   changed_when: _system_selinux_activate_output.rc != 0
@@ -31,25 +27,25 @@
   notify:
     - Reboot
 
-- name: "Setup | run selinux-config-enforcing"
+- name: "Setup | Run selinux-config-enforcing"
   ansible.builtin.command: sudo selinux-config-enforcing
   register: _system_selinux_config_enforcing_output
   changed_when: _system_selinux_config_enforcing_output.rc != 0
   become: true
 
-- name: "Setup | configure selinux"
+- name: "Setup | Configure selinux"
   when:
     - ansible_selinux.status is defined
     - ansible_connection not in [ "container", "docker", "community.docker.docker" ]
   block:
-    - name: "Setup | manage selinux"
+    - name: "Setup | Manage selinux"
       ansible.posix.selinux:
         state: "{{ system_selinux_state }}"
         policy: "{{ system_selinux_policy }}"
       notify:
         - Reboot
 
-    - name: "Setup | manage selinux booleans"
+    - name: "Setup | Manage selinux booleans"
       ansible.posix.seboolean:
         name: "{{ item.name }}"
         state: "{{ item.state | default('yes') }}"

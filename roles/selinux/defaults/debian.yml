@@ -1,0 +1,11 @@
+---
+system_selinux_state: "enforcing"
+
+_system_selinux_policy:
+  default: "targeted"
+  Debian: "default"
+system_selinux_policy: "{{ _system_selinux_policy[ansible_facts['os_family']] | default(_system_selinux_policy['default']) }}"
+
+system_selinux_reboot: true
+
+...
