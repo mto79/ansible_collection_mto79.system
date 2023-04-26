@@ -5,6 +5,10 @@
   when: not ansible_facts.keys() | list |
     intersect(__role_required_facts) == __role_required_facts
 
+- name: "Debug system_rhc_release"
+  ansible.builtin.debug:
+    msg: "system_rhc_release: {{ system_rhc_release }}"
+
 - name: "Main | Set platform/version specific variables"
   ansible.builtin.include_vars: "{{ lookup('ansible.builtin.first_found', find_vars) }}"
   vars:
