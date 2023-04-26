@@ -9,7 +9,7 @@ system_rhc_insights:
   tags: {}
 system_rhc_organization: null
 system_rhc_proxy: {}
-system_rhc_release: null
+system_rhc_release:
 system_rhc_repositories: []
 system_rhc_server: {}
 system_rhc_state: "present"

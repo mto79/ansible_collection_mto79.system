@@ -1,20 +1,3 @@
 ---
-system_selinux_role_name: "system_selinux"
-system_selinux_state: enforcing
-
-_system_selinux_policy:
-  default: targeted
-  Debian: default
-  RedHat: targeted
-system_selinux_policy: "{{ _system_selinux_policy[ansible_facts.os_family] | default(_system_selinux_policy['default']) }}"
-
-system_selinux_reboot: true
-
-# You can enable (or disable) booleans by specifying them in this list.
-# system_selinux_booleans:
-#   - name: http_can_network_connect
-#   - name: abrt_anon_write
-#     state: no
-#     persistent: no
 
 ...
