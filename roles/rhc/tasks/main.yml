@@ -21,10 +21,6 @@
       paths:
         - "vars"
 
-- name: "Debug system_rhc_release"
-  ansible.builtin.debug:
-    msg: "system_rhc_release: {{ system_rhc_release }}"
-
 - name: "Main | Assert platform/version specific variables"
   ansible.builtin.include_tasks: "{{ lookup('ansible.builtin.first_found', find_asserts) }}"
   vars:

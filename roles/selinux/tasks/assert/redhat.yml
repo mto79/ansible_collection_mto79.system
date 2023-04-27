@@ -2,17 +2,17 @@
 - name: "Assert | test if selinux_state is set correctly"
   ansible.builtin.assert:
     that:
-      - selinux_state is defined
-      - selinux_state is string
-      - selinux_state in [ "disabled", "enforcing", "permissive" ]
+      - system_selinux_state is defined
+      - system_selinux_state is string
+      - system_selinux_state in [ "disabled", "enforcing", "permissive" ]
     quiet: true
 
 - name: "Assert | test if selinux_policy is set correctly"
   ansible.builtin.assert:
     that:
-      - selinux_policy is defined
-      - selinux_policy is string
-      - selinux_policy in [ "default", "minimum", "mls", "targeted" ]
+      - system_selinux_policy is defined
+      - system_selinux_policy is string
+      - system_selinux_policy in [ "default", "minimum", "mls", "targeted" ]
     quiet: true
 
 ...

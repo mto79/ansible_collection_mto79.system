@@ -1,11 +1,3 @@
 ---
-- name: "Assert | Test if __role_name is set correctly"
-  ansible.builtin.assert:
-    that:
-      - __role_name is defined
-      - __role_name is string
-      - __role_name in ["system_rhc"]
-    quiet: true
-
 
 ...
