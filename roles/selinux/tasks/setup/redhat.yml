@@ -22,8 +22,8 @@
     # Fail if failed for a different reason than system_selinux_reboot_required.
     - name: "Setup | Handle errors"
       ansible.builtin.fail:
-        msg: "role failed"
-      when: not system_selinux_reboot_required
+        msg: "Include role fedora.linux_system_roles.selinux failed"
+      when: not system_selinux_reboot
 
     - name: "Setup | Restart managed host"
       ansible.builtin.reboot:
@@ -37,5 +37,18 @@
     - name: "Setup | Reapply the role"
       ansible.builtin.include_role:
         name: fedora.linux_system_roles.selinux
+      vars:
+        selinux_state: "{{ system_selinux_state | default(omit) }}"
+        selinux_policy: "{{ system_selinux_policy | default(omit) }}"
+        selinux_booleans: "{{ system_selinux_booleans | default(omit) }}"
+        selinux_fcontexts: "{{ system_selinux_fcontexts | default(omit) }}"
+        selinux_logins: "{{ system_selinux_logins | default(omit) }}"
+        selinux_ports: "{{ system_selinux_ports | default(omit) }}"
+        selinux_restore_dirs: "{{ system_selinux_restore_dirs | default(omit) }}"
+        selinux_all_purge: "{{ system_selinux_all_purge | default(omit) }}"
+        selinux_booleans_purge: "{{ system_selinux_booleans_purge | default(omit) }}"
+        selinux_fcontexts_purge: "{{ system_selinux_fcontexts_purge | default(omit) }}"
+        selinux_ports_purge: "{{ system_selinux_ports_purge | default(omit) }}"
+        selinux_logins_purge: "{{ system_selinux_logins_purge | default(omit) }}"
 
 ...
