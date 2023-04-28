@@ -6,7 +6,7 @@
         name: fedora.linux_system_roles.rhc
       vars:
         rhc_auth: "{{ system_rhc_auth | d({}) }}"
-        rhc_baseurl: "{{ system_rhc_baseurl | d(null) }}"
+        rhc_baseurl: "{{ system_rhc_baseurl | d(omit) }}"
         rhc_environments: "{{ system_rhc_environments | d([]) }}"
         rhc_insights: "{{ system_rhc_insights | d(omit) }}"
         rhc_organization: "{{ system_rhc_organization | d(omit) }}"
