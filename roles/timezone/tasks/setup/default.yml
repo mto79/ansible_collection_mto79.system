@@ -1,0 +1,14 @@
+---
+- name: "Setup | Execute the role and catch errors"
+  block:
+    - name: "Setup | Set timezone"
+      community.general.timezone:
+        name: "{{ system_timezone }}"
+        hwclock: "{{ system_hwclock | default(omit) }}"
+
+  rescue:
+    - name: "Setup | Handle errors"
+      ansible.builtin.fail:
+        msg: "Include General Timezone role failed"
+
+...

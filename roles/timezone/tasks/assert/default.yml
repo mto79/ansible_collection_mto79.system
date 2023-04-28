@@ -1,0 +1,8 @@
+---
+- name: "Assert | Test if system_timezone is set correctly"
+  ansible.builtin.assert:
+    that:
+      - system_timezone is string
+    quiet: true
+
+...
