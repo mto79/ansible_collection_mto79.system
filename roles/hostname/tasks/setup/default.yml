@@ -9,6 +9,6 @@
   rescue:
     - name: "Setup | Handle errors"
       ansible.builtin.fail:
-        msg: "Include General Timezone role failed"
+        msg: "Include General hostname role failed"
 
 ...
