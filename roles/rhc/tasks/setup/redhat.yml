@@ -7,7 +7,7 @@
       vars:
         rhc_auth: "{{ system_rhc_auth | d(omit) }}"
         rhc_baseurl: "{{ system_rhc_baseurl | d(omit) }}"
-        rhc_environments: "{{ system_rhc_environments | d(omit) }}"
+        rhc_environments: "{{ system_rhc_environments | d([]) }}"
         rhc_insights: "{{ system_rhc_insights | d(omit) }}"
         rhc_organization: "{{ system_rhc_organization | d(omit) }}"
         rhc_proxy: "{{ system_rhc_proxy | d(omit) }}"
