@@ -1,8 +1,8 @@
 ---
 galaxy_info:
   author: Marc Ouwerkerk.
-  role_name: system_timezone
-  description: Install and configure timezone and its required libraries on your system.
+  role_name: system_hostname
+  description: Install and configure hostname and its required libraries on your system.
   license: Apache-2.0
   min_ansible_version: "2.10"
   standalone: true
@@ -27,7 +27,7 @@ galaxy_info:
     - mto79
     - system
     - linux
-    - timezone
+    - hostname
 
 dependencies: []
 

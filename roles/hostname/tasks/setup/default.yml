@@ -1,0 +1,14 @@
+---
+- name: "Setup | Execute the role and catch errors"
+  block:
+    - name: "Setup | Set hostname"
+      ansible.builtin.hostname:
+        name: "{{ system_hostname }}"
+        use: "{{ system_hostname_use | d(omit) }}"
+
+  rescue:
+    - name: "Setup | Handle errors"
+      ansible.builtin.fail:
+        msg: "Include General Timezone role failed"
+
+...
