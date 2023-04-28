@@ -5,9 +5,9 @@
       ansible.builtin.include_role:
         name: fedora.linux_system_roles.timesync
       vars:
-        timesync_ntp_servers: "{{ system_timesync_ntp_servers }} | d([])"
-        timesync_ptp_domains: "{{ system_timesync_ptp_domains }} | d([])"
-        timesync_dhcp_ntp_servers: "{{ system_timesync_dhcp_ntp_servers }} | d(false)"
+        timesync_ntp_servers: "{{ system_timesync_ntp_servers | d([]) }}"
+        timesync_ptp_domains: "{{ system_timesync_ptp_domains | d([]) }}"
+        timesync_dhcp_ntp_servers: "{{ system_timesync_dhcp_ntp_servers | d(false) }}"
         timesync_step_threshold: "{{ system_timesync_step_threshold | d(-1.0) }}"
         timesync_min_sources: "{{ system_timesync_min_sources | d(1) }}"
         timesync_ntp_hwts_interfaces: "{{ system_timesync_ntp_hwts_interfaces | d([]) }}"
