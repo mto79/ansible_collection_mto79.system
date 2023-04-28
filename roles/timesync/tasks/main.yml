@@ -1,65 +1,59 @@
 ---
-- name: "Main | import assert/main.yml"
-  ansible.builtin.import_tasks: assert/main.yml
-  run_once: true
-  delegate_to: localhost
+- name: "Main | Ensure ansible_facts used by role"
+  ansible.builtin.setup:
+    gather_subset: min
+  when: not ansible_facts.keys() | list |
+    intersect(__role_required_facts) == __role_required_facts
 
-- name: "Main | determine specific vars file"
-  ansible.builtin.set_fact:
-    _system_timesync_vars_file: "{{ lookup('ansible.builtin.first_found', find_vars) }}"
+- name: "Main | Set platform/version specific variables"
+  ansible.builtin.include_vars: "{{ lookup('ansible.builtin.first_found', find_vars) }}"
   vars:
     find_vars:
       files:
-        - "{{ ansible_facts.distribution | lower }}-{{ ansible_facts.distribution_version | lower }}.yml"
-        - "{{ ansible_facts.distribution | lower }}-{{ ansible_facts.distribution_major_version | lower }}.yml"
-        - "{{ ansible_facts.distribution | lower }}.yml"
-        - "{{ ansible_facts.os_family | lower }}.yml"
-        - "{{ ansible_facts.system | lower }}.yml"
-        - "main.yml"
+        - "{{ (ansible_facts['distribution'] | lower) | replace(' ', '_') }}_\
+          {{ ansible_facts['distribution_version'] }}.yml"
+        - "{{ (ansible_facts['distribution'] | lower) | replace(' ', '_') }}_\
+          {{ ansible_facts['distribution_major_version'] }}.yml"
+        - "{{ (ansible_facts['distribution'] | lower) | replace(' ', '_') }}.yml"
+        - "{{ ansible_facts['os_family'] | lower }}.yml"
+        - "default.yml"
       skip: true
       paths:
         - "vars"
 
-- name: "Main | include specific vars file"
-  ansible.builtin.include_vars: "{{ _system_timesync_vars_file }}"
-  when: _system_timesync_vars_file is defined
-
-- name: "Main | include assert specific tasks"
-  ansible.builtin.set_fact:
-    _system_timesync_assert_file: "{{ lookup('ansible.builtin.first_found', find_asserts) }}"
+- name: "Main | Assert platform/version specific variables"
+  ansible.builtin.include_tasks: "{{ lookup('ansible.builtin.first_found', find_asserts) }}"
   vars:
     find_asserts:
       files:
-        - "{{ ansible_facts.distribution | lower }}-{{ ansible_facts.distribution_version | lower }}.yml"
-        - "{{ ansible_facts.distribution | lower }}-{{ ansible_facts.distribution_major_version | lower }}.yml"
-        - "{{ ansible_facts.distribution | lower }}.yml"
-        - "{{ ansible_facts.os_family | lower }}.yml"
-        - "{{ ansible_facts.system | lower }}.yml"
-        - "main.yml"
+        - "{{ (ansible_facts['distribution'] | lower) | replace(' ', '_') }}_\
+          {{ ansible_facts['distribution_version'] }}.yml"
+        - "{{ (ansible_facts['distribution'] | lower) | replace(' ', '_') }}_\
+          {{ ansible_facts['distribution_major_version'] }}.yml"
+        - "{{ (ansible_facts['distribution'] | lower) | replace(' ', '_') }}.yml"
+        - "{{ ansible_facts['os_family'] | lower }}.yml"
+        - "default.yml"
+      skip: true
       paths:
         - "assert"
 
-- name: "Main | include tasks for assert"
-  ansible.builtin.include_tasks: "{{ _system_timesync_assert_file }}"
-  when: _system_timesync_assert_file is defined
-
-- name: "Main | include setup specific tasks"
-  ansible.builtin.set_fact:
-    _setup_timesync_setup_file: "{{ lookup('ansible.builtin.first_found', find_plays) }}"
+- name: "Main | platform/version specific playbooks"
+  ansible.builtin.include_tasks: "{{ lookup('ansible.builtin.first_found', find_playbooks) }}"
   vars:
-    find_plays:
+    find_playbooks:
       files:
-        - "{{ ansible_facts.distribution | lower }}-{{ ansible_facts.distribution_version | lower }}.yml"
-        - "{{ ansible_facts.distribution | lower }}-{{ ansible_facts.distribution_major_version | lower }}.yml"
-        - "{{ ansible_facts.distribution | lower }}.yml"
-        - "{{ ansible_facts.os_family | lower }}.yml"
-        - "{{ ansible_facts.system | lower }}.yml"
-        - "main.yml"
+        - "{{ (ansible_facts['distribution'] | lower) | replace(' ', '_') }}_\
+          {{ ansible_facts['distribution_version'] }}.yml"
+        - "{{ (ansible_facts['distribution'] | lower) | replace(' ', '_') }}_\
+          {{ ansible_facts['distribution_major_version'] }}.yml"
+        - "{{ (ansible_facts['distribution'] | lower) | replace(' ', '_') }}.yml"
+        - "{{ ansible_facts['os_family'] | lower }}.yml"
+        - "default.yml"
+      skip: true
       paths:
-        - "setup"
-
-- name: "Main | include tasks for setup"
-  ansible.builtin.include_tasks: "{{ _system_timesync_setup_file }}"
-  when: _system_timesync_setup_file is defined
+        - "tasks/{{ __role_action_task }}"
+  loop: "{{ [__role_action | default('setup')] | flatten }}"
+  loop_control:
+    loop_var: __role_action_task
 
 ...

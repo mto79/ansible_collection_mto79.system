@@ -24,8 +24,10 @@ galaxy_info:
         - all
 
   galaxy_tags:
-    - timesync
+    - mto79
     - system
+    - linux
+    - timesync
 
 dependencies: []
 
