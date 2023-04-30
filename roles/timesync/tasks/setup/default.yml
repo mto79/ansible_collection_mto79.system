@@ -1,5 +1,8 @@
 ---
 - name: "Setup | Execute the role and catch errors"
+  when:
+    - system_timesync_vendor is defined
+    - system_timesync_vendor | bool
   block:
     - name: "Setup | Include timesync role"
       ansible.builtin.include_role:

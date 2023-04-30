@@ -1,5 +1,8 @@
 ---
 - name: "Setup | Execute the role and catch errors"
+  when:
+    - system_selinux_vendor is defined
+    - system_selinux_vendor | bool
   block:
     - name: "Setup | Include selinux role"
       ansible.builtin.include_role:

@@ -1,6 +1,6 @@
-# [System_timesync](#system-timesync)
-
-Install and configure timesync and its required libraries on your system.
+# [System_firewall](#system-firewall)
+:%%
+Install and configure firewall and its required libraries on your system.
 
 ## [Requirements](#requirements)
 
@@ -14,26 +14,18 @@ Refer to the following example:
 ```yaml
     - hosts: servers
       roles:
-        - role: "mto79.system.timesync"
+        - role: "mto79.system.firewall"
           vars:
             __role_action:
               - "setup"
-          tags: ['system', 'timesync', 'setup']
+          tags: ['system', 'firewall', 'setup']
 ```
 
 ## [Role Variables](#role-variables)
 
 | Variable | Default | Description |
 | -------- | ------- | ----------- |
-| `system_timesync_vendor` | `true` | |
-| `system_timesync_ntp_servers` | | |
-| `system_timesync_ptp_domains` | | |
-| `system_timesync_dhcp_ntp_server` | `False`| |
-| `system_timesync_step_threshold` | `-1.0` | |
-| `system_timesync_min_sources` | | |
-| `system_timesync_ntp_hwts_interfaces` | | |
-| `system_timesync_ntp_provider` | | |
-| `system_timesync_max_distance` | | |
+| `system_firewall_` | | |
 
 ## [Maintainers](#maintainers)
 
