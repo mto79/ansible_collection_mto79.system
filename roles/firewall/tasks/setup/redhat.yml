@@ -4,7 +4,7 @@
     - system_firewall_vendor is defined
     - system_firewall_vendor | bool
   block:
-    - name: "Setup | Include firewall`` role"
+    - name: "Setup | Include vendor firewall role"
       ansible.builtin.include_role:
         name: fedora.linux_system_roles.firewall
       vars:

@@ -1,6 +1,6 @@
-# [Hetzner-Server](#hetzner-server)
+# [System-rhc](#system-rhc)
 
-Hetzner role to provisioning a dedicated server with server
+Role for subscribing and managing RHC/Insight on your system.
 
 ## [Requirements](#requirements)
 
@@ -10,33 +10,29 @@ Hetzner role to provisioning a dedicated server with server
 ## [Example Playbook](#example-playbook)
 
 ```yaml
----
-- name: playbook
-  hosts: all
-  become: yes
-  gather_facts: yes
-
-  roles:
-    - { role: mto79.hetzner.server, tags: ['mto79', 'hetzner-server', 'system'] }
-
-  collections:
-    - mto79.hetzner.server
-
+    - hosts: servers
+      roles:
+        - role: "mto79.system.rhc"
+          vars:
+            __role_action:
+              - "setup"
+          tags: ['system', 'rhc', 'setup']
 ```
 
 ## [Role variables](#role-variables)
 
 | Variable | Default | Description |
 | -------- | ------- | ----------- |
-| `hetzner_server_api_url` | `https://robot-ws.your-server.de` | Username for Hetzner Dedicated server |
-| `hetzner_server_api_username` | `Empty` | Username for Hetzner Dedicated server |
-| `hetzner_server_api_password` | `Empty` | Password for Hetzner Dedicated server |
-| `hetzner_server_hostname` | `Empty` | Hostname for Hetzner Dedicated server |
-| `hetzner_server_ip` | `xxx.xxx.xxx.xxx` | IP address for Hetzner Dedicated server |
-| `hetzner_server_disk1` | `sda` | Disk1 for Hetzner Dedicated server |
-| `hetzner_server_disk2` | `sdb` | Disk2 for Hetzner Dedicated server |
-| `hetzner_server_image` | `/root/.oldroot/nfs/install/../images/CentOS-80-stream-amd64-base.tar.gz` | Default image for Hetzner Dedicated server |
-| `hetzner_server_image_ignore_errors` | `False` | To overlook errors image for Hetzner Dedicated server |
+|`system_rhc_auth` |  | |
+|`system_rhc_baseurl`  | |
+|`system_rhc_environments` | |
+|`system_rhc_insights` | |
+|`system_rhc_organization` | |
+|`system_rhc_proxy` | |
+|`system_rhc_release` | | |
+|`system_rhc_repositories` | |
+|`system_rhc_server` | |
+|`system_rhc_state` | |
 
 ## [Standards](#standards)
 
