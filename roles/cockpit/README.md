@@ -37,4 +37,4 @@ Marc Ouwerkerk (<https://github.com/mto79>)
 
 ## [License](#license)
 
-Apache-2.0
+MIT License

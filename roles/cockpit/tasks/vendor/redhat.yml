@@ -1,0 +1,21 @@
+---
+- name: "Setup | Execute the vendor role and catch errors"
+  block:
+    - name: "Setup | Include vendor cockpit role"
+      ansible.builtin.include_role:
+        name: fedora.linux_system_roles.cockpit
+      vars:
+        cockpit_packages: "{{ system_cockpit_packages | default('default') }}"
+        cockpit_enabled: "{{ system_cockpit_enabled | default(true) }}"
+        cockpit_started: "{{ system_cockpit_started | default(true) }}"
+        cockpit_port: "{{ system_cockpit_port | default(9090) }}"
+        cockpit_manage_firewall: "{{ system_cockpit_manage_firewall | default(false) }}"
+        cockpit_manage_selinux: "{{ system_cockpit_manage_selinux | default(false) }}"
+        cockpit_certificates: "{{ system_cockpit_certificates | default([]) }}"
+
+  rescue:
+    - name: "Setup | Handle errors"
+      ansible.builtin.fail:
+        msg: "Include fedora.linux_system_roles.cockpit role failed"
+
+...
