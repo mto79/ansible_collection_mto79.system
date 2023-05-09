@@ -4,7 +4,7 @@ galaxy_info:
   role_name: system_cockpit
   description: Install and configure cockpit and its required libraries on your system.
   license: MIT
-  min_ansible_version: "2.10"
+  min_ansible_version: "2.11.0"
   standalone: true
 
   platforms:
