@@ -5,6 +5,6 @@
       - system_firewall is defined
       - system_firewall is iterable
       - system_firewall | length > 0
-  quiet: true
+    quiet: true
 
 ...
