@@ -1,6 +1,6 @@
 ---
 - name: "Assert | Assert upstream specific vars"
-  when: __role_action_task == "upstream"
+  when: __role_action == "upstream"
   block:
     - name: "Assert | Test if system_firewall is set correctly"
       ansible.builtin.assert:

@@ -8,7 +8,7 @@
       - "__role_name != ['temp', 'late'] | join('')"
 
 - name: "Assert | Assert setup specific vars"
-  when: __role_action_task == "upstream"
+  when: __role_action == "upstream"
   block:
     - name: "Assert | Test if system_firewall_default_protocol is set correctly"
       ansible.builtin.assert:
