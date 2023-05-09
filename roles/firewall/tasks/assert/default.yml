@@ -1,10 +1,75 @@
 ---
-- name: "Assert | test if system_timesync_ntp_servers is set correctly"
+- name: "Assert | Ensure __role_name is defined"
   ansible.builtin.assert:
     that:
-      - system_timesync_ntp_servers is iterable
+      - __role_name is defined
+      - __role_name is string
+      - __role_name | length > 0
+      - "__role_name != ['temp', 'late'] | join('')"
+
+- name: "Assert | Test if system_firewall_default_protocol is set correctly"
+  ansible.builtin.assert:
+    that:
+      - system_firewall_default_protocol is defined
+      - system_firewall_default_protocol is string
+      - system_firewall_default_protocol in [ "tcp", "udp" ]
+    quiet: true
+
+- name: "Assert | Test if system_firewall_default_rule is set correctly"
+  ansible.builtin.assert:
+    that:
+      - system_firewall_default_rule is defined
+      - system_firewall_default_rule is string
+      - system_firewall_default_rule in [ "allow", "deny" ]
+    quiet: true
+
+- name: "Assert | Test if system_firewall_services is set correctly"
+  ansible.builtin.assert:
+    that:
+      - system_firewall_services is iterable
     quiet: true
   when:
-    - system_timesync_ntp_servers is defined
+    - system_firewall_services is defined
+
+- name: "Assert | Test if non-numeric item in system_firewall_services is set correctly"
+  ansible.builtin.assert:
+    that:
+      - item.name is defined
+      - item.name is string
+    quiet: true
+  loop: "{{ system_firewall_services }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when:
+    - system_firewall_services is defined
+    - item.name is not number
+
+- name: "Assert | Test if numeric item in system_firewall_services is set correctly"
+  ansible.builtin.assert:
+    that:
+      - item.name is defined
+      - item.name is number
+      - item.name > 0
+      - item.name < 65536
+    quiet: true
+  loop: "{{ system_firewall_services }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when:
+    - system_firewall_services is defined
+    - item.name is number
+
+- name: "Assert | Test if item with state in system_firewall_services is set correctly"
+  ansible.builtin.assert:
+    that:
+      - item.state is string
+      - item.state in [ "absent", "present" ]
+    quiet: true
+  loop: "{{ system_firewall_services }}"
+  loop_control:
+    label: "{{ item.state | default('unset') }}"
+  when:
+    - system_firewall_services is defined
+    - item.state is defined
 
 ...

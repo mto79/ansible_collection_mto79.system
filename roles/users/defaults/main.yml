@@ -1,14 +1,7 @@
 ---
-# The location to store ssh keys for user
-system_users_ssh_key_directory: ssh_keys
-
-# The default shell if not overwritten.
-system_users_shell: /bin/bash
-
-# manage cron permissions via /etc/cron.allow
+system_users_ssh_key_directory: "ssh_keys"
+system_users_shell: "/bin/bash"
 system_users_cron_allow: true
-
-# should homedirectories be created?
 system_users_create_home: true
 
 ...

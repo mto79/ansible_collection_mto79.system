@@ -18,6 +18,7 @@ Refer to the following example:
           vars:
             __role_action:
               - "setup"
+              #- "vendor" # Uncomment to run vendor-specific tasks
           tags: ['system', 'cockpit', 'setup']
 ```
 

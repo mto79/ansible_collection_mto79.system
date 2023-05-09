@@ -1,0 +1,69 @@
+---
+_system_firewall_packages:
+  conflicting:
+    default:
+      - firewalld
+    RedHat-7:
+      - ufw
+    RedHat: []
+    Fedora:
+      - ufw
+    openSUSE Leap:
+      - ufw
+  required:
+    default:
+      - ufw
+    RedHat-7:
+      - firewalld
+      - iptables
+      - iptables-services
+    RedHat:
+      - firewalld
+    Fedora:
+      - firewalld
+      - python3-firewall
+    openSUSE Leap:
+      - firewalld
+
+system_firewall_packages_conflicting: >-
+  {{
+    _system_firewall_packages['conflicting'][ansible_facts['distribution'] ~ '-' ~ ansible_facts['distribution_major_version']]
+    | default(_system_firewall_packages['conflicting'][ansible_facts['os_family']]
+    | default(_system_firewall_packages['conflicting']['default'] ))
+  }}
+
+system_firewall_packages_required: >-
+  {{
+    _system_firewall_packages['required'][ansible_facts['distribution'] ~ '-' ~ ansible_facts['distribution_major_version']]
+    | default(_system_firewall_packages['required'][ansible_facts['os_family']]
+    | default(_system_firewall_packages['required']['default'] ))
+  }}
+
+_system_firewall_service:
+  default: ufw
+  Alpine: iptables
+  CentOS-7: firewalld
+  CentOS-8: firewalld
+  RedHat-7: firewalld
+  RedHat-8: firewalld
+  Fedora: firewalld
+  openSUSE Leap: firewalld
+
+system_firewall_service: >-
+  {{
+    _system_firewall_service[ansible_facts['distribution'] ~ '-' ~ ansible_facts['distribution_major_version']]
+    | default (_system_firewall_service[ansible_facts['distribution']]
+    | default (_system_firewall_service['default'] ))
+  }}
+
+_system_firewall_iptables_rulefile:
+  Alpine: /etc/iptables/rules-save
+
+system_firewall_iptables_rulefile: >-
+  {{
+    _system_firewall_iptables_rulefile[ansible_facts['distribution'] ~ '-' ~ ansible_facts['distribution_major_version']]
+    | default(_system_firewall_iptables_rulefile[ansible_facts['distribution']]
+    | default(_system_firewall_iptables_rulefile['default'] ))
+  }}
+
+...

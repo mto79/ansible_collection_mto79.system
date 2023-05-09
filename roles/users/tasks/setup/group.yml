@@ -9,7 +9,7 @@
 - name: "Group | set sudo options for {{ group.name }}"
   ansible.builtin.template:
     src: sudo_group.j2
-    dest: '/etc/sudoers.d/{{ group.name | replace(".", "dot") }}_group'
+    dest: "/etc/sudoers.d/{{ group.name | replace('.', 'dot') }}_group"
     mode: "0640"
     validate: /usr/sbin/visudo -cf %s
   when:
@@ -19,7 +19,7 @@
 
 - name: "Group | remove sudo options for {{ group.name }}"
   ansible.builtin.file:
-    path: '/etc/sudoers.d/{{ group.name | replace(".", "dot") }}_group'
+    path: "/etc/sudoers.d/{{ group.name | replace('.', 'dot') }}_group"
     state: absent
   when:
     - group.sudo_options is not defined
@@ -28,8 +28,8 @@
 
 - name: "Group | ensure the sudoers.d directory is checked for group sudoers files (will be put after EOF if not exists)"
   ansible.builtin.lineinfile:
-    path: /etc/sudoers
+    path: "/etc/sudoers"
     state: present
-    line: '#includedir /etc/sudoers.d'
+    line: "#includedir /etc/sudoers.d"
 
 ...

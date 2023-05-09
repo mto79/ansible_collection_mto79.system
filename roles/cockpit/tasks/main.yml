@@ -36,7 +36,7 @@
   loop_control:
     loop_var: __role_action_task
 
-# Sometimes needend when the same tasks must be ran on every host in parallel
+# Sometimes needed when the same tasks must be ran on every host in parallel
 - name: "Main | tasks that always run"
   ansible.builtin.include_tasks: "{{ __role_found_tasks }}"
   vars:

@@ -1,9 +1,9 @@
 ---
 galaxy_info:
-  author: Marc Ouwerkerk.
+  author: MTO79
   role_name: system_hostname
   description: Install and configure hostname and its required libraries on your system.
-  license: Apache-2.0
+  license: MIT
   min_ansible_version: "2.10"
   standalone: true
 

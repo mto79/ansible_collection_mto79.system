@@ -1,65 +1,53 @@
 ---
-- name: "Main | import assert/main.yml"
-  ansible.builtin.import_tasks: assert/main.yml
-  run_once: true
-  delegate_to: localhost
+- name: "Main | Ensure ansible_facts used by role"
+  ansible.builtin.setup:
+    gather_subset: min
+  when: not ansible_facts.keys() | list |
+    intersect(__role_required_facts) == __role_required_facts
 
-- name: "Main | determine specific vars file"
-  ansible.builtin.set_fact:
-    _system_users_vars_file: "{{ lookup('ansible.builtin.first_found', find_vars) }}"
+- name: "Main | Set platform/version specific variables"
+  ansible.builtin.include_vars: "{{ lookup('ansible.builtin.first_found', find_vars) }}"
   vars:
     find_vars:
-      files:
-        - "{{ ansible_facts.distribution | lower }}-{{ ansible_facts.distribution_version | lower }}.yml"
-        - "{{ ansible_facts.distribution | lower }}-{{ ansible_facts.distribution_major_version | lower }}.yml"
-        - "{{ ansible_facts.distribution | lower }}.yml"
-        - "{{ ansible_facts.os_family | lower }}.yml"
-        - "{{ ansible_facts.system | lower }}.yml"
-        - "main.yml"
+      files: "{{ __role_file_search_order }}"
       skip: true
       paths:
         - "vars"
 
-- name: "Main | include specific vars file"
-  ansible.builtin.include_vars: "{{ _system_users_vars_file }}"
-  when: _system_users_vars_file is defined
-
-- name: "Main | include assert specific tasks"
-  ansible.builtin.set_fact:
-    _system_users_assert_file: "{{ lookup('ansible.builtin.first_found', find_asserts) }}"
+- name: "Main | Assert platform/version specific variables"
+  ansible.builtin.include_tasks: "{{ lookup('ansible.builtin.first_found', find_asserts) }}"
   vars:
     find_asserts:
-      files:
-        - "{{ ansible_facts.distribution | lower }}-{{ ansible_facts.distribution_version | lower }}.yml"
-        - "{{ ansible_facts.distribution | lower }}-{{ ansible_facts.distribution_major_version | lower }}.yml"
-        - "{{ ansible_facts.distribution | lower }}.yml"
-        - "{{ ansible_facts.os_family | lower }}.yml"
-        - "{{ ansible_facts.system | lower }}.yml"
-        - "main.yml"
+      files: "{{ __role_file_search_order }}"
+      skip: true
       paths:
         - "assert"
 
-- name: "Main | include tasks for assert"
-  ansible.builtin.include_tasks: "{{ _system_users_assert_file }}"
-  when: _system_users_assert_file is defined
-
-- name: "Main | include setup specific tasks"
-  ansible.builtin.set_fact:
-    _setup_users_setup_file: "{{ lookup('ansible.builtin.first_found', find_plays) }}"
+- name: "Main | platform/version specific playbooks"
+  ansible.builtin.include_tasks: "{{ __role_found_tasks }}"
   vars:
-    find_plays:
-      files:
-        - "{{ ansible_facts.distribution | lower }}-{{ ansible_facts.distribution_version | lower }}.yml"
-        - "{{ ansible_facts.distribution | lower }}-{{ ansible_facts.distribution_major_version | lower }}.yml"
-        - "{{ ansible_facts.distribution | lower }}.yml"
-        - "{{ ansible_facts.os_family | lower }}.yml"
-        - "{{ ansible_facts.system | lower }}.yml"
-        - "main.yml"
-      paths:
-        - "setup"
+    __role_find_tasks:
+      files: "{{ __role_file_search_order }}"
+      skip: true
+      paths: ["tasks/{{ __role_action_task }}"]
+    __role_found_tasks: "{{ lookup('ansible.builtin.first_found', __role_find_tasks) }}"
+  when: __role_found_tasks | length > 0
+  loop: "{{ [__role_action | default('setup')] | flatten }}"
+  loop_control:
+    loop_var: __role_action_task
 
-- name: "Main | include tasks for setup"
-  ansible.builtin.include_tasks: "{{ _system_users_setup_file }}"
-  when: _system_users_setup_file is defined
+# Sometimes needend when the same tasks must be ran on every host in parallel
+- name: "Main | tasks that always run"
+  ansible.builtin.include_tasks: "{{ __role_found_tasks }}"
+  vars:
+    __role_find_tasks:
+      files: ["always.yml"]
+      skip: true
+      paths: ["tasks/{{ __role_action_task }}"]
+    __role_found_tasks: "{{ lookup('ansible.builtin.first_found', __role_find_tasks) }}"
+  when: __role_found_tasks | length > 0
+  loop: "{{ [__role_action | default('setup')] | flatten }}"
+  loop_control:
+    loop_var: __role_action_task
 
 ...

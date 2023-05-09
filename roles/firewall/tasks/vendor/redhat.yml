@@ -1,0 +1,15 @@
+---
+- name: "Setup | Execute the vendor role and catch errors"
+  block:
+    - name: "Setup | Include vendor firewall role"
+      ansible.builtin.include_role:
+        name: fedora.linux_system_roles.firewall
+      vars:
+        firewall: "{{ system_firewall | d([]) }}"
+
+  rescue:
+    - name: "Setup | Handle errors"
+      ansible.builtin.fail:
+        msg: "Include fedora.linux_system_roles.firewall role failed"
+
+...
