@@ -1,10 +1,5 @@
 ---
-- name: "Assert | Assert platform/version specific variables"
-  ansible.builtin.include_tasks:
-    file: "default.yml"
-  when: __role_action_task == "setup"
-
-- name: "Assert | Assert vendor specific vars"
+- name: "Assert | Assert upstream specific vars"
   when: __role_action_task == "upstream"
   block:
     - name: "Assert | Test if system_firewall is set correctly"
