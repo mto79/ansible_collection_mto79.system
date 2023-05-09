@@ -4,7 +4,7 @@ Role for subscribing and managing RHC/Insight on your system.
 
 ## [Requirements](#requirements)
 
-* The minimum version of Ansible required is 2.10.
+* The minimum version of Ansible required is 2.11.0.
 * The minimum version of Jinja template 2.11.3
 
 ## [Example Playbook](#example-playbook)
@@ -21,8 +21,8 @@ Role for subscribing and managing RHC/Insight on your system.
 
 ## [Role variables](#role-variables)
 
-| Variable | Default | Description |
-| -------- | ------- | ----------- |
+| Variable | Type | Default | Description |
+| -------- | ---- | ------- | ----------- |
 |`system_rhc_auth` |  | |
 |`system_rhc_baseurl`  | |
 |`system_rhc_environments` | |
@@ -38,7 +38,7 @@ Role for subscribing and managing RHC/Insight on your system.
 
 ## [Maintainers](#maintainers)
 
-Marc Ouwerkerk (https://github.com/mto79)
+MTO79 (https://github.com/mto79)
 
 ## [Todo](#todo)
 

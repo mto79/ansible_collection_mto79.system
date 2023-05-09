@@ -4,7 +4,7 @@ Install and configure hostname and its required libraries on your system.
 
 ## [Requirements](#requirements)
 
-* The minimum version of Ansible required is 2.10.
+* The minimum version of Ansible required is 2.11.0.
 * The minimum version of Jinja template 2.11.3
 
 ## [Example Playbook](#example-playbook)
@@ -38,4 +38,5 @@ Marc Ouwerkerk (<https://github.com/mto79>)
 * Standaardwaarden voor molecule testen toevoegen
 
 ## [License](#license)
-Apache-2.0
+
+MIT License
