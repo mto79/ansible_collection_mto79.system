@@ -1,5 +1,5 @@
 ---
-- name: "Assert | test if system_selinux_state is set correctly"
+- name: "Assert | Test if system_selinux_state is set correctly"
   ansible.builtin.assert:
     that:
       - system_selinux_state is defined
@@ -7,7 +7,7 @@
       - system_selinux_state in [ "disabled", "enforcing", "permissive" ]
     quiet: true
 
-- name: "Assert | test if system_selinux_policy is set correctly"
+- name: "Assert | Test if system_selinux_policy is set correctly"
   ansible.builtin.assert:
     that:
       - system_selinux_policy is defined
@@ -15,14 +15,14 @@
       - system_selinux_policy in [ "default", "minimum", "mls", "targeted" ]
     quiet: true
 
-- name: "Assert | test if system_selinux_reboot is set correctly"
+- name: "Assert | Test if system_selinux_reboot is set correctly"
   ansible.builtin.assert:
     that:
       - system_selinux_reboot is defined
       - system_selinux_reboot is boolean
     quiet: true
 
-- name: "Assert | test if system_selinux_booleans is set correctly"
+- name: "Assert | Test if system_selinux_booleans is set correctly"
   ansible.builtin.assert:
     that:
       - system_selinux_booleans is iterable
@@ -30,7 +30,7 @@
   when:
     - system_selinux_booleans is defined
 
-- name: "Assert | test if item.name in system_selinux_booleans is set correctly"
+- name: "Assert | Test if item.name in system_selinux_booleans is set correctly"
   ansible.builtin.assert:
     that:
       - item.name is defined
@@ -42,7 +42,7 @@
   when:
     - system_selinux_booleans is defined
 
-- name: "Assert | test if item.state in system_selinux_booleans is set correctly"
+- name: "Assert | Test if item.state in system_selinux_booleans is set correctly"
   ansible.builtin.assert:
     that:
       - item.state is boolean
@@ -54,7 +54,7 @@
     - system_selinux_booleans is defined
     - item.state is defined
 
-- name: "Assert | test if item.persistent in system_selinux_booleans is set correctly"
+- name: "Assert | Test if item.persistent in system_selinux_booleans is set correctly"
   ansible.builtin.assert:
     that:
       - item.persistent is boolean

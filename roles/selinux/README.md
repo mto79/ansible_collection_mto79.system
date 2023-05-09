@@ -4,7 +4,7 @@ Install and configure Selinux and its required libraries on your system.
 
 ## [Requirements](#requirements)
 
-* The minimum version of Ansible required is 2.10.
+* The minimum version of Ansible required is 2.11.0.
 * The minimum version of Jinja template 2.11.3
 
 ## [Example Playbook](#example-playbook)

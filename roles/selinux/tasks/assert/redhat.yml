@@ -1,5 +1,5 @@
 ---
-- name: "Assert | test if selinux_state is set correctly"
+- name: "Assert | Test if selinux_state is set correctly"
   ansible.builtin.assert:
     that:
       - system_selinux_state is defined
@@ -7,7 +7,7 @@
       - system_selinux_state in [ "disabled", "enforcing", "permissive" ]
     quiet: true
 
-- name: "Assert | test if selinux_policy is set correctly"
+- name: "Assert | Test if selinux_policy is set correctly"
   ansible.builtin.assert:
     that:
       - system_selinux_policy is defined
