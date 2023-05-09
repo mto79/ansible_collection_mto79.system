@@ -1,4 +1,4 @@
-# [System_cockpit](#system-cockpit)
+# [System_update](#system-update)
 :%%
 Install and configure cockpit and its required libraries on your system.
 
@@ -14,19 +14,19 @@ Refer to the following example:
 ```yaml
     - hosts: servers
       roles:
-        - role: "mto79.system.cockpit"
+        - role: "mto79.system.update"
           vars:
             __role_action:
               - "setup"
-              #- "upstream" # Uncomment to run upstrea-specific tasks
-          tags: ['system', 'cockpit', 'setup']
+              #- "upstream" # Uncomment to run upstream-specific tasks
+          tags: ['system', 'update', 'setup']
 ```
 
 ## [Role Variables](#role-variables)
 
 | Variable | Default | Description |
 | -------- | ------- | ----------- |
-| `system_cockpit_` | | |
+| `system_update_` | | |
 
 ## [Maintainers](#maintainers)
 

@@ -1,0 +1,19 @@
+---
+__role_name: "system_cockpit"
+
+__role_file_search_order:
+  - "{{ (ansible_facts['distribution'] | lower) | replace(' ', '_') }}_\
+    {{ ansible_facts['distribution_version'] }}.yml"
+  - "{{ (ansible_facts['distribution'] | lower) | replace(' ', '_') }}_\
+    {{ ansible_facts['distribution_major_version'] }}.yml"
+  - "{{ (ansible_facts['distribution'] | lower) | replace(' ', '_') }}.yml"
+  - "{{ ansible_facts['os_family'] | lower }}.yml"
+  - "default.yml"
+
+__role_required_facts:
+  - distribution
+  - distribution_major_version
+  - distribution_version
+  - os_family
+
+...

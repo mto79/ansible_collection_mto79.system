@@ -5,16 +5,8 @@
   when: __role_action_task == "setup"
 
 - name: "Assert | Assert vendor specific vars"
-  when: __role_action_task == "vendor"
+  when: __role_action_task == "upstream"
   block:
-    - name: "Assert | Ensure __role_name is defined"
-      ansible.builtin.assert:
-        that:
-          - __role_name is defined
-          - __role_name is string
-          - __role_name | length > 0
-          - "__role_name != ['temp', 'late'] | join('')"
-
     - name: "Assert | Test if system_firewall is set correctly"
       ansible.builtin.assert:
         that:

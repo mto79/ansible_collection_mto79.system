@@ -1,0 +1,6 @@
+---
+- name: "Setup | Failover if no platform/version specific tasks are found"
+  ansible.builtin.debug:
+    msg: "No custom setup, only upstream implementation"
+
+...
