@@ -1,0 +1,40 @@
+---
+- name: "Assert | Test if system_update_autoremove is set correctly"
+  ansible.builtin.assert:
+    that:
+      - system_update_autoremove is defined
+      - system_update_autoremove is boolean
+    quiet: true
+
+- name: "Assert | Test if system_update_upgrade_command is set correctly"
+  ansible.builtin.assert:
+    that:
+      - system_update_upgrade_command is defined
+      - system_update_upgrade_command is string
+      - system_update_upgrade_command in [ "dist", "full", "yes", "safe" ]
+    quiet: true
+
+- name: "Assert | Test if system_update_cache_valid_time is set correctly"
+  ansible.builtin.assert:
+    that:
+      - system_update_cache_valid_time is defined
+      - system_update_cache_valid_time is number
+      - system_update_cache_valid_time >= 0
+    quiet: true
+
+- name: "Assert | Test if system_update_reboot is set correctly"
+  ansible.builtin.assert:
+    that:
+      - system_update_reboot is defined
+      - system_update_reboot is boolean
+    quiet: true
+
+- name: "Assert | Test if system_update_packages_exclude is set correctly"
+  ansible.builtin.assert:
+    that:
+      - system_update_packages_exclude is iterable
+    quiet: true
+  when:
+    - system_update_packages_exclude is defined
+
+...

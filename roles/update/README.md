@@ -26,7 +26,11 @@ Refer to the following example:
 
 | Variable | Default | Description |
 | -------- | ------- | ----------- |
-| `system_update_` | | |
+| `system_update_autoremove` | `no` | remove unused dependency packages for all module states except `build-dep |
+| `system_update_upgrade_command` | `dist` | apt_upgrade type which can be: dist, full, yes, or safe |
+| `system_update_cache_valid_time` | `1` | update the apt cache if it's older than the cache_valid_time. Set in seconds.
+| `system_update_reboot` | `yes` | Always or never reboot when packages have changed
+| `system_update_packages_exclude` | `Empty list` | List of packages to exclude from update by holding.
 
 ## [Maintainers](#maintainers)
 

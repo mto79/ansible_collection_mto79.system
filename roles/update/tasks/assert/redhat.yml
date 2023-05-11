@@ -1,0 +1,23 @@
+---
+- name: "Assert | Test if system_update_release is set correctly"
+  ansible.builtin.assert:
+    that:
+      - system_update_release is defined
+      - system_update_release is boolean
+    quiet: true
+
+- name: "Assert | Test if system_update_bugfix is set correctly"
+  ansible.builtin.assert:
+    that:
+      - system_update_bugfix is defined
+      - system_update_bugfix is boolean
+    quiet: true
+
+- name: "Assert | Test if system_update_security is set correctly"
+  ansible.builtin.assert:
+    that:
+      - system_update_security is defined
+      - system_update_security is boolean
+    quiet: true
+
+...

@@ -1,3 +1,11 @@
 ---
+system_update_autoremove: "{{ _system_update_autoremove }}"
+system_update_upgrade_command: "{{ _system_update_upgrade_command }}"
+system_update_cache_valid_time: "{{ _system_update_cache_valid_time }}"
+system_update_reboot: "{{ _system_update_reboot }}"
+system_update_packages_exclude: "{{ _system_update_packages_exclude }}"
+system_update_bugfix: "{{ _system_update_bugfix }}"
+system_update_release: "{{ _system_update_release }}"
+system_update_security: "{{ _system_update_security }}"
 
 ...

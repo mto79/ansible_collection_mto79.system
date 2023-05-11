@@ -1,6 +1,57 @@
 ---
-- name: "Setup | Failover if no platform/version specific tasks are found"
+- name: "Setup | Make sure dnf-utils is installed"
+  ansible.builtin.dnf:
+    name: dnf-utils
+    state: installed
+
+# noqa: package-latest
+- name: "Setup | Ensure updated system - Security"
+  when: setup_update_security
+  ansible.builtin.dnf: # noqa
+    name: "*"
+    state: latest
+    security: true
+    skip_broken: true
+  register: setup_update_security_result
+  failed_when: setup_update_security_result.rc != 0
+
+# noqa: package-latest
+- name: "Setup | Ensure updated system - Bugfix"
+  when: setup_update_bugfix
+  ansible.builtin.dnf: # noqa
+    name: "*"
+    state: latest
+    bugfix: true
+    skip_broken: true
+  register: setup_update_bugfix_result
+  failed_when: setup_update_bugfix_result.rc != 0
+
+# noqa: package-latest
+- name: "Setup | Ensure updated system - Setup only"
+  when: setup_update_release
+  ansible.builtin.dnf: # noqa
+    name: "*"
+    state: latest
+    update_only: true
+    skip_broken: true
+  register: setup_update_release_result
+  failed_when: setup_update_release_result.rc != 0
+
+- name: "Setup | Check if reboot is required"
+  ansible.builtin.command: needs-restarting -r
+  register: setup_update_reboot_required
+  ignore_errors: true
+  changed_when: false
+
+- name: "Setup | Display result if reboot is needed"
   ansible.builtin.debug:
-    msg: "No custom setup, only upstream implementation"
+    var: setup_update_reboot_required.rc
+  notify:
+    - "Reboot after update"
+  changed_when: setup_update_reboot_required.rc == 1
+
+- name: "Setup | Autoremove obsolete packages"
+  ansible.builtin.dnf:
+    autoremove: "{{ setup_update_autoremove | default(true) }}"
 
 ...

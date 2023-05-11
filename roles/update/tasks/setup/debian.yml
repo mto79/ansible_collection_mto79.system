@@ -1,0 +1,82 @@
+---
+- name: "Setup | Prevent packages from being upgraded"
+  ansible.builtin.dpkg_selections:
+    name: "{{ item }}"
+    selection: hold
+  with_items:
+    - "{{ system_update_packages_exclude }}"
+  when:
+    - system_update_packages_exclude is defined
+    - system_update_packages_exclude | length > 0
+
+- name: "Setup | Get packages with hold"
+  ansible.builtin.command: apt-mark showhold
+  register: system_update_result_packages_holded
+  changed_when: system_update_result_packages_holded.rc != 0
+
+- name: "Setup | Show list packages with hold"
+  ansible.builtin.debug:
+    msg: "{{ item }}"
+  with_items:
+    - "{{ system_update_result_packages_holded.stdout_lines }}"
+
+- name: "Setup | Unhold packages from being upgraded"
+  ansible.builtin.dpkg_selections:
+    name: "{{ item }}"
+    selection: install
+  when: item not in system_update_packages_exclude
+  with_items:
+    - "{{ system_update_result_packages_holded.stdout_lines }}"
+
+# when starting automating with ansible
+# sudo dpkg-reconfigure --priority=low unattended-upgrades
+#
+- name: "Setup | Configure apt"
+  when: ansible_pkg_mgr == "apt"
+  block:
+    - name: "Setup | Update all software (apt)"
+      ansible.builtin.apt:
+        update_cache: true
+        force_apt_get: true
+        # upgrade: "{{ system_update_upgrade_command }}"
+        cache_valid_time: "{{ system_update_cache_valid_time }}"
+
+    - name: "Setup | Upgrade all packages"
+      when: system_update_release
+      ansible.builtin.apt:
+        upgrade: dist
+
+    - name: "Setup | Determine Security patches"
+      when: system_update_security
+      ansible.builtin.shell: |
+        set -o pipefail
+        grep security /etc/apt/sources.list | sudo tee /etc/apt/security.sources.list
+      changed_when: false
+
+    - name: "Setup | Install only Security updates"
+      when: system_update_security
+      ansible.builtin.shell: apt-get update && apt-get upgrade -o Dir::Etc::SourceList=/etc/apt/security.sources.list -y # noqa command-instead-of-module
+      changed_when: true
+
+    - name: "Setup | Check if '/var/run/reboot-required' exists"
+      ansible.builtin.stat:
+        path: /var/run/reboot-required
+      register: system_update_stat_reboot_required
+
+    - name: "Setup | Reboot if '/var/run/reboot-required' exists"
+      ansible.builtin.debug:
+        msg: "/var/run/reboot-required exists, rebooting"
+      notify:
+        - "Reboot after update"
+      changed_when:
+        - system_update_stat_reboot_required.stat.exists
+        - system_update_stat_reboot_required.stat.isreg
+
+    - name: "Setup | Apt autoremove (apt)"
+      ansible.builtin.apt:
+        autoremove: "{{ system_update_autoremove }}"
+      when:
+        - ansible_pkg_mgr == "apt"
+        - system_update_autoremove == "yes"
+
+...
