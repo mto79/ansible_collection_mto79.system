@@ -1,7 +1,7 @@
 ---
-- name: "Upstream | Execute the vendor role and catch errors"
+- name: "Upstream | Execute the upstream role and catch errors"
   block:
-    - name: "Upstream | Include vendor firewall role"
+    - name: "Upstream | Include upstream firewall role"
       ansible.builtin.include_role:
         name: fedora.linux_system_roles.firewall
       vars:

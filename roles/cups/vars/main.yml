@@ -1,5 +1,5 @@
 ---
-__role_name: "system_firewall"
+__role_name: "system_cups"
 
 __role_file_search_order:
   - "{{ (ansible_facts['distribution'] | lower) | replace(' ', '_') }}_\

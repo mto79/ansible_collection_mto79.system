@@ -1,4 +1,5 @@
 ---
+system_hostname: "{{ inventory_hostname }}"
 system_hostname_use: "systemd"
 
 ...
