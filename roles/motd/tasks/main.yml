@@ -37,7 +37,7 @@
     __role_find_tasks:
       files: "{{ __role_file_search_order }}"
       skip: true
-      paths: ["{{ role_path }}/tasks/{{ __role_action }}"]
+      paths: ["{{ role_path }}/tasks/{{ __role_action_task }}"]
     __role_found_tasks: "{{ lookup('ansible.builtin.first_found', __role_find_tasks) }}"
   when: __role_found_tasks | length > 0
   loop: "{{ [__role_action | default('setup')] | flatten }}"
