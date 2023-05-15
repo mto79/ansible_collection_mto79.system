@@ -1,6 +1,6 @@
-# [System_hostname](#system-hostname)
+# [System_motd](#system-motd)
 
-Install and configure hostname and its required libraries on your system.
+Configure motd and its required libraries on your system.
 
 ## [Requirements](#requirements)
 
@@ -14,11 +14,11 @@ Refer to the following example:
 ```yaml
     - hosts: servers
       roles:
-        - role: "mto79.system.hostname"
+        - role: "mto79.system.motd"
           vars:
             __role_action:
               - "setup"
-          tags: ['system', 'hostname', 'setup']
+          tags: ['system', 'motd']
 
 ```
 
