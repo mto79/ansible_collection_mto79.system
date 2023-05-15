@@ -37,12 +37,12 @@
     __role_find_tasks:
       files: "{{ __role_file_search_order }}"
       skip: true
-      paths: ["{{ role_path }}/tasks/{{ __role_action_task }}"]
+      paths: ["{{ role_path }}/tasks/{{ __role_action }}"]
     __role_found_tasks: "{{ lookup('ansible.builtin.first_found', __role_find_tasks) }}"
   when: __role_found_tasks | length > 0
   loop: "{{ [__role_action | default('setup')] | flatten }}"
   loop_control:
-    loop_var: __role_action_task
+    loop_var: __role_action
 
 # This can be used when the same tasks must be ran on every host in parallel
 - name: "Main | tasks that always run"
