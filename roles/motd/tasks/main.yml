@@ -42,7 +42,7 @@
   when: __role_found_tasks | length > 0
   loop: "{{ [__role_action | default('setup')] | flatten }}"
   loop_control:
-    loop_var: __role_action
+    loop_var: __role_action_task
 
 # This can be used when the same tasks must be ran on every host in parallel
 - name: "Main | tasks that always run"

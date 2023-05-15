@@ -7,11 +7,4 @@
       - __role_name | length > 0
       - "__role_name != ['temp', 'late'] | join('')"
 
-- name: "Assert | Test if system_hostname is set correctly"
-  ansible.builtin.assert:
-    that:
-      - system_hostname is defined
-      - system_hostname is string
-    quiet: true
-
 ...
