@@ -1,5 +1,5 @@
 
-This is system {{ ansible_facts['hostname'] }}
+This is system {{ ansible_facts['fqdn'] }}
 {% if system_motd_msg is defined and system_motd_msg | length %}
 {{ system_motd_msg }}
 {% endif %}
