@@ -1,0 +1,14 @@
+
+This is system {{ ansible_facts['hostname'] }}
+{% if system_motd_msg is defined and system_motd_msg | length %}
+{{ system_motd_msg }}
+{% endif %}
+
+-----------------------------------WARNING------------------------------------
+* Use of this computer system, authorized or unauthorized, constitutes       *
+* consent to monitoring of this system. Unauthorized use may subject you to  *
+* criminal prosecution. Evidence of unauthorized use collected during        *
+* monitoring may be used for administrative, criminal, or other adverse      *
+* action. Use of this system constitutes consent to monitoring for these     *
+* purposes.                                                                  *
+-----------------------------------WARNING------------------------------------

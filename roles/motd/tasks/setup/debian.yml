@@ -1,0 +1,10 @@
+---
+ ### TODO: update taskfor non-default files
+- name: "Setup | Set update-motd files from templates."
+  ansible.builtin.template:
+    src: templates/debian/{{ item }}.j2
+    dest: /etc/update-motd.d/{{ item }}
+    mode: "0755"
+  loop: "{{ system_motd_update_script_names_default }}"
+
+...

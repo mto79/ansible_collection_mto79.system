@@ -1,0 +1,4 @@
+---
+system_motd_update_script_names_default: "{{ _system_motd_update_script_names_default }}"
+
+...
