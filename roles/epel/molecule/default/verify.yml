@@ -1,0 +1,13 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Test if EPEL packages are available
+      become: true
+      ansible.builtin.package:
+        name: aalib
+        state: present
+
+...

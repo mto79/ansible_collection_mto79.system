@@ -1,0 +1,5 @@
+---
+system_epel_url: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm"
+system_epel_gpg_key: "https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-8"
+
+...

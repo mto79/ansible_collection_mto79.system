@@ -1,0 +1,24 @@
+---
+- name: "Setup | Install epel gpg key"
+  ansible.builtin.rpm_key:
+    key: "{{ system_epel_gpg_key }}"
+    state: present
+
+- name: "Setup | Install epel-release"
+  ansible.builtin.package:
+    name: "{{ system_epel_url }}"
+    state: present
+  notify:
+    - Update package cache
+
+- name: "Setup | Install epel-next-release"
+  ansible.builtin.package:
+    name: "{{ system_epel_next_url }}"
+    state: present
+  when:
+    - system_epel_next_url is defined
+    - system_epel_next_url | length > 0
+  notify:
+    - Update package cache
+
+...

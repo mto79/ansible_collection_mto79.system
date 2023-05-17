@@ -1,0 +1,28 @@
+---
+galaxy_info:
+  author: MTO79
+  role_name: system_epel
+  description: Install and configure EPEL and its required libraries on your system.
+  license: MIT
+  min_ansible_version: "2.11.0"
+  standalone: true
+
+  platforms:
+    - name: EL
+      versions:
+        - "7"
+        - "8"
+        - "9"
+    - name: Fedora
+      versions:
+        - all
+
+  galaxy_tags:
+    - mto79
+    - system
+    - linux
+    - epel
+
+dependencies: []
+
+...
