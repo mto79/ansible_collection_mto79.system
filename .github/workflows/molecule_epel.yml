@@ -10,8 +10,6 @@ on:
   push:
     branches:
       - main
-    paths:
-      - "roles/epel/**"
     workflow_dispatch:
 
 jobs:
