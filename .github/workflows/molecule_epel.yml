@@ -12,7 +12,6 @@ on:
       - main
     paths:
       - "roles/epel/**"
-      - ".github/workflows/molecule_epel.yml"
     workflow_dispatch:
 
 jobs:
@@ -28,7 +27,7 @@ jobs:
           python-version: '3.x'
 
       - name: Install dependencies.
-        run: pip3 install -r requirements.txt
+        run: pip3 install -r ./roles/epel/requirements.txt
 
       - name: Install Ansible dependencies.
         run: ansible-galaxy install -r requirements.yml
