@@ -6,7 +6,7 @@
 
 - name: "Setup | Ensure updated Setup - Security"
   when: system_update_security
-  ansible.builtin.dnf: # noqa: package-latest
+  ansible.builtin.dnf:  # noqa: package-latest
     name: "*"
     state: latest
     security: true
@@ -16,7 +16,7 @@
 
 - name: "Setup | Ensure updated Setup - Bugfix"
   when: system_update_bugfix
-  ansible.builtin.dnf: # noqa: package-latest
+  ansible.builtin.dnf:  # noqa: package-latest
     name: "*"
     state: latest
     bugfix: true
@@ -26,7 +26,7 @@
 
 - name: "Setup | Ensure updated Setup - Setup only"
   when: system_update_release
-  ansible.builtin.dnf: # noqa: package-latest
+  ansible.builtin.dnf:  # noqa: package-latest
     name: "*"
     state: latest
     update_only: true
