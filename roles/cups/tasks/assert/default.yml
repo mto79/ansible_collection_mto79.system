@@ -60,7 +60,7 @@
     that:
       - system_cups_preserve_job_history is defined
       - system_cups_preserve_job_history is string
-      - system_cups_preserve_job_history in [ "No", "true" ]
+      - system_cups_preserve_job_history in [ "No", "Yes" ]
     quiet: true
 
 - name: Assert | If system_cups_web_interface is set correctly
@@ -68,7 +68,7 @@
     that:
       - system_cups_web_interface is defined
       - system_cups_web_interface is string
-      - system_cups_web_interface in [ "No", "true" ]
+      - system_cups_web_interface in [ "No", "Yes" ]
     quiet: true
 
 ...
