@@ -66,6 +66,16 @@ collections:
     version: X.Y.Z
 ```
 
+## [Requirements](#requirements)
+
+Make sure you have the following requirements installed on your control node.
+
+```yaml
+- name: fedora.linux_system_roles
+  version: 1.36.3
+  source: https://galaxy.ansible.com
+```
+
 ## [Pre-commit](#pre-commit)
 
 Install pre-commit
