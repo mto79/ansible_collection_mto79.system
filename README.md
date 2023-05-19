@@ -24,6 +24,7 @@ Name | Description | Tests
 Name | Description | Tests
 --- | --- | ---
 [mto79.system.hostname](https://github.com/mto79/ansible_collection_mto79.system/blob/main/roles/hostname/README.md)| Configure hostname.| Tests currently unavailable.
+[mto79.system.epel](https://github.com/mto79/ansible_collection_mto79.system/blob/main/roles/epel/README.md)| Configure EPEL on your system.
 [mto79.system.selinux](https://github.com/mto79/ansible_collection_mto79.system/blob/main/roles/selinux/README.md)| Install and configure SELinux.| Tests currently unavailable.
 [mto79.system.timesync](https://github.com/mto79/ansible_collection_mto79.system/blob/main/roles/timesync/README.md)| Install and configure Timesync.| Tests currently unavailable.
 [mto79.system.timezone](https://github.com/mto79/ansible_collection_mto79.system/blob/main/roles/timezone/README.md)| Install and configure Timezone.| Tests currently unavailable.
