@@ -9,11 +9,4 @@
       # This assert failing also ensures this role is not uploaded to Ansible Galaxy
       - "__role_name != ['temp', 'late'] | join('')"
 
-- name: "Assert | Ensure that `epel_next` is set correctly."
-  ansible.builtin.assert:
-    quiet: true
-    that:
-      - system_epel_next is defined
-      - system_epel_next is bool
-
 ...
