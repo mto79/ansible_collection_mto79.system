@@ -4,28 +4,6 @@ dependency:
 driver:
   name: podman
 platforms:
-  - name: ubuntu2004
-    image: docker.io/geerlingguy/docker-ubuntu2004-ansible
-    pre_build_image: true
-    systemd: true
-    tmpfs:
-      - /run
-      - /tmp
-    volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
-    privileged: true
-    command: "/usr/sbin/init"
-  - name: ubuntu2204
-    image: docker.io/geerlingguy/docker-ubuntu2204-ansible
-    pre_build_image: true
-    systemd: true
-    tmpfs:
-      - /run
-      - /tmp
-    volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
-    privileged: true
-    command: "/usr/sbin/init"
   - name: el8
     image: docker.io/geerlingguy/docker-rockylinux8-ansible
     pre_build_image: true
