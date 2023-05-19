@@ -26,7 +26,7 @@ Refer to the following example:
 
 | Variable | Default | Description |
 | -------- | ------- | ----------- |
-| `system_epel_gpg_key` | | GPG Key for EPEL repo |
+| `system_epel_gpg_key` | `https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-{version}` | GPG Key for EPEL repo |
 | `system_epel_url` | | URL EPEL release |
 | `system_epel_next_url` | | URL EPEL NEXT Release |
 
