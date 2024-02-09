@@ -1,8 +1,0 @@
----
-system_storage_setup_requirements:
-  - "parted"
-  - "lvm2"
-  - "e2fsprogs"
-  - "xfsprogs"
-
-...
