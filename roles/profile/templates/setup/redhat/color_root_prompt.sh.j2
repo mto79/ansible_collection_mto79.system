@@ -1,0 +1,8 @@
+#jinja2: lstrip_blocks: True, trim_blocks: True
+{{ ansible_managed | comment(decoration='# ') }}
+
+# color prompt to red for root user
+#
+if [ $UID -eq 0 -a "$PS1" ]; then
+   export PS1="\[\e[31;1m\][\u@\h \W]\\$ \[\e[0m\]"
+fi

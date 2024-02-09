@@ -1,0 +1,22 @@
+---
+# This is an example playbook to execute Ansible tests.
+
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Verify MOTD
+      ansible.builtin.stat:
+        path: /etc/motd
+      register: motd_stat
+
+    - name: Check if MOTD exists
+      ansible.builtin.fail:
+        msg: "MOTD file does not exist."
+      when: not motd_stat.stat.exists
+
+    - name: Check if MOTD is not empty
+      ansible.builtin.fail:
+        msg: "MOTD file is empty."
+      when: motd_stat.stat.size == 0
+...

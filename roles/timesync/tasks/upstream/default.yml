@@ -1,22 +1,21 @@
 ---
-- name: "Upstream | Execute the role and catch errors"
-  block:
-    - name: "Upstream | Include timesync role"
-      ansible.builtin.include_role:
-        name: fedora.linux_system_roles.timesync
-      vars:
-        timesync_ntp_servers: "{{ system_timesync_ntp_servers | d([]) }}"
-        timesync_ptp_domains: "{{ system_timesync_ptp_domains | d([]) }}"
-        timesync_dhcp_ntp_servers: "{{ system_timesync_dhcp_ntp_servers | d(false) }}"
-        timesync_step_threshold: "{{ system_timesync_step_threshold | d(-1.0) }}"
-        timesync_min_sources: "{{ system_timesync_min_sources | d(1) }}"
-        timesync_ntp_hwts_interfaces: "{{ system_timesync_ntp_hwts_interfaces | d([]) }}"
-        timesync_ntp_provider: "{{ system_timesync_ntp_provider | d('chrony') }}"
-        timesync_max_distance: "{{ system_timesync_max_distance | d(0) }}"
+- name: "Upstream | Failover if no platform/version specific tasks are found"
+  ansible.builtin.fail:
+    msg: "Your platform is not supported"
+  when: true
 
-  rescue:
-    - name: "Upstream | Handle errors"
-      ansible.builtin.fail:
-        msg: "Include fedora.linux_system_roles.timesync role failed"
+# - name: "Upstream | Execute the upstream role"
+#   block:
+#     - name: "Upstream | Include upstream role"
+#       ansible.builtin.include_role:
+#         name: upstream.collection.role
+#       vars:
+#         upstream_role_var: "{{ upstream_role_var | default(timesync_role_var) }}"
+#                                                   ^ Pass our vars to upstream
+#
+#  rescue:
+#     - name: "Upstream | Handle errors"
+#       ansible.builtin.fail:
+#         msg: "Include upstream.collection.role role failed"
 
 ...

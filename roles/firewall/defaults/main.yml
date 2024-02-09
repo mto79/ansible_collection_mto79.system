@@ -1,3 +1,7 @@
 ---
+system_firewall_setup_default_protocol: "tcp"
+system_firewall_setup_default_rule: "allow"
+system_firewall_setup_ :
+  - name: "ssh"
 
 ...

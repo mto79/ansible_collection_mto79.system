@@ -1,0 +1,21 @@
+---
+
+- name: "Upstream | Execute the ad_integration system role"
+  block:
+    - name: "Upstream | Include ad_integration role"
+      ansible.builtin.include_role:
+        name: fedora.linux_system_roles.ad_integration
+      vars:
+        ad_integration_realm: "{{ system_ad_integration_upstream_realm  }}"
+        ad_integration_user: "{{ system_ad_integration_upstream_user | d(omit) }}"
+        ad_integration_password: "{{ system_ad_integration_upstream_password }}"
+        ad_integration_join_to_dc: "{{ system_ad_integration_upstream_join_to_dc }}"
+
+        ad_integration_force_rejoin: "{{ system_ad_integration_upstream_force_rejoin | d(omit) }}"
+        ad_integration_computer_ou: "{{ system_ad_integration_upstream_computer_ou | d(omit) }}"
+  rescue:
+    - name: "Upstream | Handle errors"
+      ansible.builtin.fail:
+        msg: "Include fedora.linux_system_roles.ad_integration role failed"
+
+...

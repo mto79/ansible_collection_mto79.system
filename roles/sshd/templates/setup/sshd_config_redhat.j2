@@ -1,0 +1,158 @@
+{{ ansible_managed | comment }}
+#	$OpenBSD: sshd_config,v 1.103 2018/04/09 20:41:22 tj Exp $
+
+# This is the sshd server system-wide configuration file.  See
+# sshd_config(5) for more information.
+
+# This sshd was compiled with PATH=/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin
+
+# The strategy used for options in the default sshd_config shipped with
+# openssh is to specify options with their default value where
+# possible, but leave them commented.  Uncommented options override the
+# default value.
+
+# If you want to change the port on a SELinux system, you have to tell
+# SELinux about this change.
+# semanage port -a -t ssh_port_t -p tcp #PORTNUMBER
+#
+Port {{ system_sshd_setup_port }}
+AddressFamily {{ system_sshd_setup_address_family }}
+{% for address in system_sshd_setup_listen_addresses %}
+ListenAddress {{ address }}
+{% endfor %}
+
+{% for hostkey in system_sshd_setup_host_keys %}
+HostKey {{ hostkey }}
+{% endfor %}
+
+# Ciphers and keying
+RekeyLimit {{ system_sshd_setup_rekey_limit }}
+
+# System-wide Crypto policy:
+# This system is following system-wide crypto policy. The changes to
+# Ciphers, MACs, KexAlgoritms and GSSAPIKexAlgorithsm will not have any
+# effect here. They will be overridden by command-line options passed on
+# the server start up.
+# To opt out, uncomment a line with redefinition of  CRYPTO_POLICY=
+# variable in  /etc/sysconfig/sshd  to overwrite the policy.
+# For more information, see manual page for update-crypto-policies(8).
+
+# Logging
+#SyslogFacility AUTH
+SyslogFacility {{ system_sshd_setup_syslog_facility }}
+LogLevel {{ system_sshd_setup_loglevel }}
+
+# Authentication:
+
+LoginGraceTime {{ system_sshd_setup_login_grace_time }}
+PermitRootLogin {{ system_sshd_setup_permit_root_login }}
+StrictModes {{ system_sshd_setup_strict_modes }}
+MaxAuthTries  {{ system_sshd_setup_max_auth_tries }}
+MaxSessions {{ system_sshd_setup_max_sessions }}
+
+PubkeyAuthentication {{ system_sshd_setup_pub_key_authentication }}
+
+# The default is to check both .ssh/authorized_keys and .ssh/authorized_keys2
+# but this is overridden so installations will only check .ssh/authorized_keys
+AuthorizedKeysFile	{{ system_sshd_setup_authorized_key_file }}
+
+AuthorizedPrincipalsFile {{ system_sshd_setup_authorized_prinicpals_file }}
+
+AuthorizedKeysCommand {{ system_sshd_setup_authorized_keys_command }}
+AuthorizedKeysCommandUser {{ system_sshd_setup_authorized_keys_command_user }}
+
+# For this to work you will also need host keys in /etc/ssh/ssh_known_hosts
+HostbasedAuthentication {{ system_sshd_setup_host_based_authentication }}
+# Change to yes if you don't trust ~/.ssh/known_hosts for
+# HostbasedAuthentication
+IgnoreUserKnownHosts {{ system_sshd_setup_ignore_user_known_hosts }}
+# Don't read the user's ~/.rhosts and ~/.shosts files
+IgnoreRhosts {{ system_sshd_setup_ignore_rhosts }}
+
+# To disable tunneled clear text passwords, change to no here!
+PasswordAuthentication {{ system_sshd_setup_password_authentication }}
+PermitEmptyPasswords {{ system_sshd_setup_permit_empty_passwords }}
+
+# Change to no to disable s/key passwords
+ChallengeResponseAuthentication {{ system_sshd_setup_challenge_response_authentication }}
+
+# Kerberos options
+#KerberosAuthentication no
+#KerberosOrLocalPasswd yes
+#KerberosTicketCleanup yes
+#KerberosGetAFSToken no
+#KerberosUseKuserok yes
+
+# GSSAPI options
+GSSAPIAuthentication {{ system_sshd_setup_gssapi_authentication }}
+GSSAPICleanupCredentials {{ system_sshd_setup_gssapi_cleanup_credentials }}
+GSSAPIStrictAcceptorCheck {{ system_sshd_setup_gssapi_strict_acceptor_check }}
+GSSAPIKeyExchange {{ system_sshd_setup_gssapi_key_exchange }}
+GSSAPIEnablek5users {{ system_sshd_setup_gssaip_enable_k5_users }}
+
+# Set this to 'yes' to enable PAM authentication, account processing,
+# and session processing. If this is enabled, PAM authentication will
+# be allowed through the ChallengeResponseAuthentication and
+# PasswordAuthentication.  Depending on your PAM configuration,
+# PAM authentication via ChallengeResponseAuthentication may bypass
+# the setting of "PermitRootLogin without-password".
+# If you just want the PAM account and session checks to run without
+# PAM authentication, then enable this but set PasswordAuthentication
+# and ChallengeResponseAuthentication to 'no'.
+# WARNING: 'UsePAM no' is not supported in Fedora and may cause several
+# problems.
+UsePAM {{ system_sshd_setup_use_pam }}
+
+AllowAgentForwarding {{ system_sshd_setup_allow_agent_forwarding }}
+AllowTcpForwarding {{ system_sshd_setup_allow_tcp_forwarding }}
+GatewayPorts {{ system_sshd_setup_gateway_ports }}
+X11Forwarding {{ system_sshd_setup_x11_forwarding }}
+X11DisplayOffset {{ system_sshd_setup_x11_display_offset }}
+X11UseLocalhost {{ system_sshd_setup_x11_use_localhost }}
+PermitTTY {{ system_sshd_setup_permit_tty }}
+
+# It is recommended to use pam_motd in /etc/pam.d/sshd instead of PrintMotd,
+# as it is more configurable and versatile than the built-in version.
+PrintMotd {{ system_sshd_setup_print_motd }}
+
+PrintLastLog {{ system_sshd_setup_print_last_log }}
+TCPKeepAlive {{ system_sshd_setup_tcp_keep_alive }}
+PermitUserEnvironment {{ system_sshd_setup_permit_user_environment }}
+Compression {{ system_sshd_setup_compression }}
+ClientAliveInterval {{ system_sshd_setup_client_alive_interval }}
+ClientAliveCountMax {{ system_sshd_setup_client_alive_count_max }}
+# ShowPatchLevel {{ system_sshd_setup_show_patch_level }}
+UseDNS {{ system_sshd_setup_use_dns }}
+PidFile {{ system_sshd_setup_pid_file }}
+MaxStartups {{ system_sshd_setup_max_startups }}
+PermitTunnel {{ system_sshd_setup_permit_tunnel }}
+ChrootDirectory {{ system_sshd_setup_chroot_directory }}
+VersionAddendum {{ system_sshd_setup_version_addendum }}
+
+# no default banner path
+Banner {{ system_sshd_setup_banner }}
+
+# Accept locale-related environment variables
+{% for item in system_sshd_setup_accept_envs %}
+AcceptEnv {{ item }}
+{% endfor %}
+
+# override default of no subsystems
+Subsystem {{ system_sshd_setup_subsystem }}
+
+# Example of overriding settings on a per-user basis
+#Match User anoncvs
+#	X11Forwarding no
+#	AllowTcpForwarding no
+#	PermitTTY no
+#	ForceCommand cvs server
+
+{% if system_sshd_setup_allow_users is defined %}
+AllowUsers {{ system_sshd_setup_allow_users | join(' ') }}
+{% endif %}
+
+{% if system_sshd_setup_allow_groups is defined %}
+AllowGroups {{ system_sshd_setup_allow_groups | join(' ') }}
+{% endif %}
+
+TrustedUserCAKeys {{ system_sshd_setup_trusted_user_ca_keys }}

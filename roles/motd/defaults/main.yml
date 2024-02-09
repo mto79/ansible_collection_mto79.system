@@ -1,4 +1,5 @@
 ---
-system_motd_update_script_names_default: "{{ _system_motd_update_script_names_default }}"
+system_motd_setup_update_scripts: "{{ _system_motd_setup_update_scripts }}"
+system_motd_setup_update_scripts_use: false
 
 ...

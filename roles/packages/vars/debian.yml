@@ -1,0 +1,41 @@
+---
+system_packages_setup_conflicting_items: []
+
+system_packages_setup_items:
+  - "apt-transport-https"
+  - "debconf"
+  - "debconf-i18n"
+  - "iproute2"
+  - "passwd"
+  - "python3-apt"
+  - "subversion"
+  - "xz-utils"
+  - "network-manager"
+  - "net-tools"
+  - "chrony"
+  - "mlocate"
+  - "policycoreutils"
+  - "tree"
+  - "bind9utils"
+  - "lsof"
+  - "bsd-mailx"
+  - "netcat"
+  - "ssh"
+  - "rsync"
+  - "tmux"
+  - "sysstat"
+  - "tcpdump"
+  - "vim"
+  - "bash-completion"
+  - "bzip2"
+  - "tar"
+  - "postfix"
+  - "python3"
+  - "mailutils"
+  - "jq"
+  - "cifs-utils"
+  - "locate"
+
+system_packages_setup_pip_items: []
+
+...

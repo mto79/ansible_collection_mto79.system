@@ -1,0 +1,7 @@
+---
+- name: "Restart tuned"
+  ansible.builtin.service:
+    name: "{{ system_tuned_setup_service }}"
+    state: "restarted"
+  become: true
+...

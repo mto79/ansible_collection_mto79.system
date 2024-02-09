@@ -1,0 +1,9 @@
+{{ ansible_managed | comment }}
+{{ "system_role:tuned" | comment(prefix="", postfix="") }}
+
+daemon = {{ system_tuned_setup_daemon }}
+dynamic_tuning = {{ system_tuned_setup_dynamic_tuning }}
+sleep_interval = {{ system_tuned_setup_sleep_interval }}
+update_interval = {{ system_tuned_setup_sleep_interval }}
+recommend_command = {{ system_tuned_setup_enable_recommend }}
+reapply_sysctl = {{ system_tuned_setup_reapply_sysctl }}

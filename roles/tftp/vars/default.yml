@@ -1,0 +1,33 @@
+---
+_system_tftp_packages:
+  default:
+    - tftpd
+  Debian:
+    - tftpd-hpa
+  RedHat:
+    - tftp-server
+    - libsemanage-python
+    - policysystemutils-python
+  CentOS:
+    - tftp-server
+    - python3-libsemanage
+    - policysystemutils-python-utils
+  Suse:
+    - tftp
+
+system_tftp_packages: "{{ _system_tftp_packages[ansible_facts.distribution] | default(_system_tftp_packages['default']) }}"
+
+_system_tftp_service:
+  default: tftp.socket
+  RedHat: tftp.socket
+  CentOS: tftp.socket
+  Debian: tftpd-hpa
+
+system_tftp_service: "{{ _system_tftp_service[ansible_facts.distribution] | default(_system_tftp_service['default']) }}"
+
+system_tftp_server: /usr/sbin/in.tftpd
+system_tftp_config: /usr/lib/systemd/system/tftp.service
+
+system_tftp_foreman_map_file: /etc/tftpd.map
+
+...

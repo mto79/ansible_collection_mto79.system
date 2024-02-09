@@ -1,0 +1,8 @@
+---
+system_sos_setup_packages:
+  - "sos"
+
+system_sos_setup_command: "sos report --upload --batch --tmp-dir={{ system_sos_remote_location }} --ticket-number={{ system_sos_ticket_number }}"
+system_sos_setup_patterns: "sosreport-*-{{ ansible_date_time.date }}-*.tar.xz"
+
+...

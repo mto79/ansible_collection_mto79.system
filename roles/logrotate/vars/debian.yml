@@ -1,0 +1,10 @@
+---
+system_logrotate_setup_packages:
+  - "logrotate"
+system_logrotate_setup_config_directory: "/etc"
+system_logrotate_setup_config_file: "logrotate.conf"
+system_logrotate_setup_confd_directory: "{{ system_logrotate_setup_config_directory }}/logrotate.d"
+_system_logrotate_setup_user: "root"
+_system_logrotate_setup_group: "adm"
+
+...

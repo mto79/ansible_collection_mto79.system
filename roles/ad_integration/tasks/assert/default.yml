@@ -1,0 +1,76 @@
+---
+- name: "Assert | Ensure __role_name is defined"
+  ansible.builtin.assert:
+    that:
+      - __role_name is defined
+      - __role_name is string
+      - __role_name | length > 0
+      # Make sure you can't forget to replace the role name
+      - "__role_name != ['temp', 'late'] | join('')"
+
+- name: "Assert | Definitions for Setup"
+  when: __role_name == "setup"
+  block:
+    - name: "Assert | If system_ad_integration_setup_packages is set correctly"
+      ansible.builtin.assert:
+        that:
+          - system_ad_integration_setup_packages is defined
+
+    - name: "Assert | Test if system_ad_integration_setup_domain is set correctly"
+      ansible.builtin.assert:
+        that:
+          - system_ad_integration_setup_domain is defined
+          - system_ad_integration_setup_domain is string
+
+    - name: "Assert | Test if system_ad_integration_setup_domain_alt is set correctly"
+      ansible.builtin.assert:
+        that:
+          - system_ad_integration_setup_domain_alt is defined
+          - system_ad_integration_setup_domain_alt is string
+
+    - name: "Assert | Test if  is set system_ad_integration_setup_ldap_comp_grp_ou correctly"
+      ansible.builtin.assert:
+        that:
+          - system_ad_integration_setup_ldap_comp_grp_ou is defined
+          - system_ad_integration_setup_ldap_comp_grp_ou is string
+
+    - name: "Assert | Test if  is set system_ad_integration_setup_ldap_adm_grp_query correctly"
+      ansible.builtin.assert:
+        that:
+          - system_ad_integration_setup_ldap_adm_grp_query is defined
+          - system_ad_integration_setup_ldap_adm_grp_query is string
+
+    - name: "Assert | Test if iam_joinad_use_pexpect is set correctly"
+      ansible.builtin.assert:
+        that:
+          - system_ad_integration_setup_use_pexpect is defined
+          - system_ad_integration_setup_use_pexpect is boolean
+
+- name: "Assert | Definitions for Upstream"
+  when: __role_name == "upstream"
+  block:
+    - name: "Assert | Test if system_ad_integration_upstream_realm  is set correctly"
+      ansible.builtin.assert:
+        that:
+          - system_ad_integration_upstream_realm is defined
+          - system_ad_integration_upstream_realm is string
+
+    - name: "Assert | Test if system_ad_integration_upstream_user  is set correctly"
+      ansible.builtin.assert:
+        that:
+          - system_ad_integration_upstream_user is defined
+          - system_ad_integration_upstream_user is string
+
+    - name: "Assert | Test if system_ad_integration_upstream_password  is set correctly"
+      ansible.builtin.assert:
+        that:
+          - system_ad_integration_upstream_password is defined
+          - system_ad_integration_upstream_password is string
+
+    - name: "Assert | Test if system_ad_integration_upstream_join_to_dc  is set correctly"
+      ansible.builtin.assert:
+        that:
+          - system_ad_integration_upstream_join_to_dc is defined
+          - system_ad_integration_upstream_join_to_dc is string
+
+...

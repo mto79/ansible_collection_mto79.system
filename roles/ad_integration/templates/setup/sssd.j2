@@ -1,0 +1,24 @@
+[sssd]
+domains = {{ system_ad_integration_setup_domain_alt }}
+config_file_version = 2
+  = nss, pam, pac
+
+[pac]
+
+[domain/{{ system_ad_integration_setup_domain_alt }}]
+ad_domain = {{ system_ad_integration_setup_domain_alt }}
+krb5_realm = {{ system_ad_integration_setup_domain }}
+realmd_tags = manages-system joined-with-adcli
+cache_credentials = True
+id_provider = ad
+krb5_store_password_if_offline = True
+default_shell = /bin/bash
+ldap_id_mapping = True
+use_fully_qualified_names = False
+fallback_homedir = /home/%u
+access_provider = ad
+ad_access_filter = {{ system_ad_integration_setup_ldap_adm_grp_query }}
+chpass_provider = ad
+auth_provider = ad
+dyndns_update = false
+ad_gpo_access_control = disabled

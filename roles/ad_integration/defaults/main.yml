@@ -1,0 +1,8 @@
+---
+system_ad_integration_setup_clear_sssd_cache: true
+system_ad_integration_setup_pexpect_use: true
+system_ad_integration_setup_pexpect_download_dir: "/root/ansible-download"
+system_ad_integration_setup_pam_mkhomedir: true
+system_ad_integration_setup_register: true
+
+...

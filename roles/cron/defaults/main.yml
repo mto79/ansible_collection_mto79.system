@@ -1,0 +1,6 @@
+---
+system_cron_setup_shell: "/bin/bash"
+system_cron_setup_path: "/sbin:/bin:/usr/sbin:/usr/bin"
+system_cron_setup_mailto: "root"
+
+...

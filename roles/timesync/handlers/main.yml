@@ -1,3 +1,8 @@
 ---
+- name: "Restart chrony"
+  ansible.builtin.service:
+    name: "{{ system_timesync_setup_service_name }}"
+    state: "restarted"
+  become: true
 
 ...

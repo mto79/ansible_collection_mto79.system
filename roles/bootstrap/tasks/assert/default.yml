@@ -1,0 +1,36 @@
+---
+- name: "Assert | Ensure __role_name is defined"
+  ansible.builtin.assert:
+    that:
+      - __role_name is defined
+      - __role_name is string
+      - __role_name | length > 0
+      # Make sure you can't forget to replace the role name
+      - "__role_name != ['temp', 'late'] | join('')"
+
+- name: "Assert | Definitions for Setup"
+  when: __role_name == "setup"
+  block:
+    - name: "Assert | Test if system_bootstrap_setup_wait_for_host is set correctly"
+      ansible.builtin.assert:
+        that:
+          - system_bootstrap_setup_wait_for_host is defined
+          - system_bootstrap_setup_wait_for_host is boolean
+        quiet: true
+
+    - name: "Assert | Test if system_bootstrap_setup_timeout is set correctly"
+      ansible.builtin.assert:
+        that:
+          - system_bootstrap_setup_timeout is defined
+          - system_bootstrap_setup_timeout is number
+          - system_bootstrap_setup_timeout >= 0
+        quiet: true
+
+    - name: "Assert | Test if system_bootstrap_setup_become is set correctly"
+      ansible.builtin.assert:
+        that:
+          - system_bootstrap_setup_become is defined
+          - system_bootstrap_setup_become is boolean
+        quiet: true
+
+...

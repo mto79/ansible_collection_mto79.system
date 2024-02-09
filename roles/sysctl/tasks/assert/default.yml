@@ -1,0 +1,27 @@
+---
+- name: "Assert | Ensure __role_name is defined"
+  ansible.builtin.assert:
+    that:
+      - __role_name is defined
+      - __role_name is string
+      - __role_name | length > 0
+      # Make sure you can't forget to replace the role name
+      - "__role_name != ['temp', 'late'] | join('')"
+
+- name: "Assert | Definitions for Setup"
+  when: __role_name == "setup"
+  block:
+    - name: "Assert | Test if system_sysctl_setup_set is set correctly"
+      ansible.builtin.assert:
+        that:
+          - system_sysctl_setup_set is defined
+          - system_sysctl_setup_set is boolean
+        quiet: true
+
+    - name: "Assert | Test if system_sysctl_setup_reload is set correctly"
+      ansible.builtin.assert:
+        that:
+          - system_sysctl_setup_reload is defined
+          - system_sysctl_setup_reload is boolean
+
+...

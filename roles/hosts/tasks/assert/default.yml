@@ -1,0 +1,35 @@
+---
+- name: "Assert | Ensure __role_name is defined"
+  ansible.builtin.assert:
+    that:
+      - __role_name is defined
+      - __role_name is string
+      - __role_name | length > 0
+      # Make sure you can't forget to replace the role name
+      - "__role_name != ['temp', 'late'] | join('')"
+
+- name: "Assert | Definitions for Setup"
+  when: __role_name == "setup"
+  block:
+    - name: "Assert | Test if system_hosts_setup_entries is set correctly"
+      ansible.builtin.assert:
+        that:
+          - system_hosts_setup_entries is defined
+          - system_hosts_setup_entries is iterable
+        quiet: true
+
+    - name: "Assert | Test if item in system_hosts_setup_entries is set correctly"
+      ansible.builtin.assert:
+        that:
+          - item.ip is defined
+          - item.ip is string
+          - item.hostrule is defined
+          - item.hostrule is string
+        quiet: true
+      loop: "{{ system_hosts_setup_entries }}"
+      loop_control:
+        label: "{{ item.ip }}"
+      when:
+        - system_hosts_setup_entries is defined
+
+...

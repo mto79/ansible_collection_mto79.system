@@ -1,0 +1,12 @@
+---
+system_firewall_setup_packages_conflicting:
+  - "firewalld"
+
+system_firewall_setup_packages_required:
+  - "ufw"
+
+system_firewall_setup_service: "ufw"
+
+system_firewall_setup_iptables_rulefile: ""
+
+...

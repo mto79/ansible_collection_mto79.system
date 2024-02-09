@@ -1,0 +1,26 @@
+#jinja2: lstrip_blocks: True, trim_blocks: True
+{{ ansible_managed | comment(decoration='# ') }}
+
+# Add Date and Time to Bash History
+HISTTIMEFORMAT="%Y-%m-%d %H:%M:%S | "
+
+# Number of commands to remember in the command history (the default value is 500).
+HISTSIZE=10000
+
+# The maximum number of lines contained in the history file (the default value is 500).
+HISTFILESIZE=10000
+
+# Append commands to the history file, rather than overwrite it
+shopt -s histappend
+
+# Store Bash History Immediately
+PROMPT_COMMAND='history -a'
+
+# Control Bash History
+HISTCONTROL=ignorespace:erasedups
+
+# Ignore Specific Commands
+HISTIGNORE="ls:ll:ps:history"
+
+# Use one command per line
+shopt -s cmdhist

@@ -1,0 +1,62 @@
+#jinja2: lstrip_blocks: True
+{{ ansible_managed | comment }}
+# Configuration file for chrony service.
+
+{% if system_timesync_setup_ntp_servers | length > 0 %}
+# List of NTP servers to use
+{% for server in system_timesync_setup_ntp_servers %}
+server {{ server }}
+{% endfor %}
+{% endif %}
+
+{%- if system_timesync_setup_ntp_pools | length > 0 %}
+# List of NTP pools to use
+{% for pool in system_timesync_setup_ntp_pools %}
+pool {{ pool }}
+{% endfor %}
+{% endif %}
+
+{% if system_timesync_setup_ntp_peers | length > 0 %}
+# List of NTP peers to use
+{% for peer in system_timesync_setup_ntp_peers %}
+peer {{ peer }}
+{% endfor %}
+{% endif %}
+
+# Drift file
+driftfile {{ system_timesync_setup_config_driftfile }}
+
+# Step the clock if the adjustement is larger than *threshold* second
+# but only the first *limit* times.
+makestep {{ system_timesync_setup_makestep_threshold }} {{ system_timesync_setup_makestep_limit }}
+
+# Keep UTC date and time for RTC
+rtconutc
+
+# Enable RTC synchronization
+rtcsync
+
+# Leap second
+leapsectz right/UTC
+
+# Listen for commands only on localhost
+bindcmdaddress 127.0.0.1
+bindcmdaddress ::1
+
+# Log path
+logdir {{ system_timesync_setup_config_logdir }}
+
+{% if system_timesync_setup_allow | length > 0 %}
+# Allow NTP requests from these clients:
+# (chrony will then act as a NTP server for these)
+{% for addr in system_timesync_setup_allow %}
+allow {{ addr }}
+{% endfor %}
+{% endif %}
+
+{% if system_timesync_setup_deny | length > 0 %}
+# Deny NTP requests from these clients:
+{% for addr in system_timesync_setup_deny %}
+deny {{ addr }}
+{% endfor %}
+{% endif %}

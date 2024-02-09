@@ -1,0 +1,105 @@
+---
+system_sshd_setup_port: "22"
+system_sshd_setup_address_family: any
+system_sshd_setup_listen_addresses:
+  - "0.0.0.0"
+  - "::"
+
+system_sshd_setup_host_keys:
+  - "/etc/ssh/ssh_host_rsa_key"
+  - "/etc/ssh/ssh_host_ecdsa_key"
+  - "/etc/ssh/ssh_host_ed25519_key"
+
+system_sshd_setup_rekey_limit: "default none"
+system_sshd_setup_syslog_facility: "AUTH"
+system_sshd_setup_loglevel: "INFO"
+
+system_sshd_setup_login_grace_time: "2m"
+system_sshd_setup_permit_root_login: "yes"
+system_sshd_setup_strict_modes: "yes"
+system_sshd_setup_max_auth_tries: "6"
+system_sshd_setup_max_sessions: "10"
+
+system_sshd_setup_pub_key_authentication: "yes"
+
+system_sshd_setup_authorized_key_file: ".ssh/authorized_keys"
+
+system_sshd_setup_authorized_prinicpals_file: "none"
+system_sshd_setup_authorized_keys_command: "none"
+system_sshd_setup_authorized_keys_command_user: "nobody"
+
+system_sshd_setup_host_based_authentication: "no"
+system_sshd_setup_ignore_user_known_hosts: "no"
+system_sshd_setup_ignore_rhosts: "yes"
+
+system_sshd_setup_permit_empty_passwords: "no"
+system_sshd_setup_password_authentication: "yes"
+
+system_sshd_setup_challenge_response_authentication: "no"
+
+system_sshd_setup_gssapi_authentication: "yes"
+system_sshd_setup_gssapi_cleanup_credentials: "no"
+system_sshd_setup_gssapi_strict_acceptor_check: "yes"
+system_sshd_setup_gssapi_key_exchange: "no"
+system_sshd_setup_gssaip_enable_k5_users: "no"
+
+system_sshd_setup_use_pam: "yes"
+
+system_sshd_setup_allow_agent_forwarding: "yes"
+system_sshd_setup_allow_tcp_forwarding: "yes"
+system_sshd_setup_gateway_ports: "no"
+system_sshd_setup_x11_forwarding: "yes"
+system_sshd_setup_x11_display_offset: "10"
+system_sshd_setup_x11_use_localhost: "yes"
+system_sshd_setup_permit_tty: "yes"
+
+system_sshd_setup_print_motd: "no"
+
+system_sshd_setup_print_last_log: "yes"
+system_sshd_setup_tcp_keep_alive: "yes"
+system_sshd_setup_permit_user_environment: "no"
+system_sshd_setup_compression: delayed
+system_sshd_setup_client_alive_interval: "30"
+system_sshd_setup_client_alive_count_max: "3"
+system_sshd_setup_show_patch_level: "no"
+system_sshd_setup_use_dns: "no"
+system_sshd_setup_pid_file: /var/run/sshd.pid
+system_sshd_setup_max_startups: "10:30:100"
+system_sshd_setup_permit_tunnel: "no"
+system_sshd_setup_chroot_directory: "none"
+system_sshd_setup_version_addendum: "none"
+
+system_sshd_setup_banner: "none"
+
+system_sshd_setup_accept_envs:
+  - "LANG"
+  - "LANGUAGE"
+  - "LC_ADDRESS"
+  - "LC_ALL"
+  - "LC_COLLATE"
+  - "LC_CTYPE"
+  - "LC_IDENTIFICATION"
+  - "LC_MEASUREMENT"
+  - "LC_MESSAGES"
+  - "LC_MONETARY"
+  - "LC_NAME"
+  - "LC_NUMERIC"
+  - "LC_PAPER"
+  - "LC_TELEPHONE"
+  - "LC_TIME"
+  - "XMODIFIERS"
+
+system_sshd_setup_subsystem: "sftp {{ system_sshd_setup_sftp_server }}"
+
+# Specifies a file containing public keys of certificate authorities that are
+# trusted to sign user certificates for authentication, or none to not use one.
+system_sshd_setup_trusted_user_ca_keys: "none"
+
+# Restrict access to this (space separated list) of users or groups.
+# For example: "system_sshd_setup_allow_users: root my_user"
+# system_sshd_setup_allow_users:
+#  - root
+
+# system_sshd_setup_allow_groups:
+#  - wheel
+...

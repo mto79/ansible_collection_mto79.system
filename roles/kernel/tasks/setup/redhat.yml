@@ -1,0 +1,16 @@
+---
+- name: "Setup | Include build tasks."
+  include_tasks: "build.yml"
+  when: system_kernel_setup_build | bool
+
+- name: "Setup | Manage grub."
+  when: system_kernel_setup_grub | bool
+  become: true
+  block:
+    - name: "Setup | Disable Transparent Hugepages on all kernels"
+      ansible.builtin.command: "grubby --update-kernel=ALL --args='transparent_hugepage=never'"
+      changed_when: false
+      notify:
+        "Reboot"
+
+...

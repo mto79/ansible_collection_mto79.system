@@ -1,8 +1,8 @@
 ---
-- name: "User | Create local ssh_key_directory"
+- name: "Setup | User | Create local ssh_key_directory"
   ansible.builtin.file:
-    path: "{{ system_users_ssh_key_directory }}"
-    state: directory
+    path: "{{ system_users_setup_ssh_key_directory }}"
+    state: "directory"
     mode: "0750"
   when:
     - user.manage_ssh_key is defined
@@ -10,97 +10,127 @@
   delegate_to: localhost
   become: false
 
-- name: "User | Salt and Hash password user when set in attributes."
+- name: "Setup | User | Salt and Hash password user when set in attributes."
   ansible.builtin.set_fact:
-    user_password_hash: "{{ user.password | string | password_hash('sha512', (system_users_password_salt | string)) }}"
+    system_users_setup_password_hash: "{{ user.password | string | password_hash('sha512') }}"
   when:
     - user.password is defined
     - user.password | length > 0
 
-- name: "User | Manage users {{ user.name }}"
+- name: "Setup | User | Manage users {{ user.name }}"
   ansible.builtin.user:
     name: "{{ user.name }}"
     state: "{{ user.state | default('present') }}"
     comment: "{{ user.comment | default(omit) }}"
-    create_home: "{{ system_users_create_home }}"
-    password: "{{ user_password_hash | default(omit) }}"
+    create_home: "{{ system_users_setup_create_home }}"
+    password: "{{ system_users_setup_password_hash | default(omit) }}"
     uid: "{{ user.uid | default(omit) }}"
     group: "{{ user.group | default(omit) }}"
     groups: "{{ user.groups | default(omit) }}"
     home: "{{ user.home | default(omit) }}"
-    shell: "{{ user.shell | default(system_users_shell) }}"
+    shell: "{{ user.shell | default(system_users_setup_shell) }}"
     update_password: "{{ user.update_password | default(omit) }}"
     expires: "{{ user.expires | default(omit) }}"
     system: "{{ user.system | default(omit) }}"
-  register: system_users_manage_user
+    password_expire_max: "{{ user.password_expire_max | default(omit) }}"
+    password_expire_min: "{{ user.password_expire_min | default(omit) }}"
+    #  local: true
+  register: "system_users_setup_manage_user"
+  become: true
 
-- name: "User | Set sudo options for {{ user.name }}"
+- name: "Setup | User | Remove home directory for {{ user.name }}"
+  ansible.builtin.file:
+    path: "/home/{{ user.name }}"
+    state: "absent"
+  when:
+    - user.state is defined and user.state == "absent"
+  become: true
+
+- name: "Setup | User | Clear password facts {{ user.name }}"
+  ansible.builtin.set_fact:
+    system_users_setup_password_hash: ""
+
+- name: "Setup | User | Extra Action to clear passwd if not set {{ user.name }}"
+  ansible.builtin.command:
+    cmd: "passwd -d {{ user.name }}"
+  changed_when: false
+  failed_when: false
+  when:
+    - user.password is not defined
+    - system_users_setup_manage_user.changed
+  become: true
+
+- name: "Setup | User | Set sudo options for {{ user.name }}"
   ansible.builtin.template:
-    src: sudo_user.j2
-    dest: '/etc/sudoers.d/{{ user.name | replace(".", "dot") }}_user'
+    src: "templates/setup/sudo_user.j2"
+    dest: "/etc/sudoers.d/{{ user.name | replace('.', 'dot') }}_user"
     mode: "0640"
-    validate: /usr/sbin/visudo -cf %s
+    validate: "/usr/sbin/visudo -cf %s"
+  failed_when: false
   when:
     - user.sudo_options is defined
   loop_control:
     label: "{{ user.name }}"
+  become: true
 
-- name: "User | Remove sudo options for {{ user.name }}"
+- name: "Setup | User | Remove sudo options for {{ user.name }}"
   ansible.builtin.file:
-    path: '/etc/sudoers.d/{{ user.name | replace(".", "dot") }}_user'
-    state: absent
+    path: "/etc/sudoers.d/{{ user.name | replace('.', 'dot') }}_user"
+    state: "absent"
   when:
     - user.sudo_options is not defined
   loop_control:
     label: "{{ user.name }}"
+  become: true
 
-- name: "User | Ensure the sudoers.d directory is checked for user sudoers files (will be put after EOF if not exists)"
+- name: "Setup | User | Ensure the sudoers.d directory is checked for user sudoers files (will be put after EOF if not exists)"
   ansible.builtin.lineinfile:
-    path: /etc/sudoers
-    state: present
-    line: '#includedir /etc/sudoers.d'
+    path: "/etc/sudoers"
+    state: "present"
+    line: "#includedir /etc/sudoers.d"
+  become: true
 
-- name: "User | Generate private ssh key for {{ user.name }}"
+- name: "Setup | User | Generate private ssh key for {{ user.name }}"
   ansible.builtin.command:
-    cmd: "{{ system_users_ssh_keygen_command }}"
-    creates: "{{ system_users_ssh_key_directory }}/{{ user.name }}"
+    cmd: "{{ system_users_setup_ssh_keygen_command }}"
+    creates: "{{ system_users_setup_ssh_key_directory }}/{{ user.name }}"
   when:
     - user.manage_ssh_key is defined
     - user.manage_ssh_key | bool
   loop_control:
     label: "{{ user.name }}"
-  delegate_to: localhost
+  delegate_to: "localhost"
   become: false
 
-- name: "User | Generate public ssh key for {{ user.name }}"
+- name: "Setup | User | Generate public ssh key for {{ user.name }}"
   ansible.builtin.shell:
-    cmd: "{{ system_users_ssh_keygen_pubkey_command }} > {{ system_users_ssh_key_directory }}/{{ user.name }}.pub"
-    creates: "{{ system_users_ssh_key_directory }}/{{ user.name }}.pub"
+    cmd: "{{ system_users_setup_ssh_keygen_pubkey_command }} > {{ system_users_setup_ssh_key_directory }}/{{ user.name }}.pub"
+    creates: "{{ system_users_setup_ssh_key_directory }}/{{ user.name }}.pub"
   when:
     - user.manage_ssh_key is defined
     - user.manage_ssh_key | bool
   loop_control:
     label: "{{ user.name }}"
-  delegate_to: localhost
+  delegate_to: "localhost"
   become: false
 
-- name: "User | Convert ssh key to ppk for {{ user.name }}"
+- name: "Setup | User | Convert ssh key to ppk for {{ user.name }}"
   ansible.builtin.shell:
     cmd: >
-           ssh-keygen -e -f "{{ system_users_ssh_key_directory }}/{{ user.name }}"
-           -C "Generated by Ansible"
-           > "{{ system_users_ssh_key_directory }}/{{ user.name }}.ppk"
-    creates: "{{ system_users_ssh_key_directory }}/{{ user.name }}.ppk"
+           ssh-keygen -e -f "{{ system_users_setup_ssh_key_directory }}/{{ user.name }}"
+           -C "Generated by  mto79 .system.users"
+           > "{{ users_ssh_key_directory }}/{{ user.name }}.ppk"
+    creates: "{{ users_ssh_key_directory }}/{{ user.name }}.ppk"
   when:
     - user.manage_ssh_key is defined
     - user.manage_ssh_key | bool
-  delegate_to: localhost
+  delegate_to: "localhost"
   become: false
 
-- name: "User | Create .ssh directory for {{ user.name }}"
+- name: "Setup | User | Create .ssh directory for {{ user.name }}"
   ansible.builtin.file:
     path: "/home/{{ user.name }}/.ssh"
-    state: directory
+    state: "directory"
     mode: "700"
   become: true
   become_user: "{{ user.name }}"
@@ -108,60 +138,64 @@
     - user.manage_ssh_key is defined
     - user.manage_ssh_key
 
-- name: "User | Deploy authorized keys for {{ user.name }}"
+- name: "Setup | User | Deploy authorized keys for {{ user.name }}"
   ansible.posix.authorized_key:
     user: "{{ user.name }}"
-    state: present
+    state: "present"
     key: "{{ item }}"
   loop: "{{ user.authorized_keys }}"
   loop_control:
     label: "{{ user.name }}"
   when:
+    - user.state is defined and user.state != "absent"
     - user.authorized_keys is defined
+  become: true
 
-- name: "User | Remove unauthorized keys for {{ user.name }}"
+- name: "Setup | User | Remove unauthorized keys for {{ user.name }}"
   ansible.posix.authorized_key:
     user: "{{ user.name }}"
-    state: absent
+    state: "absent"
     key: "{{ item }}"
   loop: "{{ user.unauthorized_keys }}"
   loop_control:
     label: "{{ user.name }}"
-  when:
-    - user.unauthorized_keys is defined
+  when: user.unauthorized_keys is defined
+  become: true
 
-- name: "User | Copy generated private ssh key for {{ user.name }}"
+- name: "Setup | User | Copy generated private ssh key for {{ user.name }}"
   ansible.builtin.copy:
-    src: "{{ system_users_ssh_key_directory }}/{{ user.name }}"
+    src: "{{ system_users_setup_ssh_key_directory }}/{{ user.name }}"
     dest: "/home/{{ user.name }}/.ssh/id_rsa"
     mode: "400"
     owner: "{{ user.name }}"
     group: "{{ user.group | default(omit) }}"
   when:
-    - system_users_manage_user is defined
+    - system_users_setup_manage_user is defined
     - user.copy_private_key is defined
     - user.copy_private_key | bool
   loop_control:
     label: "{{ user.name }}"
+  become: true
 
-- name: "User | Check users password valid time"
+- name: "Setup | User | Check users password valid time"
   ansible.builtin.command:
     cmd: awk 'BEGIN { FS = ":" } $1 == "{{ user.name }}" { print $5 }' /etc/shadow
-  register: system_users_pw_valid
+  register: system_users_setup_pw_valid
   changed_when: false
   check_mode: false
   when:
     - user.state is defined and user.state != "absent" or
       user.state is not defined
+  become: true
 
-- name: "User | Set users password valid time"
+- name: "Setup | User | Set users password valid time"
   ansible.builtin.command:
     cmd: chage -M "{{ user.password_validity_days }}" "{{ user.name }}"
   changed_when: false
-  check_mode: false
   when:
     - user.password_validity_days is defined
-    - system_users_pw_valid.stdout is defined
-    - system_users_pw_valid.stdout | int !=  user.password_validity_days | int
+    - system_users_setup_pw_valid.stdout is defined
+    - system_users_setup_pw_valid.stdout | int !=  user.password_validity_days | int
+  become: true
 
 ...

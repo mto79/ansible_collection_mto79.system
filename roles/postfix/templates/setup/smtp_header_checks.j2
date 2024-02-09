@@ -1,0 +1,3 @@
+{% if system_postfix_setup_relayhost_from is defined and system_postfix_setup_relayhost_from | length > 0 %}
+/From:.*/ REPLACE From: {{ system_postfix_setup_relayhost_from }}
+{% endif %}

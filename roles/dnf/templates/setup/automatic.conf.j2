@@ -1,0 +1,40 @@
+# {{ ansible_managed }}
+
+# the following preferences are documented at
+# https://dnf.readthedocs.org/en/latest/automatic.html
+
+[commands]
+
+apply_updates = {{ system_dnf_setup_automatic_apply_updates }}
+download_updates = {{ system_dnf_setup_automatic_download_updates }}
+upgrade_type = {{ system_dnf_setup_automatic_upgrade_type }}
+random_sleep = {{ system_dnf_setup_automatic_random_sleep }}
+
+[emitters]
+
+emit_via = {{ system_dnf_setup_automatic_emit_via }}
+system_name = {{ system_dnf_setup_automatic_system_name }}
+
+[command]
+
+command_format = {{ system_dnf_setup_automatic_command_format }}
+stdin_format = {{ system_dnf_setup_automatic_stdin_format }}
+
+[command_email]
+
+command_format = {{ system_dnf_setup_automatic_email_command_format }}
+stdin_format = {{ system_dnf_setup_automatic_email_stdin_format }}
+email_from = {{ system_dnf_setup_automatic_email_from }}
+email_to = {{ system_dnf_setup_automatic_email_to }}
+
+[email]
+
+email_from = {{ system_dnf_setup_automatic_email_from }}
+email_to = {{ system_dnf_setup_automatic_email_to }}
+email_host = {{ system_dnf_setup_automatic_email_host }}
+
+[base]
+
+{% for key, value in system_dnf_setup_automatic_base_overrides.items() %}
+{{ key }} = {{ value }}
+{% endfor %}

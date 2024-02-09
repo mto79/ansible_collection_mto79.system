@@ -1,0 +1,55 @@
+---
+- name: "Setup | Install Tuned"
+  ansible.builtin.package:
+    name: "{{ system_tuned_setup_service }}"
+    state: "present"
+  become: true
+
+- name: "Setup | Enable Tuned"
+  ansible.builtin.service:
+    name: "{{ system_tuned_setup_service }}"
+    state: "started"
+    enabled: true
+  become: true
+
+- name: "Setup | Check for Tuned legacy"
+  ansible.builtin.shell: "tuned --version &> /dev/null || echo -n 'legacy'"
+  register: "_system_tuned_setup_version"
+  changed_when: false
+  become: true
+
+- name: "Setup | Generate tuned-main.conf file"
+  ansible.builtin.template:
+    src: "templates/setup/tuned-main.conf.j2"
+    dest: "/etc/tuned/tuned-main.conf"
+  notify:
+    - "Restart tuned"
+  become: true
+
+- name: "Setup | Get tuned recommended profile"
+  ansible.builtin.shell: "tuned-adm recommend 2> /dev/null || echo -n ' *fail'"
+  register: "_system_tuned_setup_recommend"
+  changed_when: false
+  become: true
+
+- name: "Setup | Set system_tuned_setup_recommended_profile"
+  ansible.builtin.set_fact:
+    system_tuned_setup_recommended_profile: >
+      {{ (_system_tuned_setup_recommend.stdout == ' *fail') | ternary('default',_system_tuned_setup_recommend.stdout) }}
+
+- name: "Setup | Set Tuned profile {{ system_tuned_setup_profile }}"
+  ansible.builtin.command: "tuned-adm profile {{ system_tuned_setup_profile }}"
+  when:
+    - not system_tuned_setup_use_recommended_profile | bool
+    - system_tuned_setup_profile != ''
+  changed_when: false
+  become: true
+
+- name: "Setup | Set recommended Tuned profile {{ system_tuned_setup_recommended_profile }}"
+  ansible.builtin.command: "tuned-adm profile {{ system_tuned_setup_recommended_profile }}"
+  when:
+    - system_tuned_setup_use_recommended_profile | bool
+  changed_when: false
+  become: true
+
+...

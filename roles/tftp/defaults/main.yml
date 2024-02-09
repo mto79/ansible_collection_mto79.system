@@ -1,0 +1,12 @@
+---
+system_tftp_root_directory: "/var/lib/tftpboot"
+system_tftp_server_args: "--secure -c"
+system_tftp_setype: tftpdir_rw_t
+system_tftp_anon_write: true
+system_tftp_home_dir: false
+system_tftp_user: "root"
+system_tftp_group: "root"
+system_tftp_mode: "0755"
+system_tftp_server_foreman_support: false
+
+...

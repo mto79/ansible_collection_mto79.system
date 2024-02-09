@@ -1,0 +1,18 @@
+---
+system_bootstrap_setup_packages:
+  - "python3"
+  - "sudo"
+
+system_bootstrap_setup_install:
+  raw: "LANG=C yum -y install {{ system_bootstrap_setup_packages }}"
+  stdout_regex: "Nothing"
+
+system_bootstrap_setup_os_family_map: ["RedHat", "CentOS", "Rocky"]
+
+system_bootstrap_setup_search: "Red Hat"
+
+system_bootstrap_setup_facts_packages:
+  - "python3"
+  - "sudo"
+
+...

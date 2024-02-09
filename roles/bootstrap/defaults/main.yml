@@ -1,0 +1,6 @@
+---
+system_bootstrap_setup_wait_for_host: false
+system_bootstrap_setup_timeout: 3
+system_bootstrap_setup_become: true
+
+...

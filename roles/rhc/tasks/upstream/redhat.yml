@@ -1,20 +1,20 @@
 ---
 - name: "Upstream | Execute the role and catch errors"
   block:
-    - name: "Upstream | include rhc role"
+    - name: "Setup | Include rhc role"
       ansible.builtin.include_role:
         name: fedora.linux_system_roles.rhc
       vars:
-        rhc_auth: "{{ system_rhc_auth | d({}) }}"
-        rhc_baseurl: "{{ system_rhc_baseurl | d(omit) }}"
-        rhc_environments: "{{ system_rhc_environments | d([]) }}"
-        rhc_insights: "{{ system_rhc_insights | d(omit) }}"
-        rhc_organization: "{{ system_rhc_organization | d(omit) }}"
-        rhc_proxy: "{{ system_rhc_proxy | d(omit) }}"
-        rhc_release: "{{ system_rhc_release | d(omit) }}"
-        rhc_repositories: "{{ system_rhc_repositories | d(omit) }}"
-        rhc_server: "{{ system_rhc_server | d(omit) }}"
-        rhc_state: "{{ system_rhc_state | d(present) }}"
+        rhc_state: "{{ system_rhc_upstream_state | d('present') }}"
+        rhc_auth: "{{ system_rhc_upstream_auth | d({}) }}"
+        rhc_baseurl: "{{ system_rhc_upstream_baseurl | d(omit) }}"
+        rhc_environments: "{{ system_rhc_upstream_environments | d([]) }}"
+        rhc_insights: "{{ system_rhc_upstream_insights | d(omit) }}"
+        rhc_organization: "{{ system_rhc_upstream_organization | d(omit) }}"
+        rhc_ mto79: "{{ system_rhc_upstream_ mto79 | d(omit) }}"
+        rhc_release: "{{ system_rhc_upstream_release | d(omit) }}"
+        rhc_repositories: "{{ system_rhc_upstream_repositories | d(omit) }}"
+        rhc_server: "{{ system_rhc_upstream_server | d(omit) }}"
 
   rescue:
     - name: "Upstream | Handle errors"

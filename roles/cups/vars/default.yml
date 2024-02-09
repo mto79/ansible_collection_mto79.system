@@ -1,4 +1,7 @@
 ---
-system_cups_service: "cups"
+system_cups_setup_packages:
+  - "cups"
+
+system_cups_setup_service: "cups"
 
 ...

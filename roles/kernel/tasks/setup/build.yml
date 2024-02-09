@@ -1,0 +1,77 @@
+---
+- name: "Setup | Install requirements"
+  ansible.builtin.package:
+    name: "{{ system_system_kernel_setup_setup_requirements }}"
+    state: "present"
+  become: true
+
+- name: "Setup | Download system_kernel_setup archive"
+  ansible.builtin.unarchive:
+    src: "{{ system_kernel_setup_unarchive_src }}"
+    dest: "{{ system_kernel_setup_build_location }}"
+    remote_src: true
+    creates: "{{ system_kernel_setup_unarchive_creates }}"
+    mode: "0755"
+  become: true
+
+- name: "Setup | Make defconfig"
+  ansible.builtin.command:
+    cmd: "make defconfig"
+    chdir: "{{ system_kernel_setup_build_location }}/linux-{{ system_kernel_setup_version }}"
+    creates: "{{ system_kernel_setup_build_location }}/linux-{{ system_kernel_setup_version }}/.config"
+  changed_when: false
+  become: true
+
+- name: "Setup | Change selected parameters in config"
+  ansible.builtin.lineinfile:
+    path: "{{ system_kernel_setup_build_location }}/linux-{{ system_kernel_setup_version }}/.config"
+    regexp: "^{{ item.name }}="
+    line: "{{ item.name }}={{ item.value }}"
+    mode: "0640"
+  loop: "{{ system_kernel_setup_parameters }}"
+  when: system_kernel_setup_parameters is defined
+  become: true
+
+- name: "Setup | Make"
+  ansible.builtin.command:
+    cmd: "make -j {{ ansible_processor_vcpus * 2 }}"
+    chdir: "{{ system_kernel_setup_build_location }}/linux-{{ system_kernel_setup_version }}"
+    creates: "{{ system_kernel_setup_build_location }}/linux-{{ system_kernel_setup_version }}/vmlinux"
+  async: 1800
+  poll: 0
+  register: "_system_kernel_setup_make"
+  changed_when: false
+  become: true
+
+- name: "Setup | Wait for make"
+  ansible.builtin.async_status:
+    jid: "{{ _system_kernel_setup_make.ansible_job_id }}"
+  register: "_system_kernel_setup_wait_for_make"
+  until: _system_kernel_setup_wait_for_make.finished
+  retries: 120
+  delay: 30
+  become: true
+
+- name: "Setup | Make modules_install"
+  ansible.builtin.command:
+    cmd: "make modules_install"
+    chdir: "{{ system_kernel_setup_build_location }}/linux-{{ system_kernel_setup_version }}"
+    creates: "{{ system_kernel_setup_modules_location }}"
+  become: true
+
+- name: "Setup | Ensure system_kernel_setup directory exists"
+  ansible.builtin.file:
+    path: "{{ system_kernel_setup_installation_location | dirname }}"
+    state: "directory"
+    mode: "0750"
+  become: true
+
+- name: "Setup | Make install"
+  ansible.builtin.command:
+    cmd: "make install"
+    chdir: "{{ system_kernel_setup_build_location }}/linux-{{ system_kernel_setup_version }}"
+    creates: "{{ system_kernel_setup_installation_location }}"
+  changed_when: false
+  become: true
+
+...

@@ -1,0 +1,8 @@
+---
+- name: Restart tftp
+  ansible.builtin.systemd:
+    name: "{{ system_tftp_service }}"
+    daemon-reload: true
+    state: restarted
+
+...

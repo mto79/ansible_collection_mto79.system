@@ -1,14 +1,9 @@
 ---
-- name: "Setup | Execute the role and catch errors"
-  block:
-    - name: "Setup | Place template /etc/motd (message of the day)"
-      ansible.builtin.template:
-        src: templates/motd.j2
-        dest: /etc/motd
-        mode: "0444"
+- name: "Setup | Place template /etc/motd (message of the day)"
+  ansible.builtin.template:
+    src: "templates/setup/motd.j2"
+    dest: "/etc/motd"
+    mode: "0444"
+  become: true
 
-  rescue:
-    - name: "Setup | Handle errors"
-      ansible.builtin.fail:
-        msg: "MOTD Role failed"
 ...

@@ -1,0 +1,35 @@
+#jinja2: lstrip_blocks: True, trim_blocks: True
+{{ ansible_managed | comment(decoration='# ') }}
+
+# see "man logrotate" for details
+# rotate log files weekly
+{{ system_logrotate_setup_frequency }}
+
+# use the syslog group by default, since this is the owning group
+# of /var/log/syslog.
+su {{ system_logrotate_setup_user }} {{ system_logrotate_setup_group }}
+
+# keep 4 weeks worth of backlogs
+rotate {{ system_logrotate_setup_keep }}
+
+# create new (empty) log files after rotating old ones
+create
+
+# add dateext
+{% if system_logrotate_setup_dateext %}
+dateext
+{% else %}
+#dateext
+{% endif %}
+
+# uncomment this if you want your log files compressed
+{% if system_logrotate_setup_compress %}
+compress
+{% else %}
+#compress
+{% endif %}
+
+# packages drop log rotation information into this directory
+include /etc/logrotate.d
+
+# system-specific logs may be configured here

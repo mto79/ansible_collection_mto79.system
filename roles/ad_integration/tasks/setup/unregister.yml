@@ -1,0 +1,24 @@
+---
+- name: "Setup | Unregister | leave using realmd"
+  when: system_ad_integration_setup_use_pexpect
+  block:
+    - name: "Setup | Unregister | leave using realmd"
+      ansible.builtin.expect:
+        command: "/bin/bash -c '/usr/sbin/realm leave -U {{ system_ad_integration_setup_domain }}\\{{ system_ad_integration_setup_username }} --remove'"
+        responses:
+          Password for.*: "{{ system_ad_integration_setup_password }}"
+      register: system_ad_integration_setup_realm_leave_result
+
+    - name: "Setup | Unregister | joining the AD realm"
+      ansible.builtin.shell: >
+        echo '{{ system_ad_integration_setup_password }}'
+         | realm leave -U {{ system_ad_integration_setup_domain }}\\{{ system_ad_integration_setup_username }}
+         --remove
+      changed_when: false
+
+  rescue:
+    - name: "Setup | Unregister | no realm find is already left"
+      ansible.builtin.debug:
+        msg: "{{ system_ad_integration_setup_realm_leave_result.stdout_lines }}"
+
+...

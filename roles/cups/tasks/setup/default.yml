@@ -1,12 +1,12 @@
 ---
 - name: "Setup | Install packages"
   ansible.builtin.package:
-    name: cups
+    name: "{{ system_cups_setup_packages }}"
     state: present
 
 - name: "Setup | Configure cups"
   ansible.builtin.template:
-    src: cupsd.conf.j2
+    src: templates/setup/cupsd.conf.j2
     dest: /etc/cups/cupsd.conf
     mode: "0640"
     validate: cupsd -t -c %s
@@ -15,8 +15,10 @@
 
 - name: "Setup | Start and enable software"
   ansible.builtin.service:
-    name: "{{ system_cups_service }}"
+    name: "{{ system_cups_setup_service }}"
     state: started
     enabled: true
+  when:
+    - system_cups_setup_service is defined
 
 ...

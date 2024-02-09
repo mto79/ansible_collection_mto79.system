@@ -1,0 +1,9 @@
+---
+- name: "Setup | Set color for root prompt."
+  ansible.builtin.template:
+    src: "templates/setup/redhat/color_root_prompt.sh.j2"
+    dest: "/etc/profile.d/color_root_prompt.sh"
+    mode: "0644"
+  become: true
+
+...

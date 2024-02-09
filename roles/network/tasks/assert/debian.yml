@@ -1,0 +1,67 @@
+---
+- name: "Assert | Assert setup specific vars"
+  when:
+    - __role_action == "setup"
+    - system_network_setup_netplan_enable is defined
+    - system_network_setup_netplan_enable | bool
+  block:
+    - name: "Assert | Test system_network_setup_netplan_dhcp4"
+      ansible.builtin.assert:
+        that:
+          - system_network_setup_netplan_dhcp4 is defined
+          - system_network_setup_netplan_dhcp4 is string
+        quiet: true
+
+    - name: "Assert | Test system_network_setup_netplan_renderer"
+      ansible.builtin.assert:
+        that:
+          - system_network_setup_netplan_renderer is defined
+          - system_network_setup_netplan_renderer is string
+        quiet: true
+
+    - name: "Assert | Test system_network_setup_netplan_ipv6_disable"
+      ansible.builtin.assert:
+        that:
+          - system_network_setup_netplan_ipv6_disable is defined
+          - system_network_setup_netplan_ipv6_disable is boolean
+        quiet: true
+
+    - name: "Assert | Test system_network_setup_netplan_ip"
+      ansible.builtin.assert:
+        that:
+          - system_network_setup_netplan_ip is defined
+          - system_network_setup_netplan_ip is string
+        quiet: true
+
+    - name: "Assert | Test system_network_setup_netplan_gateway4"
+      ansible.builtin.assert:
+        that:
+          - system_network_setup_netplan_gateway4 is defined
+          - system_network_setup_netplan_gateway4 is string
+        quiet: true
+
+    - name: "Assert | Test system_network_setup_netplan_nameservers"
+      ansible.builtin.assert:
+        that:
+          - system_network_setup_netplan_nameservers is defined
+          - system_network_setup_netplan_nameservers is iterable
+        quiet: true
+
+    - name: "Assert | Test system_network_setup_netplan_search"
+      ansible.builtin.assert:
+        that:
+          - system_network_setup_netplan_search is defined
+          - system_network_setup_netplan_search is string
+        quiet: true
+
+    - name: "Assert | Test system_network_setup_netplan_netmask"
+      ansible.builtin.assert:
+        that:
+          - system_network_setup_netplan_netmask is defined
+          - system_network_setup_netplan_netmask is string
+        quiet: true
+
+
+
+
+...

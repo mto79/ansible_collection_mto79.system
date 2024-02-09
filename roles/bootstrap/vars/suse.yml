@@ -1,0 +1,21 @@
+---
+system_bootstrap_setup_packages:
+  - "python"
+  - "sudo"
+  - "python3-xml"
+
+system_bootstrap_setup_install:
+  raw: "LANG=C zypper -n install {{ system_bootstrap_setup_packages }}"
+  stdout_regex: "Nothing"
+
+system_bootstrap_setup_os_family_map: >
+  ["SLED", "openSUSE Tumbleweed", "openSUSE Leap", "SLES_SAP", "SUSE_LINUX", "SLES", "openSUSE", "SuSE"]
+
+system_bootstrap_setup_search: ""
+
+system_bootstrap_setup_facts_packages:
+  - "python"
+  - "sudo"
+  - "python3-xml"
+
+...

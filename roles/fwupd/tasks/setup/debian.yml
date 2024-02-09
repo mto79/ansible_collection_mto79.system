@@ -1,0 +1,20 @@
+---
+- name: "Setup | Disable fwupd-refresh.service"
+  when: not system_fwupd_setup_enable | bool
+  block:
+    - name: "Setup | Stop and disable fwupd processes"
+      ansible.builtin.systemd:
+        name: "{{ item }}"
+        state: stopped
+        enabled: false
+      loop:
+        - "fwupd-refresh.timer"
+        - "fwupd-refresh.service"
+        - "fwupd"
+      become: true
+
+    - name: "Setup | Fwupd systemctl reset failed"
+      ansible.builtin.command: systemctl reset-failed fwupd-refresh.service
+      changed_when: false
+
+...

@@ -1,0 +1,37 @@
+---
+# This is an example playbook to execute Ansible tests.
+
+- name: "Verify"
+  hosts: "all"
+  gather_facts: false
+  tasks:
+    - name: "Testing Cron"
+      ansible.builtin.include_role:
+        name: " mto79 .system.cron"
+      vars:
+        system_cron_setup_jobs:
+          - name: "Requested job"
+            job: "ls -alh > /dev/null"
+
+          - name: "Requested job by the minute"
+            minute: "23"
+            job: "ls -alh > /dev/null"
+
+          - name: "Requested job by the hour"
+            hour: "23"
+            job: "ls -alh > /dev/null"
+
+          - name: "Requested job by the weekday"
+            weekday: "1"
+            job: "ls -alh > /dev/null"
+
+          - name: "Requested job by specific user"
+            hour: "23"
+            job: "ls -alh > /dev/null"
+            user: "root"
+
+          - name: "Requested job every 5 minutes"
+            minute: "*/5"
+            job: "ls -alh > /dev/null"
+
+...

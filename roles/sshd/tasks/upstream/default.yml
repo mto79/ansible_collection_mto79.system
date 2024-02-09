@@ -1,0 +1,28 @@
+---
+- name: "Upstream | Execute the sshd system role"
+  block:
+    - name: "Upstream | Display ssh setting"
+      ansible.builtin.debug:
+        msg: "{{ system_sshd_upstream_ssh | d({}) }}"
+
+    - name: "Upstream | Include ssh role"
+      ansible.builtin.include_role:
+        name: "fedora.linux_system_roles.sshd"
+        apply:
+          become: true
+      vars:
+        sshd_enable: "{{ system_sshd_upstream_enable | d(true) }}"
+        sshd_skip_defaults: "{{ system_sshd_upstream_skip_defaults | d(false) }}"
+        sshd_manage_service: "{{ system_sshd_upstream_manage_service | d(true) }}"
+        sshd_allow_reload: "{{ system_sshd_upstream_allow_reload | d(true) }}"
+        sshd_install_service: "{{ system_sshd_upstream_install_service | d(false) }}"
+        ssh_backup: "{{ system_sshd_upstream_backup | d(true) }}"
+        sshd_sysconfig: "{{ system_sshd_upstream_sysconfig | d(false) }}"
+        sshd: "{{ system_sshd_upstream_sshd | d({}) }}"
+
+  rescue:
+    - name: "Upstream | Handle errors"
+      ansible.builtin.fail:
+        msg: "Include fedora.linux_system_roles.sshd role failed"
+
+...

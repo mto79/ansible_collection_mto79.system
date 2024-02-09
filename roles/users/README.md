@@ -1,27 +1,46 @@
-# [System-users](#system-users)
+Ansible Role users
+=========
 
-Configure users and groups on your system.
+This is an Ansible role to install and configure users.
 
-# [Role Variables](#role-variables)
+Include more information about users in this section.
 
-| Variable | Default | Description |
-| -------- | ------- | ----------- |
-| `system_users_ssh_key_directory` | `ssh_keys` | Directory where ssh_key is placed |
-| `system_users_shell` | `/bin/bash` | Users shell |
-| `system_users_cron_allow` | `yes` | Can User create cron jobs? |
-| `system_users_create_home` | `yes` | Create users home directory |
-| `system_users_requirements` |
-| `system_users_group_list` |  | name: group_name gid: group_id |
-| `system_users_user_list`  |  | name: user_name comment: user_full_name uid: user_id group: group_name home: users_home_dir cron_allow: yes / no |
+Table of Contents
+-----------------
+- [Ansible Role users](#ansible-role-users)
+  - [Table of Contents](#table-of-contents)
+  - [Requirements](#requirements)
+  - [Role variables](#role-variables)
+    - [Setup](#setup)
+    - [Upsream](#upsream)
+  - [Example Playbook](#example-playbook)
 
-## [Maintainers](#maintainers)
+## [Requirements](#requirements)
 
-Marc Ouwerkerk (<https://github.com/mto79>)
+- The minimum version of Ansible required is 2.11.0.
+- The minimum version of Jinja template 2.11.3
 
-## [Todo](#todo)
+## [Role variables](#role-variables)
+### Setup
+| Variable | Type | Default | Description |
+| -------- | ---- | ------- | ----------- |
+|`system_users_setup_ssh_key_directory` |  `String` | `ssh_keys` | `The location to store ssh keys for user` |
+|`system_users_setup_shell` |  `String` | `/bin/bash` | `The default shell if not overwritten.` |
+|`system_users_setup_cron_allow` |  `Boolean` | `True` | `Manage cron permissions via /etc/cron.allow` |
+|`system_users_setup_create_home` |  `Boolean` | `True` | `Should homedirectories be created?` |
 
-* Standaardwaarden voor molecule testen toevoegen
+### Upsream
+| Variable | Type | Default | Description |
+| -------- | ---- | ------- | ----------- |
 
-## [License](#license)
+## [Example Playbook](#example-playbook)
 
-Apache-2.0
+```yaml
+    - hosts: servers
+      roles:
+        - role: " mto79 .system.users"
+          vars:
+            __role_action:
+              - "setup"
+          tags: ['system', 'users']
+```

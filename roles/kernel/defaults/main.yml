@@ -1,0 +1,9 @@
+---
+system_kernel_setup_build: false
+system_kernel_setup_version: "5.15.5"
+system_kernel_setup_build_location: /tmp
+system_kernel_setup_parameters:
+  - name: "CONFIG_SMP"
+    value: "y"
+
+...

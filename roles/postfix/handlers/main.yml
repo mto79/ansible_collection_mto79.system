@@ -1,0 +1,49 @@
+---
+- name: "Rebuild alias database"
+  become: true
+  ansible.builtin.command:
+    cmd: postmap "{{ system_postfix_setup_alias_path }}"
+
+- name: "Rebuild sender_access database"
+  become: true
+  ansible.builtin.command:
+    cmd: postmap "{{ system_postfix_setup_sender_access_path }}"
+
+- name: "Rebuild recipient_access database"
+  become: true
+  ansible.builtin.command:
+    cmd: postmap "{{ system_postfix_setup_recipient_access_path }}"
+
+- name: "Rebuild sasl_passwd database"
+  become: true
+  ansible.builtin.command:
+    cmd: postmap /etc/postfix/sasl_passwd
+
+- name: "Rebuild transport_maps database"
+  become: true
+  ansible.builtin.command:
+    cmd: postmap /etc/postfix/transport
+
+- name: "Validate configuration"
+  become: true
+  ansible.builtin.command:
+    cmd: "postconf"
+  changed_when: no
+
+- name: "Reload postfix"
+  become: true
+  ansible.builtin.service:
+    name: "{{ system_postfix_setup_service }}"
+    state: "reloaded"
+  when:
+    - not ansible_check_mode | bool
+
+- name: "Restart postfix"
+  become: true
+  ansible.builtin.service:
+    name: "{{ system_postfix_setup_service }}"
+    state: "restarted"
+  when:
+    - not ansible_check_mode | bool
+
+...

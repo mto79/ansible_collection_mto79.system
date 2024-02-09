@@ -1,0 +1,7 @@
+---
+system_timesync_setup_service_name: "chronyd"
+system_timesync_setup_service_executable: "/usr/sbin/chronyd"
+system_timesync_setup_config_file: "/etc/chrony.conf"
+system_timesync_setup_config_driftfile: "/var/lib/chrony/drift"
+
+...

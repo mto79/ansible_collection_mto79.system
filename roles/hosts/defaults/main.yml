@@ -1,0 +1,4 @@
+---
+system_hosts_entries: "{{ groups.all }}" # Fill /etc/hosts with all hosts in the play.
+system_hosts_ipv6_enabled: false
+...

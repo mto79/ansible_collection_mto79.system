@@ -1,0 +1,11 @@
+---
+system_tuned_setup_use_recommended_profile: true
+system_tuned_setup_profile: "balanced"
+system_tuned_setup_daemon: true
+system_tuned_setup_dynamic_tuning: true
+system_tuned_setup_sleep_interval: 1
+system_tuned_setup_update_interval: 10
+system_tuned_setup_enable_recommend: true
+system_tuned_setup_reapply_sysctl: true
+
+...

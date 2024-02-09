@@ -1,0 +1,56 @@
+---
+- name: "Setup | Install sos"
+  ansible.builtin.package:
+    name: "{{ system_sos_packages }}"
+    state: present
+
+- name: "Setup | Create remote directory"
+  ansible.builtin.file:
+    path: "{{ system_sos_remote_location }}"
+    state: directory
+    mode: "0755"
+
+- name: "Setup | Find sosreports"
+  ansible.builtin.find:
+    paths: "{{ system_sos_remote_location }}"
+    patterns: "{{ system_sos_patterns }}"
+  register: _system_sos_find_sosreports
+
+- name: "Setup | Run sosreport"
+  ansible.builtin.command:
+    cmd: "{{ system_sos_command }}"
+  environment:
+    SOSUPLOADUSER: "{{ system_sos_upload_user }}"
+    SOSUPLOADPASSWORD: "{{ system_sos_upload_password }}"
+  when:
+    - _system_sos_find_sosreports.matched == 0
+  changed_when: true
+
+- name: "Setup | Create local directory"
+  ansible.builtin.file:
+    path: "{{ system_sos_local_location }}"
+    state: directory
+    mode: "0755"
+  delegate_to: localhost
+  run_once: true
+  become: false
+
+- name: "Setup | Find sosreports after running"
+  ansible.builtin.find:
+    paths: "{{ system_sos_remote_location }}"
+    patterns: "{{ system_sos_patterns }}"
+  register: _system_sos_find_sosreports
+
+- name: "Setup | Fetch sosreports"
+  ansible.builtin.fetch:
+    src: "{{ item.path }}"
+    dest: "{{ system_sos_local_location }}/"
+    flat: true
+  loop: "{{ _system_sos_find_sosreports.files }}"
+  when:
+    - _system_sos_find_sosreports is defined
+    - _system_sos_find_sosreports.files is defined
+  loop_control:
+    label: "{{ item.path | basename }}"
+
+...

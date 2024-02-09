@@ -1,0 +1,8 @@
+---
+system_sysctl_setup_packages:
+  - "procps"
+system_sysctl_setup_set: true
+system_sysctl_setup_reload: true
+system_sysctl_setup_items: []
+
+...

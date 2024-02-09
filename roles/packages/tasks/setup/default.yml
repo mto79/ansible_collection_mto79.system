@@ -1,0 +1,41 @@
+---
+- name: "Setup | Remove conflicting packages"
+  ansible.builtin.package:
+    name: "{{ system_packages_setup_conflicting_items }}"
+    state: "absent"
+  when:
+    - system_packages_setup_conflicting_items is defined
+    - system_packages_setup_conflicting_items | length > 0
+  become: true
+
+- name: "Setup | Install packages"
+  ansible.builtin.package:
+    name: "{{ system_packages_setup_items }}"
+    state: "present"
+    update_cache: "yes"
+  when:
+    - system_packages_setup_items is defined
+    - system_packages_setup_items | length > 0
+  become: true
+  notify:
+    - "Gather facts"
+
+- name: "Setup | Reset connetion"
+  ansible.builtin.meta: "reset_connection"
+
+- name: "Setup | Try to install pip packages"
+  ansible.builtin.pip:
+    name: "{{ system_packages_pip_items }}"
+    state: "present"
+  when:
+    - system_packages_pip_items is defined
+    - system_packages_pip_items | length > 0
+  become: true
+  failed_when: false
+  notify:
+    - "Gather facts"
+
+- name: "Flush handlers"
+  ansible.builtin.meta: "flush_handlers"
+
+...

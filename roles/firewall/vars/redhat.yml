@@ -1,0 +1,11 @@
+---
+system_firewall_setup_packages_conflicting: []
+
+system_firewall_setup_packages_required:
+  - "firewalld"
+
+system_firewall_setup_service: "firewalld"
+
+system_firewall_setup_iptables_rulefile: ""
+
+...

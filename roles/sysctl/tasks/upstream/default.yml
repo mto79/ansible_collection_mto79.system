@@ -1,0 +1,22 @@
+---
+- name: "Upstream | Execute the role and catch errors"
+  become: true
+  block:
+    - name: "Upstream | Include kernel_settings role"
+      ansible.builtin.include_role:
+        name: "fedora.linux_system_roles.kernel_settings"
+      vars:
+        kernel_settings_sysctl: "{{ system_sysctl_upstream_items | d([]) }}"
+        kernel_settings_sysfs: "{{ system_sysctl_upstream_sysfs | d([]) }}"
+        kernel_settings_systemd_cpu_affinity: "{{ system_sysctl_upstream_systemd_cpu_affinity | d(None) }}"
+        kernel_settings_transparent_hugepages: "{{ system_sysctl_transparent_hugepages | d(None) }}"
+        kernel_settings_transparent_hugepages_defrag: "{{ system_sysctl_transparent_hugepages_defrag | d(None) }}"
+        kernel_settings_sysctl_purge: "{{ system_sysctl_upstream_sysctl_purge | d(false) }}"
+        kernel_settings_reboot_ok: "{{ system_sysctl_upstream_reboot_ok | d(false) }}"
+
+  rescue:
+    - name: "Upstream | Handle errors"
+      ansible.builtin.fail:
+        msg: "Include fedora.linux_system_roles.kernel_settings role failed"
+
+...

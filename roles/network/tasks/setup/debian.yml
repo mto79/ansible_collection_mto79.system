@@ -1,0 +1,34 @@
+---
+- name: "Setup | Netplan"
+  when: system_network_setup_netplan_enable | bool
+  block:
+    - name: "Setup | Remove all files and dirs from /etc/netplan"
+      ansible.builtin.file:
+        path: "/etc/netplan"
+        state: "absent"
+      become: true
+
+    - name: "Setup | Create /etc/netplan"
+      ansible.builtin.file:
+        path: "/etc/netplan"
+        state: "directory"
+        owner: "root"
+        group: "root"
+        mode: "0755"
+      become: true
+
+    - name: "Setup | Set network configuration"
+      ansible.builtin.template:
+        src: "templates/setup/debian/01-netcfg.yaml.j2"
+        dest: "/etc/netplan/01-netcfg-{{ inventory_hostname }}.yaml"
+        owner: "root"
+        group: "root"
+        mode: "0644"
+      become: true
+
+    - name: "Setup | Netplan | Network apply"
+      ansible.builtin.command: "netplan apply"
+      changed_when: false
+      when: system_network_setup_netplan_apply | bool
+      become: true
+...

@@ -1,0 +1,50 @@
+---
+- name: "Setup | Register | Check if system is already joined"
+  ansible.builtin.shell:
+    cmd: realm list | grep {{ system_ad_integration_setup_domain }}
+  changed_when: false
+  check_mode: false
+  register: system_ad_integration_setup_domain_joined
+
+- name: "Setup | Register | Show result ream list"
+  ansible.builtin.debug:
+    msg: "{{ system_ad_integration_setup_domain_joined.stdout }}"
+
+- name: "Setup | Register | Register system to AD"
+  when: system_ad_integration_setup_domain_joined.stdout == ""
+  block:
+    - name: "Setup | Register | Discovering the AD realm"
+      ansible.builtin.shell: >
+        realm  discover {{ system_ad_integration_setup_domain | upper }}
+      changed_when: false
+
+    - name: "Setup | Register | Join using realmd"
+      ansible.builtin.expect:
+        command: >
+          "/bin/bash -c '/usr/sbin/realm join {{ system_ad_integration_setup_domain }}
+           --user={{ system_ad_integration_setup_username }}
+           --computer-ou=\"{{ system_ad_integration_setup_ldap_comp_grp_ou }}\"'"
+        responses:
+          Password for.*: "{{ system_ad_integration_setup_password }}"
+      register: system_ad_integration_setup_realm_register_result
+      when: system_ad_integration_setup_use_pexpect
+
+    - name: "Setup | Register | Joining the AD realm"
+      ansible.builtin.shell: >
+        echo '{{ system_ad_integration_setup_password }}'
+         | realm join -U {{ system_ad_integration_setup_username }} {{ system_ad_integration_setup_domain }}
+          --computer-ou="{{ system_ad_integration_setup_ldap_comp_grp_ou }}"
+      changed_when: false
+      when: not system_ad_integration_setup_use_pexpect
+
+    - name: "Setup | Register | Enabling oddjobd service"
+      ansible.builtin.systemd:
+        name: "oddjobd.service"
+        enabled: true
+        state: "started"
+
+  rescue:
+    - name: "Setup | Register | No realm find is already left"
+      ansible.builtin.debug:
+        msg: "{{ system_ad_integration_setup_realm_register_result.stdout_lines }}"
+...

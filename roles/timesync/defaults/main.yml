@@ -1,4 +1,17 @@
 ---
-system_timesync_vendor: "true"
+system_timesync_setup_config_file: "/etc/chrony.conf"
+system_timesync_setup_service_name: "chronyd"
+system_timesync_setup_service_executable: "/usr/bin/chronyd"
+system_timesync_setup_ntp_pools:
+  - "pool.ntp.org iburst maxpoll 10"
+system_timesync_setup_ntp_servers: []
+system_timesync_setup_ntp_peers: []
+
+system_timesync_setup_config_logdir: "/var/log/chrony"
+system_timesync_setup_config_driftfile: "/var/lib/chronyd/drift"
+system_timesync_setup_makestep_threshold: 1
+system_timesync_setup_makestep_limit: 10
+system_timesync_setup_allow: []
+system_timesync_setup_deny: []
 
 ...

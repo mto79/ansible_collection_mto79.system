@@ -1,0 +1,16 @@
+---
+- name: "Setup | Install openscap packages"
+  ansible.builtin.dnf:
+    name: "{{ item }}"
+    state: "present"
+  loop:
+    - "scap-security-guide"
+    - "openscap-scanner"
+    - "openscap"
+  become: true
+
+- name: "Setup | Run the insights client compliance"
+  ansible.builtin.include_tasks:
+    file: "redhat/run_insights_compliance.yml"
+
+...

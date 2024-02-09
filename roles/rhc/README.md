@@ -1,49 +1,53 @@
-# [System-rhc](#system-rhc)
+Ansible Role rhc
+=========
 
-Role for subscribing and managing RHC/Insight on your system.
+This is an Ansible role to install and configure rhc.
+
+Include more information about rhc in this section.
+
+Table of Contents
+-----------------
+
+- [Ansible Role rhc](#ansible-role-rhc)
+  - [Table of Contents](#table-of-contents)
+  - [Requirements](#requirements)
+  - [Role variables](#role-variables)
+    - [Setup,](#setup)
+    - [Upstream,](#upstream)
+  - [Example Playbook](#example-playbook)
 
 ## [Requirements](#requirements)
 
-* The minimum version of Ansible required is 2.11.0.
-* The minimum version of Jinja template 2.11.3
+- The minimum version of Ansible required is 2.11.0.
+- The minimum version of Jinja template 2.11.3
+
+## [Role variables](#role-variables)
+
+### Setup,
+| Variable | Type | Default | Description |
+| -------- | ---- | ------- | ----------- |
+### Upstream,
+| Variable | Type | Default | Description |
+| -------- | ---- | ------- | ----------- |
+|`system_rhc_upstream_auth` |  | |
+|`system_rhc_upstream_baseurl`  | |
+|`system_rhc_upstream_environments` | |
+|`system_rhc_upstream_insights` | |
+|`system_rhc_upstream_organization` | |
+|`system_rhc_upstream_ mto79` | |
+|`system_rhc_upstream_release` | | |
+|`system_rhc_upstream_repositories` | |
+|`system_rhc_upstream_server` | |
+|`system_rhc_upstream_state` | |
 
 ## [Example Playbook](#example-playbook)
 
 ```yaml
     - hosts: servers
       roles:
-        - role: "mto79.system.rhc"
+        - role: " mto79 .system.rhc"
           vars:
             __role_action:
               - "setup"
-          tags: ['system', 'rhc', 'setup']
+          tags: ['system', 'rhc']
 ```
-
-## [Role variables](#role-variables)
-
-| Variable | Type | Default | Description |
-| -------- | ---- | ------- | ----------- |
-|`system_rhc_auth` |  | |
-|`system_rhc_baseurl`  | |
-|`system_rhc_environments` | |
-|`system_rhc_insights` | |
-|`system_rhc_organization` | |
-|`system_rhc_proxy` | |
-|`system_rhc_release` | | |
-|`system_rhc_repositories` | |
-|`system_rhc_server` | |
-|`system_rhc_state` | |
-
-## [Standards](#standards)
-
-## [Maintainers](#maintainers)
-
-MTO79 (https://github.com/mto79)
-
-## [Todo](#todo)
-
-* testing
-
-## [License](#license)
-
-MIT License

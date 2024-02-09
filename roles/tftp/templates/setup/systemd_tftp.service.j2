@@ -1,0 +1,13 @@
+# TFTP server systemd unit file
+# {{ ansible_managed }}
+[Unit]
+Description=Tftp Server
+Requires=tftp.socket
+Documentation=man:in.tftpd
+
+[Service]
+ExecStart={{ system_tftp_setup_server }} {{ system_tftp_setup_server_args }} {{ system_tftp_setup_root_directory }}
+StandardInput=socket
+
+[Install]
+Also=tftp.socket

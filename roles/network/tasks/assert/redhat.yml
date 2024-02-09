@@ -1,0 +1,15 @@
+---
+- name: "Assert | Assert setup specific vars"
+  when:
+    - __role_action == "upstream"
+  block:
+    - name: "Assert | Test system_network_upstream_connections"
+      ansible.builtin.assert:
+        that:
+          - system_network_upstream_connections is defined
+          - system_network_upstream_connections is iterable
+        quiet: true
+      when:
+        - system_network_upstream_connections is defined
+
+...

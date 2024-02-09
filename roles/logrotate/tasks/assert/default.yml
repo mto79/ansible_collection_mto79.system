@@ -1,0 +1,199 @@
+---
+- name: "Assert | Ensure __role_name is defined"
+  ansible.builtin.assert:
+    that:
+      - __role_name is defined
+      - __role_name is string
+      - __role_name | length > 0
+      # Make sure you can't forget to replace the role name
+      - "__role_name != ['temp', 'late'] | join('')"
+
+- name: "Assert | Definitions for Setup"
+  when: __role_name == "setup"
+  block:
+    - name: "Assert | Test if system_logrotate_setup_frequency is set correctly"
+      ansible.builtin.assert:
+        that:
+          - system_logrotate_setup_frequency is defined
+          - system_logrotate_setup_frequency is string
+          - system_logrotate_setup_frequency in [ "daily", "weekly", "monthly" ]
+        quiet: true
+
+    - name: "Assert | Test if system_logrotate_setup_keep is set correctly."
+      ansible.builtin.assert:
+        that:
+          - system_logrotate_setup_keep is defined
+          - system_logrotate_setup_keep is number
+          - system_logrotate_setup_keep >= 0
+        quiet: true
+
+    - name: "Assert | Test if system_logrotate_setup_compress is set correctly"
+      ansible.builtin.assert:
+        that:
+          - system_logrotate_setup_compress is defined
+          - system_logrotate_setup_compress is boolean
+        quiet: true
+
+    - name: "Assert | Test if system_logrotate_setup_dateext is set correctly"
+      ansible.builtin.assert:
+        that:
+          - system_logrotate_setup_dateext is defined
+          - system_logrotate_setup_dateext is boolean
+        quiet: true
+
+    - name: "Assert | Test if system_logrotate_setup_user is set correctly"
+      ansible.builtin.assert:
+        that:
+          - system_logrotate_setup_user is defined
+          - system_logrotate_setup_user is string
+        quiet: true
+
+    - name: "Assert | Test if system_logrotate_setup_group is set correctly"
+      ansible.builtin.assert:
+        that:
+          - system_logrotate_setup_group is defined
+          - system_logrotate_setup_group is string
+        quiet: true
+
+    - name: "Assert | Test if system_logrotate_setup_entries is set correctly"
+      ansible.builtin.assert:
+        that:
+          - system_logrotate_setup_entries is iterable
+        quiet: true
+      when:
+        - system_logrotate_setup_entries is defined
+
+    - name: "Assert | Test if mandatory items in system_logrotate_setup_entries are set correctly"
+      ansible.builtin.assert:
+        that:
+          - item.name is defined
+          - item.name is string
+          - item.path is defined
+          - item.path is string
+        quiet: true
+      loop: "{{ system_logrotate_setup_entries }}"
+      loop_control:
+        label: "{{ item.name }}"
+      when:
+        - system_logrotate_setup_entries is defined
+
+    - name: "Assert | Test if frequency in system_logrotate_setup_entries is set correctly"
+      ansible.builtin.assert:
+        that:
+          - item.frequency is string
+          - item.frequency in [ "daily", "weekly", "monthly" ]
+        quiet: true
+      loop: "{{ system_logrotate_setup_entries }}"
+      loop_control:
+        label: "{{ item.name }}"
+      when:
+        - item.frequency is defined
+
+    - name: "Assert | Test if keep in system_logrotate_setup_entries is set correctly"
+      ansible.builtin.assert:
+        that:
+          - item.keep is integer
+          - item.keep >= 1
+        quiet: true
+      loop: "{{ system_logrotate_setup_entries }}"
+      loop_control:
+        label: "{{ item.name }}"
+      when:
+        - item.keep is defined
+
+    - name: "Assert | Test if compress in system_logrotate_setup_entries is set correctly"
+      ansible.builtin.assert:
+        that:
+          - item.compress is boolean
+        quiet: true
+      loop: "{{ system_logrotate_setup_entries }}"
+      loop_control:
+        label: "{{ item.name }}"
+      when:
+        - item.compress is defined
+
+    - name: "Assert | Test if postrotate in system_logrotate_setup_entries is set correctly"
+      ansible.builtin.assert:
+        that:
+          - item.postrotate is string
+        quiet: true
+      loop: "{{ system_logrotate_setup_entries }}"
+      loop_control:
+        label: "{{ item.name }}"
+      when:
+        - item.postrotate is defined
+
+    - name: "Assert | Test if missingok in system_logrotate_setup_entries is set correctly"
+      ansible.builtin.assert:
+        that:
+          - item.missingok is boolean
+        quiet: true
+      loop: "{{ system_logrotate_setup_entries }}"
+      loop_control:
+        label: "{{ item.name }}"
+      when:
+        - item.missingok is defined
+
+    - name: "Assert | Test if nomissingok in system_logrotate_setup_entries is set correctly"
+      ansible.builtin.assert:
+        that:
+          - item.nomissingok is boolean
+        quiet: true
+      loop: "{{ system_logrotate_setup_entries }}"
+      loop_control:
+        label: "{{ item.name }}"
+      when:
+        - item.nomissingok is defined
+
+    - name: "Assert | Test if create_* in system_logrotate_setup_entries is set correctly"
+      ansible.builtin.assert:
+        that:
+          - item.create_mode is defined
+          - item.create_mode is string
+          - item.create_user is defined
+          - item.create_user is string
+          - item.create_group is defined
+          - item.create_group is string
+        quiet: true
+      loop: "{{ system_logrotate_setup_entries }}"
+      loop_control:
+        label: "{{ item.name }}"
+      when:
+        - item.create_mode is defined or
+          item.create_user is defined or
+          item.create_group is defined
+
+    - name: "Assert | Test if minsize in system_logrotate_setup_entries is set correctly"
+      ansible.builtin.assert:
+        that:
+          - item.minsize is string
+        quiet: true
+      loop: "{{ system_logrotate_setup_entries }}"
+      loop_control:
+        label: "{{ item.name }}"
+      when:
+        - item.minsize is defined
+
+    - name: "Assert | Test if notifempty in system_logrotate_setup_entries is set correctly"
+      ansible.builtin.assert:
+        that:
+          - item.notifempty is boolean
+        quiet: true
+      loop: "{{ system_logrotate_setup_entries }}"
+      loop_control:
+        label: "{{ item.name }}"
+      when:
+        - item.notifempty is defined
+
+    - name: "Assert | Test if sharedscripts in system_logrotate_setup_entries is set correctly"
+      ansible.builtin.assert:
+        that:
+          - item.sharedscripts is boolean
+        quiet: true
+      loop: "{{ system_logrotate_setup_entries }}"
+      loop_control:
+        label: "{{ item.name }}"
+      when:
+        - item.sharedscripts is defined
+
+...

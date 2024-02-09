@@ -1,41 +1,16 @@
-# [System_timezone](#system-timezone)
+Ansible Role timezone
+=========
 
-Install and configure timezone and its required libraries on your system.
+This is an Ansible role to install and configure timezone.
 
-## [Requirements](#requirements)
+Include more information about timezone in this section.
 
-* The minimum version of Ansible required is 2.10.
-* The minimum version of Jinja template 2.11.3
-
-## [Example Playbook](#example-playbook)
-
-Refer to the following example:
-
-```yaml
-    - hosts: servers
-      roles:
-        - role: "mto79.system.timezone"
-          vars:
-            __role_action:
-              - "setup"
-          tags: ['system', 'timezone', 'setup']
-
-```
-
-## [Role Variables](#role-variables)
-
-| Variable | Default | Description |
-| -------- | ------- | ----------- |
-| `system_timezone` | `Europe/Amsterdam` | Standard timezone|
-| `system_hwclock` | `UTC` | Default system time (only linux) |
-
-## [Maintainers](#maintainers)
-
-Marc Ouwerkerk (<https://github.com/mto79>)
-
-## [Todo](#todo)
-
-* Standaardwaarden voor molecule testen toevoegen
-
-## [License](#license)
-Apache-2.0
+Table of Contents
+-----------------
+- [Ansible Role timezone](#ansible-role-timezone)
+  - [Table of Contents](#table-of-contents)
+  - [Requirements](#requirements)
+  - [Role Variables](#role-variables)
+  - [Dependencies](#dependencies)
+  - [Example Playbook](#example-playbook)
+  - [Role Testing](#role-testing)

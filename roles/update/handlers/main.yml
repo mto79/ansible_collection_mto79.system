@@ -2,7 +2,7 @@
 - name: "Reboot after update"
   ansible.builtin.reboot:
   when:
-    - system_update_reboot | bool
-    - ansible_connection not in [ "container", "docker", "community.docker.docker" ]
+    - system_update_setup_reboot | bool
+  become: true
 
 ...

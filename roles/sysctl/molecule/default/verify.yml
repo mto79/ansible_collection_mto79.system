@@ -1,0 +1,16 @@
+---
+# This is an example playbook to execute Ansible tests.
+
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: "Test sysctl ip4_forward"
+      ansible.builtin.include_role:
+        name: " mto79 .system.sysctl"
+      vars:
+        system_sysctl_setup_items:
+          - name: "net.ipv4.ip_forward"
+            value: 1
+
+...

@@ -1,0 +1,41 @@
+---
+system_packages_setup_conflicting_items: []
+
+system_packages_setup_items:
+  - "acl"
+  - "at"
+  - "bzip2"
+  - "bash"
+  - "git"
+  - "gzip"
+  - "tar"
+  - "unzip"
+  - "iproute"
+  - "libselinux-python"
+  - "libsemanage-python"
+  - "shadow-utils"
+  - "xz"
+  - "yum"
+  - "yum-utils"
+  - "cifs-utils"
+  - "git"
+  - "strace"
+  - "vim-enhanced"
+  - "lsof"
+  - "yum-versionlock"
+  - "policycoreutils"
+  - "selinux-policy"
+  - "selinux-policy-targeted"
+  - "libselinux"
+  - "libselinux-utils"
+  - "libselinux-python"
+  - "setroubleshoot-server"
+  - "cloud-utils-growpart"
+  - "bash-completion"
+  - "sos"
+  - "abrt"
+  - "wget"
+
+system_packages_setup_pip_items: []
+
+...

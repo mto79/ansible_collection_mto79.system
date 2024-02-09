@@ -1,0 +1,26 @@
+#jinja2: lstrip_blocks: True, trim_blocks: True
+{{ ansible_managed | comment(decoration='# ') }}
+
+network:
+  version: 2
+  renderer: {{ system_network_setup_netplan_renderer }}
+  ethernets:
+    {{ ansible_facts.default_ipv4.interface }}:
+      {% if system_network_setup_netplan_ipv6_disable is defined and system_network_setup_netplan_ipv6_disable is sameas true %}
+      # link-local: [ ipv4 ]
+      {% endif %}
+      dhcp4: {{ system_network_setup_netplan_dhcp4 }}
+      addresses:
+      - {{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}/{{ system_network_setup_netplan_netmask | default("24") }}
+      {% if system_network_setup_netplan_gateway4 is defined %}
+      gateway4: {{ system_network_setup_netplan_gateway4 }}
+      {% endif %}
+      nameservers:
+        addresses:
+        {% for nameserver in system_network_setup_netplan_nameservers %}
+        - {{ nameserver }}
+        {% endfor %}
+        {% if system_network_setup_netplan_search is defined %}
+        search:
+        - {{ system_network_setup_netplan_search }}
+        {% endif %}

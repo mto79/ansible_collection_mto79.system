@@ -1,0 +1,9 @@
+---
+system_postfix_setup_service: "postfix"
+system_postfix_setup_daemon_directory: "/usr/libexec/postfix"
+system_postfix_setup_alias_path: "/etc/aliases"
+system_postfix_setup_recipient_access_path: "/etc/postfix/recipient_access"
+system_postfix_setup_sender_access_path: "/etc/postfix/sender_access"
+system_postfix_setup_group: "postdrop"
+
+...

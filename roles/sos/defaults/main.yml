@@ -1,0 +1,5 @@
+---
+system_sos_setup_remote_location: "/tmp/sosreport"
+system_sos_setup_local_location: "/tmp/sosreports"
+
+...

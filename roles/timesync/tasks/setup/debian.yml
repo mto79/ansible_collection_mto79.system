@@ -1,0 +1,50 @@
+---
+- name: "Setup | Install chrony"
+  ansible.builtin.apt:
+    name: "chrony"
+    state: "present"
+  become: true
+
+- name: "Setup | Disable conflicting  "
+  ansible.builtin.service:
+    name: "{{ item }}"
+    state: "stopped"
+    enabled: false
+  register: "_system_timesync_setup_disable_service_result"
+  failed_when: (_system_timesync_setup_disable_service_result is failed)
+               and ('Could not find the requested service' not in _system_timesync_setup_disable_service_result.msg)
+  loop:
+    - "ntp"
+    - "ntpd"
+    - "ntpsec"
+    - "openntpd"
+    - "systemd-timesyncd"
+  become: true
+
+- name: "Setup | Start and enable service"
+  ansible.builtin.service:
+    name: "{{ system_timesync_setup_service_name }}"
+    state: started
+    enabled: true
+  become: true
+
+- name: "Setup | Create configuration directory"
+  ansible.builtin.file:
+    path: "{{ system_timesync_setup_config_file | dirname }}"
+    state: "directory"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+  become: true
+
+- name: "Setup | Create configuration file"
+  ansible.builtin.template:
+    src: "templates/setup/chronyd.conf.j2"
+    dest: "{{ system_timesync_setup_config_file }}"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  notify: "Restart chrony"
+  become: true
+
+...

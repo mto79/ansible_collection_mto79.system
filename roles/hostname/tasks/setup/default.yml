@@ -1,14 +1,22 @@
 ---
-- name: "Setup | Execute the role and catch errors"
-  block:
-    - name: "Setup | Set hostname"
-      ansible.builtin.hostname:
-        name: "{{ system_hostname }}"
-        use: "{{ system_hostname_use | d(omit) }}"
+- name: "Setup | Install requirements"
+  ansible.builtin.package:
+    name: "{{ system_hostname_setup_requirements }}"
+    state: "present"
+  become: true
 
-  rescue:
-    - name: "Setup | Handle errors"
-      ansible.builtin.fail:
-        msg: "Include General hostname role failed"
+- name: "Setup | Display hostname"
+  ansible.builtin.debug:
+    msg: "Hostname: {{ system_hostname_setup_hostname }}"
+
+- name: "Setup | Set hostname"
+  ansible.builtin.hostname:
+    name: "{{ system_hostname_setup_hostname }}"
+  notify:
+    - "Reboot"
+    - "Gather facts"
+  when:
+    - ansible_connection not in [ "container", "docker", "community.docker.docker" ]
+  become: true
 
 ...

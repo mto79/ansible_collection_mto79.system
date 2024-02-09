@@ -1,43 +1,16 @@
-# [System_epel](#system-epel)
+Ansible Role epel
+=========
 
-Install and configure EPEL and its required libraries on your system.
+This is an Ansible role to install and configure epel.
 
-## [Requirements](#requirements)
+Include more information about epel in this section.
 
-* The minimum version of Ansible required is 2.11.0.
-* The minimum version of Jinja template 2.11.3
-
-## [Example Playbook](#example-playbook)
-
-Refer to the following example:
-
-```yaml
-    - hosts: servers
-      roles:
-        - role: "mto79.system.epel"
-          vars:
-            __role_action:
-              - "setup"
-              #- "upstream" # Uncomment to run upstrea-specific tasks
-          tags: ['system', 'epel']
-```
-
-## [Role Variables](#role-variables)
-
-| Variable | Default | Description |
-| -------- | ------- | ----------- |
-| `system_epel_gpg_key` | `https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-{version}` | GPG Key for EPEL repo |
-| `system_epel_url` | | URL EPEL release |
-| `system_epel_next_url` | | URL EPEL NEXT Release |
-
-## [Maintainers](#maintainers)
-
-MTO79 (<https://github.com/mto79>)
-
-## [Todo](#todo)
-
-* Standaardwaarden voor molecule testen toevoegen
-
-## [License](#license)
-
-MIT License
+Table of Contents
+-----------------
+- [Ansible Role epel](#ansible-role-epel)
+  - [Table of Contents](#table-of-contents)
+  - [Requirements](#requirements)
+  - [Role Variables](#role-variables)
+  - [Dependencies](#dependencies)
+  - [Example Playbook](#example-playbook)
+  - [Role Testing](#role-testing)

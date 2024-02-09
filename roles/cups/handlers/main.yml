@@ -4,6 +4,7 @@
     name: "{{ system_cups_service }}"
     state: restarted
   when:
+    - system_cups_service is defined
     - not ansible_check_mode
 
 ...

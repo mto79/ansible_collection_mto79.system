@@ -5,14 +5,27 @@
       - __role_name is defined
       - __role_name is string
       - __role_name | length > 0
+      # Make sure you can't forget to replace the role name
       - "__role_name != ['temp', 'late'] | join('')"
 
-- name: "Assert | test if system_timesync_ntp_servers is set correctly"
-  ansible.builtin.assert:
-    that:
-      - system_timesync_ntp_servers is iterable
-    quiet: true
-  when:
-    - system_timesync_ntp_servers is defined
+- name: "Assert | Assert setup specific vars"
+  when: __role_action == "setup"
+  block:
+    - name: "Assert | Test if system_timesync_setup_ntp_pools is set correctly"
+      ansible.builtin.assert:
+        that:
+          - system_timesync_setup_ntp_pools is iterable
+        quiet: true
+      when: system_timesync_setup_ntp_pools is defined
+
+- name: "Assert | Assert setup specific vars"
+  when: __role_action == "upstream"
+  block:
+    - name: "Assert | Test if system_timesync_upstream_ntp_servers is set correctly"
+      ansible.builtin.assert:
+        that:
+          - system_timesync_upstream_ntp_servers is iterable
+        quiet: true
+      when: system_timesync_upstream_ntp_servers is defined
 
 ...

@@ -1,0 +1,5 @@
+---
+system_dnf_setup_versionlock_package: "python3-dnf-plugin-versionlock"
+system_dnf_setup_automatic_package: "dnf-automatic"
+
+...

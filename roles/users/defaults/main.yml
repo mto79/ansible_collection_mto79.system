@@ -1,7 +1,7 @@
 ---
-system_users_ssh_key_directory: "ssh_keys"
-system_users_shell: "/bin/bash"
-system_users_cron_allow: true
-system_users_create_home: true
+system_users_setup_ssh_key_directory: "ssh_keys"
+system_users_setup_shell: "/bin/bash"
+system_users_setup_cron_allow: true
+system_users_setup_create_home: true
 
 ...

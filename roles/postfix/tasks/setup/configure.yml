@@ -1,0 +1,156 @@
+---
+- name: "Setup | Create /etc/postfix/sasl_passwd when using external mail server to send mails."
+  become: true
+  when:
+    - system_postfix_setup_smtpd_sasl_auth_enable is defined
+    - system_postfix_setup_sasl_passwd_rules is defined
+  ansible.builtin.template:
+    src: "{{ system_postfix_setup_sasl_passwd_template }}"
+    dest: "/etc/postfix/sasl_passwd"
+    owner: root
+    group: root
+    mode: "0600"
+  notify:
+    - "Validate configuration"
+    - "Rebuild sasl_passwd database"
+
+- name: "Setup | Set from mailaddress when using relayhost"
+  become: true
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  loop:
+    - {src: 'templates/setup/smtp_header_checks.j2', dest: '/etc/postfix/smtp_header_checks'}
+    - {src: 'templates/setup/sender_canonical_maps.j2', dest: '/etc/postfix/sender_canonical_maps'}
+  notify:
+    - "Validate configuration"
+    - "Reload postfix"
+  when:
+    - system_postfix_setup_smtpd_sasl_auth_enable is defined
+    - system_postfix_setup_sasl_passwd_rules is defined
+    - (system_postfix_setup_relayhost_from is defined and system_postfix_setup_relayhost_from | length > 0)
+
+- name: "Setup | Install postfix-mysql"
+  ansible.builtin.package:
+    name: "postfix-mysql"
+    state: "present"
+  when:
+    - (system_postfix_setup_virtual_mailbox_maps is defined and "'mysql' in system_postfix_setup_virtual_mailbox_maps) or
+      (system_postfix_setup_virtual_mailbox_domains is defined and 'mysql' in system_postfix_setup_virtual_mailbox_domains) or
+      (system_postix__setupvirtual_alias_maps is defined and 'mysql' in system_postix__setupvirtual_alias_maps")
+  become: true
+
+- name: "Setup | Configure postfix (transport_maps)"
+  ansible.builtin.template:
+    src: "{{ system_postfix_setup_transport_maps_template }}"
+    dest: /etc/postfix/transport
+    mode: "0644"
+  notify:
+    - "Validate configuration"
+    - "Rebuild transport_maps database"
+  when:
+    - system_postfix_setup_transport_maps_template is defined
+  become: true
+
+- name: "Setup | Configure postfix (header_checks)"
+  ansible.builtin.template:
+    src: "{{ system_postfix_setup_header_checks_template }}"
+    dest: "/etc/postfix/header_checks"
+    mode: "0644"
+  notify:
+    - "Validate configuration"
+    - "Reload postfix"
+  when:
+    - system_postfix_setup_header_checks_template is defined
+  become: true
+
+- name: "Setup | Configure postfix (main.cf)"
+  ansible.builtin.template:
+    src: "templates/setup/main.cf.j2"
+    dest: "/etc/postfix/main.cf"
+    validate: "postconf -d -c %s"
+    mode: "0644"
+  notify:
+    - "Validate configuration"
+    - "Reload postfix"
+  become: true
+
+- name: "Setup | Configure postfix (master.cf)"
+  ansible.builtin.template:
+    src: "templates/setup/master.cf.j2"
+    dest: "/etc/postfix/master.cf"
+    validate: "postconf -d -c %s"
+    mode: "0644"
+  notify:
+    - "Validate configuration"
+    - "Reload postfix"
+  become: true
+
+- name: "Setup | Flush handlers"
+  ansible.builtin.meta: "flush_handlers"
+
+- name: "Setup | Configure aliases"
+  become: true
+  ansible.builtin.lineinfile:
+    path: "{{ system_postfix_setup_alias_path }}"
+    regexp: "^{{ item.name }}:"
+    line: "{{ item.name }}: {{ item.destination }}"
+    mode: "0644"
+  when:
+    - system_postfix_setup_aliases is defined
+  loop: "{{ system_postfix_setup_aliases }}"
+  notify:
+    - "Rebuild alias database"
+    - "Reload postfix"
+  loop_control:
+    label: "{{ item.name }}"
+
+- name: "Setup | Configure sender_access"
+  become: true
+  ansible.builtin.lineinfile:
+    path: "{{ system_postfix_setup_sender_access_path }}"
+    regexp: "^{{ item.domain }}"
+    line: "{{ item.domain }} {{ item.action }}"
+    create: true
+    mode: "0644"
+  when:
+    - system_postfix_setup_sender_access is defined
+  loop: "{{ system_postfix_setup_sender_access }}"
+  notify:
+    - "Rebuild sender_access database"
+    - "Reload postfix"
+  loop_control:
+    label: "{{ item.domain }}"
+
+- name: "Setup | Configure recipient_access"
+  become: true
+  ansible.builtin.lineinfile:
+    path: "{{ system_postfix_setup_recipient_access_path }}"
+    regexp: "^{{ item.domain }}"
+    line: "{{ item.domain }} {{ item.action }}"
+    create: true
+    mode: "0644"
+  when:
+    - system_postfix_setup_recipient_access is defined
+  loop: "{{ system_postfix_setup_recipient_access }}"
+  notify:
+    - "Validate configuration"
+    - "Rebuild recipient_access database"
+    - "Reload postfix"
+  loop_control:
+    label: "{{ item.domain }}"
+
+- name: "Setup | Flush handlers again"
+  ansible.builtin.meta: "flush_handlers"
+
+- name: "Setup | Start and enable postfix"
+  become: true
+  ansible.builtin.service:
+    name: "{{ system_postfix_setup_service }}"
+    state: "started"
+    enabled: true
+
+...

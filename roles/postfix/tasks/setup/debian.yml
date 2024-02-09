@@ -1,0 +1,26 @@
+---
+- name: "Setup | Debian | Pre-configure debian systems"
+  ansible.builtin.debconf:
+    name: "postfix"
+    question: "postfix/main_mailer_type"
+    vtype: "string"
+    value: "No configuration"
+  become: true
+
+- name: "Setup | Debian | Package postfix"
+  ansible.builtin.apt:
+    name: "postfix"
+    state: "present"
+  become: true
+
+- name: "Setup | Debian | Sasl"
+  ansible.builtin.apt:
+    name: "libsasl2-modules"
+    state: "present"
+  become: true
+
+- name: "Setup | Debian | Include configure.yml tasks"
+  ansible.builtin.include_tasks:
+    file: "configure.yml"
+
+...

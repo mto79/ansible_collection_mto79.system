@@ -1,0 +1,27 @@
+---
+- name: "Setup | Logrotate | Install"
+  ansible.builtin.package:
+    name: "{{ system_logrotate_setup_packages }}"
+    state: "present"
+  become: true
+
+- name: "Setup | Logrotate | Configure"
+  ansible.builtin.template:
+    src: "templates/setup/{{ system_logrotate_setup_config_file }}.j2"
+    dest: "{{ system_logrotate_setup_config_directory }}/{{ system_logrotate_setup_config_file }}"
+    mode: "0644"
+  become: true
+
+- name: "Setup | Logrotate | Generate logrotate.d files"
+  ansible.builtin.template:
+    src: "templates/setup/entry.j2"
+    dest: "{{ system_logrotate_setup_confd_directory }}/{{ item.name }}"
+    mode: "0644"
+  loop: "{{ system_logrotate_setup_entries }}"
+  when:
+    - system_logrotate_setup_entries is defined
+  loop_control:
+    label: "{{ item.name }}"
+  become: true
+
+...

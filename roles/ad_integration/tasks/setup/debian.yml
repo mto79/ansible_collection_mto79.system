@@ -1,0 +1,41 @@
+---
+- name: "Setup | Debian | Install packages for joining AD"
+  ansible.builtin.apt:
+    name: "{{ system_ad_integration_setup_packages }}"
+    state: present
+    update_cache: true
+
+- name: "Setup | Debian | PIP for pexpect"
+  ansible.builtin.include_tasks:
+    file: "setup/pexpect.yml"
+  when: system_ad_integration_setup_pexpect_use
+
+- name: "Setup | Debian | Register"
+  ansible.builtin.include_tasks:
+    file: "setup/register.yml"
+  when: system_ad_integration_setup_register
+
+- name: "Setup | Debian | Register"
+  ansible.builtin.include_tasks:
+    file: "setup/unregister.yml"
+  when: not system_ad_integration_setup_register
+
+- name: "Setup | Debian | Configuring sssd.conf"
+  ansible.builtin.template:
+    src: "templates/setup/sssd.j2"
+    dest: "/etc/sssd/sssd.conf"
+    owner: "root"
+    group: "root"
+    mode: "0600"
+
+- name: "Setup | Debian | Clear SSSD"
+  ansible.builtin.include_tasks:
+    file: "setup/clear_sssd.yml"
+  when: system_ad_integration_setup_clear_sssd
+
+- name: "Setup | Debian | Create new pam_mkhomedir.so rule"
+  ansible.builtin.include_tasks:
+    file: "setup/pam_mkhomedir.yml"
+  when: system_ad_integration_setup_pam_mkhomedir
+
+...

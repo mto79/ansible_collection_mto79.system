@@ -1,3 +1,5 @@
 ---
+system_selinux_setup_reboot: true
+system_selinux_upstream_reboot: true
 
 ...

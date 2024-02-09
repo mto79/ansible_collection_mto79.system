@@ -1,0 +1,26 @@
+---
+- name: "Setup | Samba | Ensure SMB packages are installed"
+  anisble.builtin.apt:
+    name: "{{ system_samba_setup_packages }}"
+    state: "present"
+  become: true
+
+- name: "Setup | Samba | Set smb.conf"
+  ansible.builtin.template:
+    src: "templates/setup/smb.conf.j2"
+    dest: /etc/samba/smb.conf
+    owner: "root"
+    group: "root"
+    mode: 0640
+    backup: true
+  notify: "Restart smbd"
+  become: true
+
+- name: "Setup | Samba | Ensure smbd/winbind   are enabled and started"
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    enabled: true
+    state: "started"
+  loop: "{{ system_samba_setup_  }}"
+
+...

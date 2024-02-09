@@ -1,0 +1,26 @@
+---
+- name: "Setup | Clear sssd | sssd cache"
+  block:
+    - name: "Setup | Clear sssd | Stopping sssd"
+      ansible.builtin.systemd:
+        name: "sssd"
+        enabled: true
+        state: "stopped"
+
+    - name: "Setup | Clear sssd | Remove contents /var/lib/sss/db/"
+      ansible.builtin.file:
+        state: "{{ item }}"
+        path: "/var/lib/sss/db/"
+        owner: "sssd"
+        group: "sssd"
+        mode: "0700"
+      loop:
+        - "absent"
+        - "directory"
+
+    - name: "Setup | Clear sssd | Starting sssd"
+      ansible.builtin.systemd:
+        name: "sssd"
+        enabled: true
+        state: "started"
+...

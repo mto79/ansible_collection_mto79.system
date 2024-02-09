@@ -1,0 +1,8 @@
+---
+- name: "Restart openssh"
+  ansible.builtin.service:
+    name: "{{ system_ssh_setup_service }}"
+    state: "restarted"
+  become: true
+
+...

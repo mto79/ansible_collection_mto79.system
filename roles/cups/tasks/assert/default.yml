@@ -1,74 +1,86 @@
 ---
-- name: Assert | If system_cups_listen is set correctly
+- name: "Assert | Ensure __role_name is defined"
   ansible.builtin.assert:
     that:
-      - system_cups_listen is defined
-      - system_cups_listen is string
-    quiet: true
+      - __role_name is defined
+      - __role_name is string
+      - __role_name | length > 0
+      # Make sure you can't forget to replace the role name
+      - "__role_name != ['temp', 'late'] | join('')"
 
-- name: Assert | If system_cups_browsing is set correctly
-  ansible.builtin.assert:
-    that:
-      - system_cups_browsing is defined
-      - system_cups_browsing is string
-      - system_cups_browsing in [ "Off", "On" ]
-    quiet: true
+- name: "Assert | Check if setup variables are set correctly"
+  when: __role_action == "setup"
+  block:
+    - name: "Assert | If system_cups_setup_listen is set correctly"
+      ansible.builtin.assert:
+        that:
+          - system_cups_setup_listen is defined
+          - system_cups_setup_listen is string
+        quiet: true
 
-- name: Assert | If system_cups_locations is set correctly
-  ansible.builtin.assert:
-    that:
-      - system_cups_locations is defined
-      - system_cups_locations is iterable
-    quiet: true
+    - name: "Assert | If system_cups_setup_browsing is set correctly"
+      ansible.builtin.assert:
+        that:
+          - system_cups_setup_browsing is defined
+          - system_cups_setup_browsing is string
+          - system_cups_setup_browsing in [ "Off", "On" ]
+        quiet: true
 
-- name: Assert | If item in system_cups_locations is set correctly
-  ansible.builtin.assert:
-    that:
-      - item.name is defined
-      - item.name is string
-      - item.order is defined
-      - item.order is string
-    quiet: true
-  loop: "{{ system_cups_locations }}"
-  loop_control:
-    label: "{{ item.name }}"
+    - name: "Assert | If system_cups_setup_locations is set correctly"
+      ansible.builtin.assert:
+        that:
+          - system_cups_setup_locations is defined
+          - system_cups_setup_locations is iterable
+        quiet: true
 
-- name: Assert | If item.authtype in system_cups_locations is set correctly
-  ansible.builtin.assert:
-    that:
-      - item.authtype in [ "Basic", "Default", "Negotiate", "None" ]
-    quiet: true
-  loop: "{{ system_cups_locations }}"
-  loop_control:
-    label: "{{ item.name }}"
-  when:
-    - item.authtype is defined
+    - name: "Assert | If item in system_cups_setup_locations is set correctly"
+      ansible.builtin.assert:
+        that:
+          - item.name is defined
+          - item.name is string
+          - item.order is defined
+          - item.order is string
+        quiet: true
+      loop: "{{ system_cups_setup_locations }}"
+      loop_control:
+        label: "{{ item.name }}"
 
-- name: Assert | If item.allow in system_cups_locations is set correctly
-  ansible.builtin.assert:
-    that:
-      - item.allow is string
-    quiet: true
-  loop: "{{ system_cups_locations }}"
-  loop_control:
-    label: "{{ item.name }}"
-  when:
-    - item.allow is defined
+    - name: "Assert | If item.authtype in system_cups_setup_locations is set correctly"
+      ansible.builtin.assert:
+        that:
+          - item.authtype in [ "Basic", "Default", "Negotiate", "None" ]
+        quiet: true
+      loop: "{{ system_cups_setup_locations }}"
+      loop_control:
+        label: "{{ item.name }}"
+      when:
+        - item.authtype is defined
 
-- name: Assert | If system_cups_preserve_job_history is set correctly
-  ansible.builtin.assert:
-    that:
-      - system_cups_preserve_job_history is defined
-      - system_cups_preserve_job_history is string
-      - system_cups_preserve_job_history in [ "No", "Yes" ]
-    quiet: true
+    - name: "Assert | If item.allow in system_cups_setup_locations is set correctly"
+      ansible.builtin.assert:
+        that:
+          - item.allow is string
+        quiet: true
+      loop: "{{ system_cups_setup_locations }}"
+      loop_control:
+        label: "{{ item.name }}"
+      when:
+        - item.allow is defined
 
-- name: Assert | If system_cups_web_interface is set correctly
-  ansible.builtin.assert:
-    that:
-      - system_cups_web_interface is defined
-      - system_cups_web_interface is string
-      - system_cups_web_interface in [ "No", "Yes" ]
-    quiet: true
+    - name: "Assert | If system_cups_setup_preserve_job_history is set correctly"
+      ansible.builtin.assert:
+        that:
+          - system_cups_setup_preserve_job_history is defined
+          - system_cups_setup_preserve_job_history is string
+          - system_cups_setup_preserve_job_history in [ "No", "Yes" ]
+        quiet: true
+
+    - name: "Assert | If system_cups_setup_web_interface is set correctly"
+      ansible.builtin.assert:
+        that:
+          - system_cups_setup_web_interface is defined
+          - system_cups_setup_web_interface is string
+          - system_cups_setup_web_interface in [ "No", "Yes" ]
+        quiet: true
 
 ...

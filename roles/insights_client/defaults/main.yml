@@ -1,0 +1,7 @@
+---
+system_insights_client_setup_config: false
+system_insights_client_setup_retries: 3
+system_insights_client_setup_unit_restart: "on-failure"
+system_insights_client_setup_unit_restart_secs: 300
+
+...

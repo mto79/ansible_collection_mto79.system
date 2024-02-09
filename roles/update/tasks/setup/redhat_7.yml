@@ -1,0 +1,61 @@
+---
+- name: "Setup | Make sure yum-utils is installed"
+  ansible.builtin.yum:
+    name: "yum-utils"
+    state: "installed"
+  become: true
+
+- name: "Setup | Ensure updated Setup - Security"
+  when: system_update_setup_security
+  ansible.builtin.yum:  # noqa: package-latest
+    name: "*"
+    state: "latest"
+    security: true
+    skip_broken: true
+  register: "_system_update_setup_security_result"
+  failed_when: _system_update_setup_security_result.rc != 0
+  become: true
+
+- name: "Setup | Ensure updated Setup - Bugfix"
+  when: system_update_setup_bugfix | bool
+  ansible.builtin.yum:  # noqa: package-latest
+    name: "*"
+    state: "latest"
+    bugfix: true
+    skip_broken: true
+  register: "_system_update_setup_bugfix_result"
+  failed_when: _system_update_setup_bugfix_result.rc != 0
+  become: true
+
+- name: "Setup | Ensure updated Setup - Setup only"
+  when: system_update_setup_release | bool
+  ansible.builtin.yum:  # noqa: package-latest
+    name: "*"
+    state: "latest"
+    update_only: true
+    skip_broken: true
+  register: "_system_update_setup_release_result"
+  failed_when: _system_update_setup_release_result.rc != 0
+  become: true
+
+- name: "Setup | Check if reboot is required"
+  ansible.builtin.command: "needs-restarting -r"
+  register: "_system_update_setup_reboot_required"
+  ignore_errors: true
+  changed_when: false
+  become: true
+
+- name: "Setup | Display result if reboot is needed"
+  ansible.builtin.debug:
+    var: _system_update_setup_reboot_required.rc
+  notify:
+    - "Reboot after update"
+  changed_when: _system_update_setup_reboot_required.rc == 1
+  become: true
+
+- name: "Setup | Autoremove obsolete packages"
+  ansible.builtin.yum:
+    autoremove: "{{ system_update_setup_autoremove | default(true) }}"
+  become: true
+
+...

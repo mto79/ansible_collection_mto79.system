@@ -1,0 +1,90 @@
+{{ ansible_managed | comment }}
+
+Port {{ system_sshd_setup_port }}
+
+AddressFamily {{ system_sshd_setup_address_family }}
+
+{% for address in system_sshd_setup_listen_addresses %}
+ListenAddress {{ address }}
+{% endfor %}
+
+{% for hostkey in system_sshd_setup_host_keys %}
+HostKey {{ hostkey }}
+{% endfor %}
+
+RekeyLimit {{ system_sshd_setup_rekey_limit }}
+
+SyslogFacility {{ system_sshd_setup_syslog_facility }}
+LogLevel {{ system_sshd_setup_loglevel }}
+
+LoginGraceTime {{ system_sshd_setup_login_grace_time }}
+PermitRootLogin {{ system_sshd_setup_permit_root_login }}
+StrictModes {{ system_sshd_setup_strict_modes }}
+MaxAuthTries {{ system_sshd_setup_max_auth_tries }}
+MaxSessions {{ system_sshd_setup_max_sessions }}
+
+PubkeyAuthentication {{ system_sshd_setup_pub_key_authentication }}
+
+AuthorizedKeysFile {{ system_sshd_setup_authorized_key_file }}
+
+AuthorizedPrincipalsFile {{ system_sshd_setup_authorized_prinicpals_file }}
+
+AuthorizedKeysCommand {{ system_sshd_setup_authorized_keys_command }}
+AuthorizedKeysCommandUser {{ system_sshd_setup_authorized_keys_command_user }}
+
+HostbasedAuthentication {{ system_sshd_setup_host_based_authentication }}
+IgnoreUserKnownHosts {{ system_sshd_setup_ignore_user_known_hosts }}
+IgnoreRhosts {{ system_sshd_setup_ignore_rhosts }}
+
+PermitEmptyPasswords {{ system_sshd_setup_permit_empty_passwords }}
+PasswordAuthentication {{ system_sshd_setup_password_authentication }}
+
+ChallengeResponseAuthentication {{ system_sshd_setup_challenge_response_authentication }}
+
+GSSAPIAuthentication {{ system_sshd_setup_gssapi_authentication }}
+GSSAPICleanupCredentials {{ system_sshd_setup_gssapi_cleanup_credentials }}
+GSSAPIStrictAcceptorCheck {{ system_sshd_setup_gssapi_strict_acceptor_check }}
+GSSAPIKeyExchange {{ system_sshd_setup_gssapi_key_exchange }}
+
+UsePAM {{ system_sshd_setup_use_pam }}
+
+AllowAgentForwarding {{ system_sshd_setup_allow_agent_forwarding }}
+AllowTcpForwarding  {{ system_sshd_setup_allow_tcp_forwarding }}
+GatewayPorts {{ system_sshd_setup_gateway_ports }}
+X11Forwarding {{ system_sshd_setup_x11_forwarding }}
+X11DisplayOffset {{ system_sshd_setup_x11_display_offset }}
+X11UseLocalhost {{ system_sshd_setup_x11_use_localhost }}
+PermitTTY {{ system_sshd_setup_permit_tty }}
+
+PrintMotd {{ system_sshd_setup_print_motd }}
+
+PrintLastLog {{ system_sshd_setup_print_last_log }}
+TCPKeepAlive {{ system_sshd_setup_tcp_keep_alive }}
+PermitUserEnvironment {{ system_sshd_setup_permit_user_environment }}
+Compression {{ system_sshd_setup_compression }}
+ClientAliveInterval {{ system_sshd_setup_client_alive_interval }}
+ClientAliveCountMax {{ system_sshd_setup_client_alive_count_max }}
+UseDNS {{ system_sshd_setup_use_dns }}
+PidFile {{ system_sshd_setup_pid_file }}
+MaxStartups {{ system_sshd_setup_max_startups }}
+PermitTunnel {{ system_sshd_setup_permit_tunnel }}
+ChrootDirectory {{ system_sshd_setup_chroot_directory }}
+VersionAddendum {{ system_sshd_setup_version_addendum }}
+
+Banner {{ system_sshd_setup_banner }}
+
+{% for item in system_sshd_setup_accept_envs %}
+AcceptEnv {{ item }}
+{% endfor %}
+
+Subsystem {{ system_sshd_setup_subsystem }}
+
+{% if system_sshd_setup_allow_users is defined %}
+AllowUsers {{ system_sshd_setup_allow_users | join(' ') }}
+{% endif %}
+
+{% if system_sshd_setup_allow_groups is defined %}
+AllowGroups {{ system_sshd_setup_allow_groups | join(' ') }}
+{% endif %}
+
+TrustedUserCAKeys {{ system_sshd_setup_trusted_user_ca_keys }}

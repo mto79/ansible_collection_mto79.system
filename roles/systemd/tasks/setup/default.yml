@@ -1,0 +1,10 @@
+---
+- name: "Setup | manage packages"
+  ansible.builtin.systemd_service:
+    name: "{{ item.name }}"
+    daemon_reload: "{{ item.daemon_reload | default(omit) }}"
+    masked: "{{ item.masked | default(omit) }}"
+    state: "{{ item.state | default(omit) }}"
+  loop: system_systemd_setup_packages
+
+...

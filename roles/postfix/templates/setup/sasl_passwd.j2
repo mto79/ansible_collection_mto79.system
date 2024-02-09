@@ -1,0 +1,5 @@
+{% if system_postfix_setup_sasl_passwd_rules is defined and system_postfix_setup_sasl_passwd_rules | length > 0 %}
+{% for system_postfix_setup_sasl_passwd_rule in system_postfix_setup_sasl_passwd_rules %}
+{{ system_postfix_setup_sasl_passwd_rule.relayhost }} {{ system_postfix_setup_sasl_passwd_rule.relayhost_username }}:{{ system_postfix_setup_sasl_passwd_rule.relayhost_password }}
+{% endfor %}
+{% endif %}

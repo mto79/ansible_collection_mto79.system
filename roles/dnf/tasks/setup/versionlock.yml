@@ -1,0 +1,49 @@
+---
+- name: "Setup | Manage dnf-versionlock package."
+  when: system_dnf_setup_versionlock_use | bool
+  block:
+    - name: "Setup | Install dnf-versionlock package."
+      ansible.builtin.package:
+        name: "{{ system_dnf_setup_versionlock_package }}"
+        state: "present"
+
+    - name: "Setup | Add versionlock entries."
+      ansible.builtin.command:
+        cmd: "dnf versionlock add {{ item }}"
+      loop: "{{ system_dnf_setup_versionlock_packages | d([]) }}"
+
+    - name: "Setup | List versionlock entries."
+      ansible.builtin.command:
+        cmd: "dnf versionlock list"
+      register: "_system_dnf_setup_versionlock_list"
+
+    - name: "Setup | Debug versionlock entries."
+      ansible.builtin.debug:
+        msg: "{{ _system_dnf_setup_versionlock_list.stdout_lines }}"
+
+    - name: "Setup | Determine packages to remove from versionlock"
+      ansible.builtin.set_fact:
+        _system_dnf_setup_packages_to_remove: >
+          {{  _system_dnf_setup_versionlock_list.stdout_lines | difference(system_dnf_setup_versionlock_packages) }}
+
+    - name: "Setup | Remove packages not in system_dnf_setup_versionlock_packages"
+      ansible.builtin.command:
+        cmd: "dnf versionlock delete {{ item }}"
+      loop: "{{ _system_dnf_setup_packages_to_remove }}"
+      when: _system_dnf_setup_packages_to_remove | length > 0
+
+- name: "Setup | Remove dnf-versionlock package."
+  when: not system_dnf_setup_versionlock_use | bool
+  block:
+    - name: "Setup | Remove packages in system_dnf_setup_versionlock_packages"
+      ansible.builtin.command:
+        cmd: "dnf versionlock delete {{ item }}"
+      loop: "{{ system_dnf_setup_versionlock_packages }}"
+      when: system_dnf_setup_versionlock_packages | length > 0
+
+    - name: "Setup | Remove dnf-versionlock package."
+      ansible.builtin.package:
+        name: "{{ system_dnf_setup_versionlock_package }}"
+        state: "absent"
+
+...

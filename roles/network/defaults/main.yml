@@ -1,0 +1,7 @@
+---
+system_network_setup_netplan_enable: false
+system_network_setup_netplan_ipv6_disable: true
+system_network_setup_netplan_renderer: "networkd"
+system_network_setup_netplan_apply: false
+
+...

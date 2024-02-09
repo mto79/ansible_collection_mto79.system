@@ -1,0 +1,77 @@
+---
+- name: "Setup | Place template /etc/motd (message of the day)"
+  ansible.builtin.template:
+    src: "templates/setup/motd.j2"
+    dest: "/etc/motd"
+    mode: "0444"
+  become: true
+
+- name: "Setup | Disable motd in ubuntu"
+  when: not system_motd_setup_update_scripts_use | bool
+  become: true
+  block:
+    - name: "Setup | Find all files in /etc/update-motd.d"
+      ansible.builtin.find:
+        paths: "/etc/update-motd.d"
+        file_type: "any"
+      register: "_system_motd_setup_files"
+
+    - name: "Setup | Remove execute permissions on all files in /etc/update-motd.d"
+      ansible.builtin.file:
+        path: "{{ item.path }}"
+        mode: "a-x"
+        follow: true
+      loop: "{{ _system_motd_setup_files.files }}"
+
+    - name: "Setup | Disable motd-news"
+      ansible.builtin.lineinfile:
+        path: "/etc/default/motd-news"
+        regexp: '^ENABLED='
+        line: 'ENABLED=0'
+        state: "present"
+
+    - name: "Setup | Disable motd-news.timer and motd-news.service"
+      ansible.builtin.systemd:
+        name: "{{ item }}"
+        state: "stopped"
+        enabled: "no"
+        daemon_reload: true
+      loop:
+        - "motd-news.timer"
+        - "motd-news.service"
+
+- name: "Setup | Enable motd in ubuntu"
+  when: system_motd_setup_update_scripts_use | bool
+  become: true
+  block:
+    - name: "Setup | Set update-motd files from templates."
+      ansible.builtin.template:
+        src: templates/setup/ubuntu/{{ item }}.j2
+        dest: /etc/update-motd.d/{{ item }}
+        mode: "0755"
+      loop: "{{ system_motd_setup_update_scripts }}"
+
+    - name: "Setup | Enable motd-news"
+      ansible.builtin.lineinfile:
+        path: "/etc/default/motd-news"
+        regexp: '^ENABLED='
+        line: 'ENABLED=1'
+        state: "present"
+
+    - name: "Setup | Enable motd-news.timer and motd-news.service"
+      ansible.builtin.systemd:
+        name: "{{ item }}"
+        state: "started"
+        enabled: "yes"
+        daemon_reload: true
+      loop:
+        - "motd-news.timer"
+        - "motd-news.service"
+
+- name: "Setup | Reset failed state of motd-news.service"
+  ansible.builtin.command:
+    cmd: "systemctl reset-failed motd-news"
+  changed_when: false
+  become: true
+
+...

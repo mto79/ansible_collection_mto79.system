@@ -1,0 +1,19 @@
+---
+- name: "Setup | Set pam limits"
+  community.general.pam_limits:
+    domain: "{{ item.domain }}"
+    limit_type: "{{ item.limit_type }}"
+    limit_item: "{{ item.limit_item }}"
+    value: "{{ item.value }}"
+  loop: "{{ system_pam_limits_setup_items }}"
+  when:
+    - system_pam_limits_setup_items is defined
+    - item.domain is defined
+    - item.limit_type is defined
+    - item.limit_item is defined
+    - item.value is defined
+    - ansible_connection not in [ "container", "docker", "community.docker.docker" ]
+  loop_control:
+    label: "{{ item.limit_item }}"
+
+...

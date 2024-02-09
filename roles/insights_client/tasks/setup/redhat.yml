@@ -1,0 +1,35 @@
+---
+- name: "Setup | Set custom variables for insights_client"
+  when: system_insights_client_setup_config | bool
+  block:
+    - name: "Setup | Create directory for insights_client override"
+      ansible.builtin.file:
+        path: "/etc/systemd/system/insights-client.service.d"
+        state: "directory"
+        mode: "0755"
+        owner: "root"
+        group: "root"
+      become: true
+
+    - name: "Setup | Customize RedHat insights unit file"
+      ansible.builtin.template:
+        src: "templates/setup/insights_client_override.conf.j2"
+        dest: "/etc/systemd/system/insights-client.service.d/override.conf"
+        mode: "0644"
+        owner: "root"
+        group: "root"
+      become: true
+
+    - name: "Setup | Reload systemd to initialise new unit file"
+      ansible.builtin.systemd:
+        daemon_reload: true
+      become: true
+
+    - name: "Setup | Restart insights-client service"
+      ansible.builtin.service:
+        name: "insights-client"
+        state: "restarted"
+        enabled: true
+      become: true
+
+...

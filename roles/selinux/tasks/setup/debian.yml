@@ -1,58 +1,66 @@
 ---
-- name: "Setup | Install required packages"
+- name: "Setup | Debian | Install required packages"
   ansible.builtin.package:
-    name: "{{ system_selinux_requirements }}"
-    state: present
+    name: "{{ system_selinux_setup_packages }}"
+    state: "present"
   notify:
-    - Gather facts
+    - "Gather facts"
 
-- name: "Setup | Flush handlers"
+- name: "Setup | Debian | Flush handlers"
   ansible.builtin.meta: flush_handlers
 
-- name: "Setup | Stop service apparmor"
+- name: "Setup | Debian | Stop service apparmor"
   ansible.builtin.systemd:
-    name: apparmor
-    state: stopped
+    name: "apparmor"
+    state: "stopped"
+  become: true
 
-- name: "Setup | Remove apparmor"
+- name: "Setup | Debian | Remove apparmor"
   ansible.builtin.apt:
-    name: apparmor
-    state: absent
+    name: "apparmor"
+    state: "absent"
+  become: true
 
-- name: "Setup | Run selinux-activate"
+- name: "Setup | Debian | Run selinux-activate"
   ansible.builtin.command: sudo selinux-activate
-  register: _system_selinux_activate_output
-  changed_when: _system_selinux_activate_output.rc != 0
+  register: _system_selinux_setup_activate_output
+  changed_when: _system_selinux_setup_activate_output.rc != 0
   become: true
-  notify:
-    - Reboot
 
-- name: "Setup | Run selinux-config-enforcing"
+- name: "Setup | Debian | Restart managed host"
+  ansible.builtin.reboot:
+  when: system_selinux_setup_reboot
+  become: true
+
+- name: "Setup | Debian | Run selinux-config-enforcing"
   ansible.builtin.command: sudo selinux-config-enforcing
-  register: _system_selinux_config_enforcing_output
-  changed_when: _system_selinux_config_enforcing_output.rc != 0
+  register: _system_selinux_setup_config_enforcing_output
+  changed_when: _system_selinux_setup_config_enforcing_output.rc != 0
   become: true
 
-- name: "Setup | Configure selinux"
+- name: "Setup | Debian | Configure selinux"
   when:
     - ansible_selinux.status is defined
-    - ansible_connection not in [ "container", "docker", "community.docker.docker" ]
+  become: true
   block:
-    - name: "Setup | Manage selinux"
+    - name: "Setup | Debian | Manage selinux"
       ansible.posix.selinux:
-        state: "{{ system_selinux_state }}"
-        policy: "{{ system_selinux_policy }}"
-      notify:
-        - Reboot
+        state: "{{ system_selinux_setup_state }}"
+        policy: "{{ system_selinux_setup_policy }}"
 
-    - name: "Setup | Manage selinux booleans"
+    - name: "Setup | Debian | Restart managed host"
+      ansible.builtin.reboot:
+      when: system_selinux_setup_reboot
+
+    - name: "Setup | Debian | Manage selinux booleans"
       ansible.posix.seboolean:
         name: "{{ item.name }}"
         state: "{{ item.state | default('yes') }}"
         persistent: "{{ item.persistent }}"
-      loop: "{{ system_selinux_booleans }}"
+      loop: "{{ system_selinux_setup_booleans }}"
       loop_control:
         label: "{{ item.name }}"
       when:
-        - system_selinux_booleans is defined
+        - system_selinux_setup_booleans is defined
+
 ...

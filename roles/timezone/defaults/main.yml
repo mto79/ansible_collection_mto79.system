@@ -1,5 +1,4 @@
 ---
-system_timezone: "Europe/Amsterdam"
-system_hwclock: "UTC"
+system_timezone_setup_timezone: "Europe/Amsterdam"
 
 ...

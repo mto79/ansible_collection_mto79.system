@@ -1,0 +1,50 @@
+---
+- name: "Setup | Wait for port to be available"
+  ansible.builtin.wait_for:
+    port: "{{ ansible_port | default('22') }}"
+    timeout: "{{ system_bootstrap_setup_timeout }}"
+  become: false
+  when:
+    - ansible_connection is defined
+    - ansible_connection not in [ "container", "docker", "community.docker.docker" ]
+    - ansible_connection is not none
+    - system_bootstrap_setup_wait_for_host
+
+#  At this stage, python and/or sudo are not installed, `become` can't be used.
+- name: "Setup | Prepare system"
+  become: false
+  block:
+    - name: "Setup | Test connection"
+      ansible.builtin.wait_for_connection:
+        timeout: "{{ system_bootstrap_setup_timeout }}"
+      register: system_bootstrap_setup_connect
+      changed_when: false
+
+    - name: "Setup | Test sudo"
+      ansible.builtin.command:
+        cmd: sudo --version
+      changed_when: false
+  rescue:
+    - name: "Setup | Gather bootstrap facts"
+      ansible.builtin.include_tasks:
+        file: gather_facts.yml
+
+    - name: "Setup | Install bootstrap packages (raw)"
+      ansible.builtin.raw: "{{ system_bootstrap_setup_install.raw }}"
+      register: system_bootstrap_setup_install_packages
+      changed_when:
+        - (system_bootstrap_setup_install.stdout_regex not in system_bootstrap_setup_install_packages.stdout and
+           system_bootstrap_setup_os_family in [ "Debian", "RedHat", "Rocky", "Suse" ])
+
+- name: "Setup | Gather ansible facts"
+  ansible.builtin.setup:
+  become: false
+
+- name: "Setup | Install bootstrap packages (package)"
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ system_bootstrap_setup_facts_packages }}"
+  become: "{{ system_bootstrap_setup_become }}"
+
+...

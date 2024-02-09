@@ -1,0 +1,8 @@
+#jinja2: lstrip_blocks: True, trim_blocks: True
+{{ ansible_managed | comment }}
+
+{% for section in system_samba_setup_config %}
+[{{ section.name }}]
+  {{ section.value}}
+
+{% endfor %}

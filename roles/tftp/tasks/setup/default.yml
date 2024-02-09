@@ -1,0 +1,64 @@
+---
+- name: "Setup | Configure SELinux if it is active on the system"
+  when:
+    - ansible_facts.selinux is defined
+    - ansible_facts.selinux | bool
+    - ansible_facts.selinux.status == "enabled"
+  block:
+    - name: "Setup | Ensure SELinux boolean tftp_anon_write has the desired value"
+      ansible.posix.seboolean:
+        name: tftp_anon_write
+        state: "{{ system_tftp_setup_anon_write }}"
+        persistent: true
+
+    - name: "Setup | Ensure SELinux boolean tftp_home_dir has the desired value"
+      ansible.posix.seboolean:
+        name: tftp_home_dir
+        state: "{{ system_tftp_setup_home_dir }}"
+        persistent: true
+
+    - name: "Setup | Set the default SELinux file context for the tftp root dir"
+      ansible.posix.sefcontext:
+        target: "{{ system_tftp_setup_root_directory }}(/.*)?"
+        setype: "{{ system_tftp_setup_setype }}"
+        state: present
+
+- name: "Setup | Setup packages"
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: installed
+  loop: "{{ system_tftp_setup_packages }}"
+
+- name: "Setup | Ensure tftp root directory exists"
+  ansible.builtin.file:
+    path: "{{ system_tftp_setup_root_directory }}"
+    state: directory
+    owner: "{{ system_tftp_setup_user }}"
+    group: "{{ system_tftp_setup_group }}"
+    mode: "{{ system_tftp_setup_mode }}"
+    setype: "{{ system_tftp_setup_setype }}"
+
+- name: "Setup | Setup configuration file"
+  ansible.builtin.template:
+    src: templates/setup/systemd_tftp.service.j2
+    dest: "{{ system_tftp_setup_config }}"
+    mode: "0644"
+  notify:
+    - Restart tftp
+
+- name: "Setup | Ensure service is started"
+  ansible.builtin.service:
+    name: "{{ system_tftp_setup_service }}"
+    state: started
+    enabled: true
+
+#  - name: "Setup | Setup foreman map file"
+#    ansible.builtin.template:
+#      src: templates/setup/etc_tftpd.map.j2
+#      dest: "{{ tftp_foreman_map_file }}"
+#      mode: "0644"
+#    notify:
+#      - Restart tftp
+#    when: system_tftp_setup_server_foreman_support
+
+...

@@ -1,0 +1,9 @@
+---
+system_logrotate_setup_frequency: "weekly"
+system_logrotate_setup_keep: "4"
+system_logrotate_setup_compress: "yes"
+system_logrotate_setup_dateext: "no"
+system_logrotate_setup_user: "{{ _system_logrotate_setup_user }}"
+system_logrotate_setup_group: "{{ _system_logrotate_setup_group }}"
+
+...

@@ -1,0 +1,21 @@
+---
+- name: "Setup | Redhat | Postfix"
+  ansible.builtin.dnf:
+    name: "postfix"
+    state: "present"
+  become: true
+
+- name: "Setup | Redhat | Sasl"
+  ansible.builtin.dnf:
+    name: "{{ item }}"
+    state: "present"
+  loop:
+    - "cyrus-sasl"
+    - "cyrus-sasl-plain"
+  become: true
+
+- name: "Setup | Redhat | Include configure.yml tasks"
+  ansible.builtin.include_tasks:
+    file: "configure.yml"
+
+...

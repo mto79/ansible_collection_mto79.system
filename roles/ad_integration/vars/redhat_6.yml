@@ -1,0 +1,13 @@
+---
+system_ad_integration_setup_packages:
+  - "adcli"
+  - "authconfig"
+  - "sssd"
+  - "krb5-workstation"
+
+system_ad_integration_setup_pip_packages:
+  - "ptyprocess-0.7.0.tar.gz"
+  - "pexpect-4.8.0.tar.gz"
+  # - pexpect
+
+...

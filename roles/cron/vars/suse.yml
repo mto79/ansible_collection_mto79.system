@@ -1,0 +1,8 @@
+---
+system_cron_setup_packages:
+  - "cronie"
+
+system_cron_setup_configuration: "/etc/crontab"
+system_cron_setup_service: "cron"
+
+...

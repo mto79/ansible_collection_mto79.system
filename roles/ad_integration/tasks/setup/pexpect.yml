@@ -1,0 +1,17 @@
+---
+- name: "Setup | Pexpect | Use pexpect for password"
+  block:
+    - name: "Setup | Install pip packages for secure password"
+      ansible.builtin.copy:
+        src: "{{ system_ad_integration_setup_pexpect_download_dir }}/{{ item }}"
+        dest: "/tmp/{{ item }}"
+        mode: "0644"
+      with_items: "{{ system_ad_integration_setup_pip_packages }}"
+
+    - name: "Setup | Pexpect | Try to install pip packages"
+      ansible.builtin.pip:
+        name: "file:///tmp/{{ item }}"
+        state: present
+      with_items: "{{ system_ad_integration_setup_pip_packages }}"
+
+...

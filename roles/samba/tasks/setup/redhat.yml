@@ -1,0 +1,77 @@
+---
+- name: "Setup | Samba | Ensure SMB packages are installed"
+  anisble.builtin.dnf:
+    name: "{{ system_samba_setup_packages }}"
+    state: "present"
+  become: true
+
+- name: "Setup | Samba | Set smb.conf"
+  ansible.builtin.template:
+    src: "templates/setup/smb.conf.j2"
+    dest: /etc/samba/smb.conf
+    owner: "root"
+    group: "root"
+    mode: 0640
+    backup: true
+  when: system_samba_setup_config is defined
+  notify: "Restart smbd"
+  become: true
+
+- name: "Setup | Samba | Ensure SELinux Booleans for samba are set"
+  block:
+    - name: "Setup | Samba | Include  mto79  selinux role"
+      ansible.builtin.include_role:
+        name: " mto79 .system.selinux"
+      vars:
+        selinux_booleans: "{{ system_samba_setup_selinux_booleans | d([]) }}"
+
+  rescue:
+    - name: "Setup | Samba | Handle errors"
+      ansible.builtin.fail:
+        msg: "Include  mto79 .system.selinux role failed"
+
+    - name: "Setup | Ensure booleans are set"
+      ansible.posix.seboolean:
+        name: "{{ item.name }}"
+        state: "{{ item.state }}"
+        persistent: "{{ item.persistent }}"
+      loop: "{{ system_samba_setup_selinux_booleans }}"
+      become: true
+
+- name: "Setup | Samba | Ensure Firewalld for samba are set"
+  block:
+    - name: "Setup | Samba | Include  mto79  firewalld role"
+      ansible.builtin.include_role:
+        name: " mto79 .system.firewall"
+      vars:
+         firewall: "{{ system_samba_setup_firewall_  | d([]) }}"
+
+  rescue:
+    - name: "Setup | Samba | Handle errors"
+      ansible.builtin.fail:
+        msg: "Include  mto79 .system.firewall role failed"
+
+    - name: "Setup | Ensure firewall rules are set"
+      ansible.builtin.firewalld:
+        service: "{{ item.name }}"
+        state: "{{ item.state }}"
+        permanent: "{{ item.permanent }}"
+        immediate: "{{ item.immediate }}"
+      loop: "{{ system_samba_setup_firewall_  }}"
+      become: true
+
+- name: "Setup | Samba | Ensure Samba Data is used on AD joined servers"
+  ansible.builtin.shell: "adcli update -v --add-samba-data --computer-password-lifetime=0"
+  changed_when: false
+  failed_when: false
+  become: true
+  when: system_samba_setup_adcli_use_samba_data | bool
+
+- name: "Setup | Samba | Ensure smbd/winbind   are enabled and started"
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    enabled: true
+    state: "started"
+  loop: "{{ system_samba_setup_  }}"
+
+...

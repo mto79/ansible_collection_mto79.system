@@ -1,0 +1,16 @@
+---
+- name: "Setup | Hosts | Place /etc/hosts configuration file"
+  block:
+    - name: "Setup | Fill /etc/hosts"
+      ansible.builtin.template:
+        src: "templates/setup/hosts.j2"
+        dest: "/etc/hosts"
+        mode: "0644"
+      become: true
+  rescue:
+    - name: "Setup | Hosts | Message if /etc/hosts could not be modified"
+      ansible.builtin.debug:
+        msg:
+          - "The file /etc/hosts could not be modified."
+
+...

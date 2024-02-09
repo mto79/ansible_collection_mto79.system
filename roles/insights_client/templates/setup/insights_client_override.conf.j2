@@ -1,0 +1,11 @@
+#jinja2: lstrip_blocks: True, trim_blocks: True
+{{ ansible_managed | comment(decoration='# ') }}
+
+[Service]
+ExecStart=
+ExecStart=/usr/bin/insights-client --retry {{ system_insights_client_setup_retries | d('3')}}
+Restart=
+Restart={{ system_insights_client_setup_unit_restart | d('no') }}
+{% if system_insights_client_setup_unit_restart_secs is defined and system_insights_client_setup_unit_restart_secs | int > 0 %}
+RestartSec={{ system_insights_client_setup_unit_restart_secs }}
+{% endif %}

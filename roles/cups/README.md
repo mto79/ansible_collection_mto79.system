@@ -1,11 +1,29 @@
-# [System_cups](#system-cups)
+Ansible Role cups
+=========
 
-Install and configure cups and its required libraries on your system.
+This is an Ansible role to install and configure cups.
+
+Include more information about cups in this section.
+
+Table of Contents
+-----------------
+
+- [Ansible Role cups](#ansible-role-cups)
+  - [Table of Contents](#table-of-contents)
+  - [Requirements](#requirements)
+  - [Role Variables](#role-variables)
+  - [Example Playbook](#example-playbook)
 
 ## [Requirements](#requirements)
 
-* The minimum version of Ansible required is 2.10.
-* The minimum version of Jinja template 2.11.3
+- The minimum version of Ansible required is 2.10.
+- The minimum version of Jinja template 2.11.3
+
+## [Role Variables](#role-variables)
+
+| Variable | Default | Description |
+| -------- | ------- | ----------- |
+| `system_cups_` | | |
 
 ## [Example Playbook](#example-playbook)
 
@@ -20,19 +38,3 @@ Refer to the following example:
               - "setup"
           tags: ['system', 'firewall']
 ```
-
-## [Role Variables](#role-variables)
-
-| Variable | Default | Description |
-| -------- | ------- | ----------- |
-| `system_cups_` | | |
-
-## [Maintainers](#maintainers)
-
-MTO79 (<https://github.com/mto79>)
-
-## [Todo](#todo)
-
-## [License](#license)
-
-MIT License

@@ -1,0 +1,23 @@
+{{ ansible_managed | comment }}
+
+127.0.0.1 localhost localhost.localdomain localhost4 localhost4.localdomain4
+{% if system_hosts_ipv6_enabled is defined and system_hosts_ipv6_enabled | bool == True %}
+::1 localhost localhost.localdomain localhost6 localhost6.localdomain6
+{% endif %}
+
+{% if system_hosts_setup_entries is defined %}
+{% for item in system_hosts_setup_entries %}
+{% if item.ip != "127.0.0.1" or item.hostrule != "localhost" %}
+{{ item.ip }} {{ item.hostrule }}
+{% endif %}
+{% endfor %}
+{% endif %}
+
+{% if system_hosts_setup_ipv6_enabled is defined and system_hosts_setup_ipv6_enabled | bool == True %}
+# The following lines are desirable for IPv6 capable hosts
+::1     ip6-localhost ip6-loopback localhost localhost.localdomain localhost6 localhost6.localdomain6
+fe00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+{% endif %}

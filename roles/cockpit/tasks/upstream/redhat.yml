@@ -5,13 +5,13 @@
       ansible.builtin.include_role:
         name: fedora.linux_system_roles.cockpit
       vars:
-        cockpit_packages: "{{ system_cockpit_packages | default('default') }}"
-        cockpit_enabled: "{{ system_cockpit_enabled | default(true) }}"
-        cockpit_started: "{{ system_cockpit_started | default(true) }}"
-        cockpit_port: "{{ system_cockpit_port | default(9090) }}"
-        cockpit_manage_firewall: "{{ system_cockpit_manage_firewall | default(false) }}"
-        cockpit_manage_selinux: "{{ system_cockpit_manage_selinux | default(false) }}"
-        cockpit_certificates: "{{ system_cockpit_certificates | default([]) }}"
+        cockpit_packages: "{{ system_cockpit_upstream_packages | default('default') }}"
+        cockpit_enabled: "{{ system_cockpit_upstream_enabled | default(true) }}"
+        cockpit_started: "{{ system_cockpit_upstream_started | default(true) }}"
+        cockpit_port: "{{ system_cockpit_upstream_port | default(9090) }}"
+        cockpit_manage_firewall: "{{ system_cockpit_upstream_manage_firewall | default(false) }}"
+        cockpit_manage_selinux: "{{ system_cockpit_upstream_manage_selinux | default(false) }}"
+        cockpit_certificates: "{{ system_cockpit_upstream_certificates | default([]) }}"
 
   rescue:
     - name: "Upstream | Handle errors"

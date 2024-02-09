@@ -1,6 +1,5 @@
 ---
-__role_name: "system_motd"
-
+__role_name: "motd"
 __role_file_search_order:
   - "{{ (ansible_facts['distribution'] | lower) | replace(' ', '_') }}_\
     {{ ansible_facts['distribution_release'] | lower | replace(' ', '_') }}_\
@@ -25,5 +24,4 @@ __role_required_facts:
   - distribution_major_version
   - distribution_version
   - os_family
-
 ...

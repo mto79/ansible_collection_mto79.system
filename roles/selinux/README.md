@@ -1,82 +1,60 @@
-# [System-selinux](#system-selinux)
+Ansible Role selinux
+=========
 
-Install and configure Selinux and its required libraries on your system.
+This is an Ansible role to install and configure selinux.
+
+Include more information about selinux in this section.
+
+Table of Contents
+-----------------
+- [Ansible Role selinux](#ansible-role-selinux)
+  - [Table of Contents](#table-of-contents)
+  - [Requirements](#requirements)
+  - [Role variables](#role-variables)
+    - [Setup](#setup)
+    - [Upstream](#upstream)
+  - [Example Playbook](#example-playbook)
 
 ## [Requirements](#requirements)
 
-* The minimum version of Ansible required is 2.11.0.
-* The minimum version of Jinja template 2.11.3
+- The minimum version of Ansible required is 2.12.0.
+- The minimum version of Jinja template 2.11.3
+
+## [Role variables](#role-variables)
+
+### Setup
+
+| Variable | Type | Default | Description |
+| -------- | ---- | ------- | ----------- |
+| `system_selinux_setup_packages` | String | `` |  Packages to install for selinux.
+| `system_selinux_setup_state`  | String | `` |  State of selinux.
+| `system_selinux_setup_policy`  | String | `` |  Policy of selinux.
+| `system_selinux_setup_booleans` | String | `` |  Booleans of selinux.
+
+### Upstream
+
+| Variable | Type | Default | Description |
+| -------- | ---- | ------- | ----------- |
+| `system_selinux_upstream_state` | String | `` |  State of selinux.
+| `system_selinux_upstream_policy`  | String | `` |  Policy of selinux.
+| `system_selinux_upstream_booleans`  | List | `` |  Booleans of selinux.
+| `system_selinux_upstream_fcontexts` | List | `` |  Fcontexts of selinux.
+| `system_selinux_upstream_logins` | List | `` |  Logins of selinux.
+| `system_selinux_upstream_ports` | List | `` |  Ports of selinux.
+| `system_selinux_upstream_restore_dirs` | List | `` |  Restore dirs of selinux.
+| `system_selinux_upstream_all_purge` | Boolean | `` |  All purge of selinux.
+| `system_selinux_upstream_booleans_purge` | Boolean | `` |  Booleans purge of selinux.
+| `system_selinux_upstream_fcontexts_purge` | Boolean | `` |  Fcontexts purge of selinux.
+| `system_selinux_upstream_ports_purge` | Boolean | `` |  Ports purge of selinux.
+| `system_selinux_upstream_logins_purge` | Boolean | `` |  Logins purge of selinux.
 
 ## [Example Playbook](#example-playbook)
-
-Refer to the following example:
 
 ```yaml
     - hosts: servers
       roles:
-        - { role: mto79.system.selinux, tags: ['system', 'selinux', 'system'] }
-```
-
-## [Role Variables](#role-variables)
-
-| Variable | Default | Description |
-| -------- | ------- | ----------- |
-| `system_selinux_state`| `enforcing` | State of SELinux |
-| `system_selinux_policy` | `targeted` | Policy of SELinux |
-| `system_selinux_reboot` | `yes` | Machine reboot after SELinux changes |
-| `system_selinux_booleans`| `default settings per distro` | Enable (or disable) booleans |
-
-The policy differs per distribution, mostly because Debian and Ubuntu use 'default' and other distributions use 'targeted'.
-
-See for usage variable system_selinux_booleans the defaults.yml
-
-## [Pre-commit](#pre-commit)
-
-Install pre-commit
-
-```bash
-pip install pre-commit
-```
-
-Set hooks in .pre-commit-config.yaml
-
-```bash
-repos:
-- repo: https://github.com/ansible/ansible-lint.git
-  rev: v4.2.0
-  hooks:
-    - id: ansible-lint
-      files: \.(yaml|yml)$
-```
-
-Enable pre-commit for your git repository
-
-```bash
-$ pre-commit install
-pre-commit installed at .git/hooks/pre-commit
-```
-
-Testing pre-commit
-
-```bash
-pre-commit run --all-files
-Ansible-lint.............................................................Passed
-```
-
-or just type:
-
-```bash
-git commit
-```
-
-## [Maintainers](#maintainers)
-
-Marc Ouwerkerk (<https://github.com/mto79>)
-
-## [Todo](#todo)
-
-* Standaardwaarden voor molecule testen toevoegen
-
-## [License](#license)
-
-Apache-2.0
+        - role: " mto79 .system.selinux"
+          vars:
+            __role_action:
+              - "setup"
+          tags: ['system', 'system-selinux']
