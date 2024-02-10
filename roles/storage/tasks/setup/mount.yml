@@ -1,0 +1,51 @@
+---
+- name: "Setup | Mount | Test storage_mounts"
+  ansible.builtin.assert:
+    that:
+      - mount.name is defined
+      - mount.src is defined
+    quiet: true
+
+- name: "Setup | Mount | Create mountpoint"
+  ansible.builtin.file:
+    path: "{{ mount.name }}"
+    owner: "{{ mount.owner | default(omit) }}"
+    group: "{{ mount.group | default(omit) }}"
+    mode: "{{ mount.mode | default(omit) }}"
+    state: "directory"
+  become: true
+
+- name: "Setup | Mount | Add mount to fstab filesystem"
+  ansible.posix.mount:
+    path: "{{ mount.name }}"
+    src: "{{ mount.src }}"
+    fstype: "{{ mount.fstype | default(system_storage_setup_default_fstype) }}"
+    opts: "{{ mount.opts | default(omit) }}"
+    boot: "{{ mount.boot | default(omit) }}"
+    dump: "{{ mount.dump | default(omit) }}"
+    passno: "{{ mount.passno | default(omit) }}"
+    state: "present"
+  become: true
+
+- name: "Setup | Mount | Reload systemd"
+  when: ansible_service_mgr == "systemd"
+  ansible.builtin.command:
+    cmd: systemctl daemon-reload  # noqa: command-instead-of-module
+  changed_when: false
+  become: true
+
+- name: "Setup | Mount | Mount filessytem"
+  ansible.posix.mount:
+    path: "{{ mount.name }}"
+    src: "{{ mount.src }}"
+    fstype: "{{ mount.fstype | default(system_storage_setup_default_fstype) }}"
+    opts: "{{ mount.opts | default(omit) }}"
+    boot: "{{ mount.boot | default(omit) }}"
+    dump: "{{ mount.dump | default(omit) }}"
+    passno: "{{ mount.passno | default(omit) }}"
+    state: "mounted"
+  notify:
+    - "Refresh facts"
+  become: true
+
+...

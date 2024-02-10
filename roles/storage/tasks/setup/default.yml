@@ -1,0 +1,65 @@
+---
+- name: "Setup | Install requirements"
+  when: system_storage_setup_requirements is defined
+  ansible.builtin.package:
+    name: "{{ system_storage_setup_requirements }}"
+    state: "present"
+  become: true
+
+- name: "Setup | Find scsi busses"
+  ansible.builtin.find:
+    path: "/sys/class/scsi_host"
+    patterns: 'host*'
+  register: "system_storage_setup_scsi_busses"
+
+- name: "Setup | Scan scsi bus"
+  when: system_storage_setup_scsi_busses.files | length > 0
+  ansible.builtin.lineinfile:
+    path: "{{ item.path }}"
+    line: "- - -"
+    mode: "0444"
+  loop: "{{ system_storage_setup_scsi_busses.files }}"
+  changed_when: false
+  become: true
+
+- name: "Setup | Include partition"
+  when: system_storage_setup_partitions is defined
+  ansible.builtin.include_tasks:
+    file: "partition.yml"
+  loop: "{{ system_storage_setup_partitions }}"
+  loop_control:
+    loop_var: "partition"
+
+- name: "Setup | Include volumegroup"
+  when: system_storage_setup_volumegroups is defined
+  ansible.builtin.include_tasks:
+    file: "volumegroup.yml"
+  loop: "{{ system_storage_setup_volumegroups }}"
+  loop_control:
+    loop_var: "volumegroup"
+
+- name: "Setup | Include volume"
+  when: system_storage_setup_volumes is defined
+  ansible.builtin.include_tasks:
+    file: "volume.yml"
+  loop: "{{ system_storage_setup_volumes }}"
+  loop_control:
+    loop_var: "volume"
+
+- name: "Setup | Include filesystem"
+  when: system_storage_setup_filesystems is defined
+  ansible.builtin.include_tasks:
+    file: "filesystem.yml"
+  loop: "{{ system_storage_setup_filesystems }}"
+  loop_control:
+    loop_var: "filesystem"
+
+- name: "Setup | Include mount"
+  when: system_storage_setup_mounts is defined
+  ansible.builtin.include_tasks:
+    file: "mount.yml"
+  loop: "{{ system_storage_setup_mounts }}"
+  loop_control:
+    loop_var: "mount"
+
+...
