@@ -1,7 +1,7 @@
 ---
-system_samba_setup_ :
- - "smb"
- - "winbind"
+system_samba_setup_services:
+  - "smb"
+  - "winbind"
 
 system_samba_setup_packages:
   - "samba"

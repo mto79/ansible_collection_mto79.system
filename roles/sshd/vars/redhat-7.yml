@@ -1,6 +1,6 @@
 ---
 system_sshd_setup_packages:
-   - "openssh-server"
+  - "openssh-server"
 
 system_sshd_setup_key_types:
   - "rsa"
@@ -9,7 +9,7 @@ system_sshd_setup_key_types:
 
 system_sshd_setup_run_directory: "/run/sshd"
 
-system_sshd_setup_configuration_file: /etc/ssh/"sshd_config"
+system_sshd_setup_configuration_file: /etc/ssh/sshd_config"
 
 system_sshd_setup_service: "sshd"
 

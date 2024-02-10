@@ -9,12 +9,16 @@
 - name: "Setup | Replace a localhost entry searching for a literal string to avoid escaping"
   ansible.builtin.lineinfile:
     path: "/root/.bashrc"
-    regexp: "^    PS1='\\${debian_chroot:\\+\\(\\$debian_chroot\\)}\\\\\\[\\\\033\\[01;32m\\\\\\]\\\\u@\\\\h\\\\\\[\\\\033\\[00m\\\\\\]:\\\\\\[\\\\033\\[01;34m\\\\\\]\\\\w\\\\\\[\\\\033\\[00m\\\\\\]\\\\\\$ '"
+    regexp: >
+      "^    PS1='\\${debian_chroot:\\+\\(\\$debian_chroot\\)}\\\\\\[\\\\033\\
+      [01;32m\\\\\\]\\\\u@\\\\h\\\\\\[\\\\033\\[00m\\\\\\]:\\\\\\[\\\\033\\[01;34m\\\\\\]\\\\w\\\\\\[\\\\033\\[00m\\\\\\]\\\\\\$ '"
     line: "    PS1='${debian_chroot:+($debian_chroot)}\\[\\033[01;31m\\]\\u\\[\\033[01;32m\\]@\\h\\[\\033[00m\\]:\\[\\033[01;34m\\]\\w\\[\\033[00m\\]\\$ '"
     owner: root
     group: root
     mode: "0644"
   become: true
+  tags:
+    - skip_ansible_lint
 
 - name: "Setup | Source root bashrc"
   ansible.builtin.shell: "source /root/.bashrc"
@@ -35,19 +39,25 @@
   become: true
 
 - name: "Setup | Apply changes immediately"
-  ansible.builtin.shell: "source /etc/profile.d/{{ item }}"
-  args:
-     executable: "/bin/bash"
+  ansible.builtin.shell:
+    cmd: "source /etc/profile.d/{{ item }}"
+    args:
+      executable: "/bin/bash"
   loop:
     - "cmd_history.sh"
   changed_when: false
   become: true
+  tags:
+    - skip_ansible_lint
 
 - name: "Setup | Change bash history options (merge history of multi bash session)"
-  ansible.builtin.shell: "shopt -s histappend"
-  args:
-     executable: "/bin/bash"
+  ansible.builtin.shell:
+    cmd: "shopt -s histappend"
+    args:
+      executable: "/bin/bash"
   changed_when: false
   become: true
+  tags:
+    - skip_ansible_lint
 
 ...

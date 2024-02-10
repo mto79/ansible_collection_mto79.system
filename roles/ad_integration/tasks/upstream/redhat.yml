@@ -6,7 +6,7 @@
       ansible.builtin.include_role:
         name: fedora.linux_system_roles.ad_integration
       vars:
-        ad_integration_realm: "{{ system_ad_integration_upstream_realm  }}"
+        ad_integration_realm: "{{ system_ad_integration_upstream_realm }}"
         ad_integration_user: "{{ system_ad_integration_upstream_user | d(omit) }}"
         ad_integration_password: "{{ system_ad_integration_upstream_password }}"
         ad_integration_join_to_dc: "{{ system_ad_integration_upstream_join_to_dc }}"

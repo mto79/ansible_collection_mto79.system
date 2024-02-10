@@ -7,7 +7,7 @@
   changed_when: false
   failed_when: false
 
-- name : "Setup | Display result from running the insights client"
+- name: "Setup | Display result from running the insights client"
   ansible.builtin.debug:
     var: "system_openscap_setup_run_insights_compliance"
 

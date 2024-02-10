@@ -6,16 +6,21 @@
       ansible.builtin.package:
         name: "{{ system_dnf_setup_versionlock_package }}"
         state: "present"
+      become: true
 
     - name: "Setup | Add versionlock entries."
       ansible.builtin.command:
         cmd: "dnf versionlock add {{ item }}"
       loop: "{{ system_dnf_setup_versionlock_packages | d([]) }}"
+      changed_when: false
+      failed_when: false
 
     - name: "Setup | List versionlock entries."
       ansible.builtin.command:
         cmd: "dnf versionlock list"
       register: "_system_dnf_setup_versionlock_list"
+      changed_when: false
+      failed_when: false
 
     - name: "Setup | Debug versionlock entries."
       ansible.builtin.debug:
@@ -31,6 +36,8 @@
         cmd: "dnf versionlock delete {{ item }}"
       loop: "{{ _system_dnf_setup_packages_to_remove }}"
       when: _system_dnf_setup_packages_to_remove | length > 0
+      changed_when: false
+      failed_when: false
 
 - name: "Setup | Remove dnf-versionlock package."
   when: not system_dnf_setup_versionlock_use | bool
@@ -40,10 +47,13 @@
         cmd: "dnf versionlock delete {{ item }}"
       loop: "{{ system_dnf_setup_versionlock_packages }}"
       when: system_dnf_setup_versionlock_packages | length > 0
+      changed_when: false
+      failed_when: false
 
     - name: "Setup | Remove dnf-versionlock package."
       ansible.builtin.package:
         name: "{{ system_dnf_setup_versionlock_package }}"
         state: "absent"
+      become: true
 
 ...

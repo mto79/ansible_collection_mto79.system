@@ -3,7 +3,7 @@
   ansible.builtin.systemd:
     name: "{{ item }}"
     state: "restarted"
-  loop: "{{ system_samba_setup_  }}"
+  loop: "{{ system_samba_setup_services }}"
   become: true
 
 ...

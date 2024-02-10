@@ -1,8 +1,8 @@
 ---
 galaxy_info:
-  author: " MTO79"
-  namespace: " mto79 "
-  company: " MTO79   "
+  author: "MTO79"
+  namespace: "mto79"
+  company: "MTO79"
   description: "Ansible role to install and configure selinux"
   role_name: "selinux"
   standalone: true
@@ -20,7 +20,7 @@ galaxy_info:
   # - CC-BY-4.0
   license: "MIT"
 
-  min_ansible_version: "2.12"
+  min_ansible_version: "2.13"
 
   # If this a Container Enabled role, provide the minimum Ansible Container version.
   # min_ansible_container_version:
@@ -38,7 +38,7 @@ galaxy_info:
         - "9"
 
   galaxy_tags:
-    - " mto79 "
+    - "mto79"
     - "system"
     - "selinux"
     - "security"

@@ -7,6 +7,7 @@
       community.general.archive:
         path: "/tmp"
         dest: "tmp.tgz"
+        mode: "0644"
 
     - name: "Check network facts"
       ansible.builtin.assert:
@@ -15,7 +16,7 @@
 
     - name: "See if the package manager still works"
       block:
-        - name: Install a package
+        - name: "Install a package"
           ansible.builtin.package:
             name: "acl"
 

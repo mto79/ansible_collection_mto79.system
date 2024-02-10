@@ -2,34 +2,34 @@
 # This is an example playbook to execute Ansible tests.
 
 - name: Verify
-  hosts: all
+  hosts: "all"
   gather_facts: false
   tasks:
-    - name: Create a firewall rule to open port 1337
+    - name: "Create a firewall rule to open port 1337"
       ansible.builtin.include_role:
-        name:  mto79 .system.firewall
+        name: "mto79.system.firewall"
       vars:
-        system_firewall_ :
+        system_firewall_setup_services:
           - name: 1337
 
-    - name: Remove a firewall rule to close port 1337
+    - name: "Remove a firewall rule to close port 1337"
       ansible.builtin.include_role:
-        name:  mto79 .system.firewall
+        name: "mto79.system.firewall"
       vars:
-        firewall_ :
+        system_firewall_setup_services:
           - name: 1337
-            state: absent
+            state: "absent"
 
-    - name: Remove a firewall rule to close port 1337 again
+    - name: "Remove a firewall rule to close port 1337 again"
       ansible.builtin.include_role:
-        name:  mto79 .system.firewall
+        name: "mto79.system.firewall"
       vars:
-        firewall_ :
+        system_firewall_setup_services:
           - name: 1337
-            state: absent
+            state: "absent"
       register: _system_firewall_remove_a_firewall_rule_to_close_port_1337
 
-    - name: Check last result
+    - name: "Check last result"
       ansible.builtin.assert:
         that:
           - _system_firewall_remove_a_firewall_rule_to_close_port_1337 is not changed

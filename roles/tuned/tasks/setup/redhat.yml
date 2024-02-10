@@ -22,6 +22,9 @@
   ansible.builtin.template:
     src: "templates/setup/tuned-main.conf.j2"
     dest: "/etc/tuned/tuned-main.conf"
+    owner: "root"
+    group: "root"
+    mode: "0644"
   notify:
     - "Restart tuned"
   become: true
@@ -34,8 +37,15 @@
 
 - name: "Setup | Set system_tuned_setup_recommended_profile"
   ansible.builtin.set_fact:
-    system_tuned_setup_recommended_profile: >
-      {{ (_system_tuned_setup_recommend.stdout == ' *fail') | ternary('default',_system_tuned_setup_recommend.stdout) }}
+    system_tuned_setup_recommended_profile: >-
+      {{
+        (
+          _system_tuned_setup_recommend.stdout == ' *fail'
+        ) | ternary(
+          'default',
+          _system_tuned_setup_recommend.stdout
+        )
+      }}
 
 - name: "Setup | Set Tuned profile {{ system_tuned_setup_profile }}"
   ansible.builtin.command: "tuned-adm profile {{ system_tuned_setup_profile }}"

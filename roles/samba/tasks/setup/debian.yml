@@ -11,7 +11,7 @@
     dest: /etc/samba/smb.conf
     owner: "root"
     group: "root"
-    mode: 0640
+    mode: "0640"
     backup: true
   notify: "Restart smbd"
   become: true
@@ -21,6 +21,6 @@
     name: "{{ item }}"
     enabled: true
     state: "started"
-  loop: "{{ system_samba_setup_  }}"
+  loop: "{{ system_samba_setup_services }}"
 
 ...

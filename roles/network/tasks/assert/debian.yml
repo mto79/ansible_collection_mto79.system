@@ -61,7 +61,4 @@
           - system_network_setup_netplan_netmask is string
         quiet: true
 
-
-
-
 ...

@@ -1,6 +1,6 @@
 ---
 - name: "Setup | Include build tasks."
-  include_tasks: "build.yml"
+  ansible.builtin.include_tasks: "build.yml"
   when: system_kernel_setup_build | bool
 
 - name: "Setup | Manage grub."

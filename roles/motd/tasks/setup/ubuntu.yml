@@ -68,10 +68,13 @@
         - "motd-news.timer"
         - "motd-news.service"
 
+
 - name: "Setup | Reset failed state of motd-news.service"
   ansible.builtin.command:
     cmd: "systemctl reset-failed motd-news"
   changed_when: false
   become: true
+  tags:
+    - skip_ansible_lint
 
 ...

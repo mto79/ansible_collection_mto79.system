@@ -19,27 +19,27 @@
           - system_firewall_setup_default_rule in [ "allow", "deny" ]
         quiet: true
 
-    - name: "Assert | Test if system_firewall_setup_  is set correctly"
+    - name: "Assert | Test if system_firewall_setup_services is set correctly"
       ansible.builtin.assert:
         that:
-          - system_firewall_setup_  is iterable
+          - system_firewall_setup_services is iterable
         quiet: true
-      when: system_firewall_setup_  is defined
+      when: system_firewall_setup_services is defined
 
-    - name: "Assert | Test if non-numeric item in system_firewall_setup_  is set correctly"
+    - name: "Assert | Test if non-numeric item in system_firewall_setup_services is set correctly"
       ansible.builtin.assert:
         that:
           - item.name is defined
           - item.name is string
         quiet: true
-      loop: "{{ system_firewall_setup_  }}"
+      loop: "{{ system_firewall_setup_services }}"
       loop_control:
         label: "{{ item.name }}"
       when:
-        - system_firewall_setup_  is defined
+        - system_firewall_setup_services is defined
         - item.name is not number
 
-    - name: "Assert | Test if numeric item in system_firewall_setup_  is set correctly"
+    - name: "Assert | Test if numeric item in system_firewall_setup_services is set correctly"
       ansible.builtin.assert:
         that:
           - item.name is defined
@@ -47,24 +47,24 @@
           - item.name > 0
           - item.name < 65536
         quiet: true
-      loop: "{{ system_firewall_setup_  }}"
+      loop: "{{ system_firewall_setup_services }}"
       loop_control:
         label: "{{ item.name }}"
       when:
-        - system_firewall_setup_  is defined
+        - system_firewall_setup_services is defined
         - item.name is number
 
-    - name: "Assert | Test if item with state in system_firewall_setup_  is set correctly"
+    - name: "Assert | Test if item with state in system_firewall_setup_services is set correctly"
       ansible.builtin.assert:
         that:
           - item.state is string
           - item.state in [ "absent", "present" ]
         quiet: true
-      loop: "{{ system_firewall_setup_  }}"
+      loop: "{{ system_firewall_setup_services }}"
       loop_control:
         label: "{{ item.state | default('unset') }}"
       when:
-        - system_firewall_setup_  is defined
+        - system_firewall_setup_services is defined
         - item.state is defined
 
 ...

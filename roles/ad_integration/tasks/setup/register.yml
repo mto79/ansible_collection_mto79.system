@@ -1,7 +1,10 @@
 ---
 - name: "Setup | Register | Check if system is already joined"
   ansible.builtin.shell:
-    cmd: realm list | grep {{ system_ad_integration_setup_domain }}
+    cmd: |
+      set -o pipefail
+      realm list | grep {{ system_ad_integration_setup_domain }}
+    executable: "/bin/bash"
   changed_when: false
   check_mode: false
   register: system_ad_integration_setup_domain_joined
@@ -31,7 +34,7 @@
 
     - name: "Setup | Register | Joining the AD realm"
       ansible.builtin.shell: >
-        echo '{{ system_ad_integration_setup_password }}'
+        set -o pipefail && echo '{{ system_ad_integration_setup_password }}'
          | realm join -U {{ system_ad_integration_setup_username }} {{ system_ad_integration_setup_domain }}
           --computer-ou="{{ system_ad_integration_setup_ldap_comp_grp_ou }}"
       changed_when: false

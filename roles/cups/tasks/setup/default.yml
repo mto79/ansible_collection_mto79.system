@@ -3,6 +3,7 @@
   ansible.builtin.package:
     name: "{{ system_cups_setup_packages }}"
     state: present
+  become: true
 
 - name: "Setup | Configure cups"
   ansible.builtin.template:
@@ -20,5 +21,6 @@
     enabled: true
   when:
     - system_cups_setup_service is defined
+  become: true
 
 ...

@@ -1,5 +1,5 @@
 ---
-system_samba_setup_ :
+system_samba_setup_services:
   - "smb"
   - "winbind"
 
@@ -15,7 +15,7 @@ system_samba_setup_selinux_booleans:
   - { name: 'samba_export_all_ro', state: 'on', persistent: 'yes' }
   - { name: 'samba_export_all_rw', state: 'on', persistent: 'yes' }
 
-system_samba_setup_firewall_ :
+system_samba_setup_firewall_services:
   - { zone: "public", service: "samba", state: "enabled", permanent: true, immediate: true }
 
 ...

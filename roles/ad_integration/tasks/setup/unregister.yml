@@ -11,7 +11,7 @@
 
     - name: "Setup | Unregister | joining the AD realm"
       ansible.builtin.shell: >
-        echo '{{ system_ad_integration_setup_password }}'
+        set -o pipefail && echo '{{ system_ad_integration_setup_password }}'
          | realm leave -U {{ system_ad_integration_setup_domain }}\\{{ system_ad_integration_setup_username }}
          --remove
       changed_when: false

@@ -47,12 +47,12 @@
       when:
         - system_postfix_setup_banner is defined
 
-    #- name: "Assert | if system_postfix_setup_mydestination is set correctly"
-    #  ansible.builtin.assert:
-    #    that:
-    #      - system_postfix_setup_mydestination is defined
-    #      - system_postfix_setup_mydestination is string
-    #    quiet: true
+    # - name: "Assert | if system_postfix_setup_mydestination is set correctly"
+    #   ansible.builtin.assert:
+    #     that:
+    #       - system_postfix_setup_mydestination is defined
+    #       - system_postfix_setup_mydestination is string
+    #     quiet: true
 
     - name: "Assert | if system_postfix_setup_mynetworks is set correctly"
       ansible.builtin.assert:

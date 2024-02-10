@@ -6,7 +6,7 @@
       ansible.builtin.include_role:
         name: "fedora.linux_system_roles.firewall"
       vars:
-        firewall: "{{ system_firewall_upstream_  | d([]) }}"
+        firewall: "{{ system_firewall_upstream_services | d([]) }}"
 
   rescue:
     - name: "Upstream | Handle errors"

@@ -1,10 +1,10 @@
 ---
 galaxy_info:
-  author: " MTO79"
-  namespace: " mto79 "
-  company: " MTO79   "
+  author: "MTO79"
+  namespace: "mto79"
+  company: "MTO79"
   description: "Ansible role to configure dnf"
-  role_name: "system_dnf"
+  role_name: "dnf"
   standalone: true
 
   # If the issue tracker for your role is not on github, uncomment the
@@ -20,7 +20,7 @@ galaxy_info:
   # - CC-BY-4.0
   license: "MIT"
 
-  min_ansible_version: "2.11"
+  min_ansible_version: "2.13"
 
   # If this a Container Enabled role, provide the minimum Ansible Container version.
   # min_ansible_container_version:
@@ -36,17 +36,9 @@ galaxy_info:
       versions:
         - "8"
         - "9"
-    - name: "Ubuntu"
-      versions:
-        - "focal"
-        - "jammy"
-    - name: "Debian"
-      versions:
-        - "buster"
-        - "bullseye"
 
   galaxy_tags:
-    - " mto79 "
+    - "mto79"
     - "system"
     - "dnf"
 

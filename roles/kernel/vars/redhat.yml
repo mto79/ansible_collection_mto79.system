@@ -1,7 +1,9 @@
 ---
-system_kernel_setup_unarchive_src: "https://cdn.kernel.org/pub/linux/kernel/v{{ system_kernel_setup_version[:1] }}.x/linux-{{ system_kernel_setup_version }}.tar.xz"
+system_kernel_setup_unarchive_src: >-
+  "https://cdn.kernel.org/pub/linux/kernel/v{{ system_kernel_setup_version[:1] }}.x/linux-{{ system_kernel_setup_version }}.tar.xz"
 
-system_kernel_setup_unarchive_creates: "{{ system_kernel_setup_build_location }}/linux-{{ system_kernel_setup_version }}"
+system_kernel_setup_unarchive_creates: >-
+  {{ system_kernel_setup_build_location }}/linux-{{ system_kernel_setup_version }}
 
 system_kernel_setup_requirements:
   - "bc"

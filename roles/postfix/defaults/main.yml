@@ -15,7 +15,7 @@ system_postfix_setup_inet_protocols: "all"
 system_postfix_setup_banner: "$myhostname ESMTP $mail_name"
 
 # The distination tells Postfix what mails to accept mail for.
-#system_postfix_setup_mydestination: $mydomain, $myhostname, localhost.$mydomain, localhost
+# system_postfix_setup_mydestination: $mydomain, $myhostname, localhost.$mydomain, localhost
 
 # To accept email from other machines, set the mynetworks to something like
 # "- 192.168.0.0/24".
@@ -119,7 +119,7 @@ system_postfix_setup_smtp_tls_security_level: none
 # Postfix is final destination for the specified list of domains; mail is delivered via the $virtual_transport mail delivery transport
 # system_postfix_setup_virtual_mailbox_domains: "$virtual_mailbox_maps"
 
-# Postfix is final destination for the specified list of virtual alias domains, that is, domains for which all addresses are aliased to addresses in other local or remote domains.
+# Postfix is final destination for specified list virtual alias domains, domains for all addresses aliased to addresses in local or remote domains.
 # system_postfix_setup_virtual_alias_domains: "$virtual_alias_maps"
 
 # Optional lookup tables that alias specific mail addresses or domains to other local or remote address.
@@ -137,7 +137,7 @@ system_postfix_setup_smtp_tls_security_level: none
 # The name of the Postfix SMTP server's local SASL authentication realm.
 # system_postfix_setup_smtpd_sasl_local_domain: $myhostname
 
-# Postfix SMTP server SASL security options; as of Postfix 2.3 the list of available features depends on the SASL server implementation that is selected with smtpd_sasl_type.
+# Postfix SMTP server SASL security options; as of Postfix 2.3 the list available features depends on SASL implementation that is selected smtpd_sasl_type.
 # system_postfix_setup_smtpd_sasl_security_options: noanonymous
 
 # Report the SASL authenticated user name in the smtpd(8) Received message header.
@@ -155,10 +155,10 @@ system_postfix_setup_smtp_tls_security_level: none
 # File with the Postfix SMTP server RSA private key in PEM format.
 # system_postfix_setup_smtpd_tls_key_file: /etc/letsencrypt/live/smtp.syhosting.ch/privkey.pem
 
-# Request that the Postfix SMTP server produces Received: message headers that include information about the protocol and cipher used, as well as the remote SMTP client CommonName and client certificate issuer CommonName.
+# Request Postfix SMTP server produces Received: message headers including info protocol and cipher used, remote SMTP client CN / client cert. issuer CN.
 # system_postfix_setup_smtpd_tls_received_header: yes
 
-# The default SMTP TLS security level for the Postfix SMTP client; when a non-empty value is specified, this overrides the obsolete parameters smtp_use_tls, smtp_enforce_tls, and smtp_tls_enforce_peername.
+# The SMTP TLS security level Postfix SMTP client;non-empty value specified, overrides obsol. params smtp_use_tls, smtp_enforce_tls, smtp_tls_enforce_peername.
 # system_postfix_setup_smtpd_tls_security_level: may
 
 # Ask a remote SMTP client for a client certificate.
@@ -200,7 +200,8 @@ system_postfix_setup_smtp_tls_security_level: none
 # The maximal size in bytes of a message, including envelope information.
 # system_postfix_setup_message_size_limit: 10240000
 
-# Require that a remote SMTP client introduces itself with the HELO or EHLO command before sending the MAIL command or other commands that require EHLO negotiation.
+# Require that a remote SMTP client introduces itself with the HELO or EHLO command before sending the MAIL
+# command or other commands that require EHLO negotiation.
 # system_postfix_setup_smtpd_helo_required: no
 
 # The time unit over which client connection rates and other rates are calculated.
@@ -218,7 +219,7 @@ system_postfix_setup_smtp_tls_security_level: none
 # The location of Postfix README files that describe how to build, configure or operate a specific Postfix subsystem or feature.
 # system_postfix_setup_readme_directory: /usr/share/doc/postfix
 
-# The location of Postfix HTML files that describe how to build, configure or operate a specific Postfix subsystem or feature.
+# The location of Postfix HTML, configure or operate a specific Postfix subsystem or feature.
 # system_postfix_setup_html_directory: /usr/share/doc/postfix/html
 
 ...

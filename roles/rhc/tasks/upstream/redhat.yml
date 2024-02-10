@@ -11,7 +11,7 @@
         rhc_environments: "{{ system_rhc_upstream_environments | d([]) }}"
         rhc_insights: "{{ system_rhc_upstream_insights | d(omit) }}"
         rhc_organization: "{{ system_rhc_upstream_organization | d(omit) }}"
-        rhc_ mto79: "{{ system_rhc_upstream_ mto79 | d(omit) }}"
+        rhc_proxy: "{{ system_rhc_upstream_proxy | d(omit) }}"
         rhc_release: "{{ system_rhc_upstream_release | d(omit) }}"
         rhc_repositories: "{{ system_rhc_upstream_repositories | d(omit) }}"
         rhc_server: "{{ system_rhc_upstream_server | d(omit) }}"

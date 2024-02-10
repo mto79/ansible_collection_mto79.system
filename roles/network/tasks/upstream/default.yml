@@ -5,7 +5,7 @@
       ansible.builtin.include_role:
         name: "fedora.linux_system_roles.network"
       vars:
-        network_connections: "{{ system_network_upstream_connections  | default([]) }}"
+        network_connections: "{{ system_network_upstream_connections | default([]) }}"
 
   rescue:
     - name: "Upstream | Handle errors"
