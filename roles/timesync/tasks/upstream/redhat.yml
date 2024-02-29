@@ -2,9 +2,10 @@
 - name: "Upstream | Execute the role and catch errors"
   become: true
   block:
+
     - name: "Upstream | Include timesync role"
       ansible.builtin.include_role:
-        name: fedora.linux_system_roles.timesync
+        name: "fedora.linux_system_roles.timesync"
       vars:
         timesync_ntp_servers: "{{ system_timesync_upstream_ntp_servers | d([]) }}"
         timesync_ptp_domains: "{{ system_timesync_upstream_ptp_domains | d([]) }}"
@@ -16,6 +17,7 @@
         timesync_max_distance: "{{ system_timesync_upstream_max_distance | d(0) }}"
 
   rescue:
+
     - name: "Upstream | Handle errors"
       ansible.builtin.fail:
         msg: "Include fedora.linux_system_roles.timesync role failed"

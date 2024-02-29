@@ -11,8 +11,8 @@
     state: "stopped"
     enabled: false
   register: "_system_timesync_setup_disable_service_result"
-  failed_when: (_system_timesync_setup_disable_service_result is failed)
-               and ('Could not find the requested service' not in _system_timesync_setup_disable_service_result.msg)
+  failed_when: "(_system_timesync_setup_disable_service_result is failed)
+               and ('Could not find the requested service' not in _system_timesync_setup_disable_service_result.msg)"
   loop:
     - "ntp"
     - "ntpd"
@@ -24,7 +24,7 @@
 - name: "Setup | Start and enable service"
   ansible.builtin.service:
     name: "{{ system_timesync_setup_service_name }}"
-    state: started
+    state: "started"
     enabled: true
   become: true
 

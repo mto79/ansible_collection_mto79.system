@@ -1,7 +1,6 @@
-# Ansible role -  mto79 .system.timesync
+# Ansible role -  mto79.system.timesync
 
 This is an Ansible role to install and configure timesync.
-
 Include more information about timesync in this section.
 
 ## Table of Contents
@@ -46,9 +45,8 @@ Refer to the following example:
 ```yaml
     - hosts: servers
       roles:
-        - role: " mto79 .system.timesync"
+        - role: "mto79.system.timesync"
           vars:
-            __role_action:
-              - "setup"
+            __role_action: "setup"
           tags: ['system', 'system-timesync']
 ```
