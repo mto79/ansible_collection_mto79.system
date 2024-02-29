@@ -23,9 +23,10 @@ Name | Description | Tests
 
 Name | Description | Tests
 --- | --- | ---
+[mto79.system.bootstrap](https://github.com/mto79/ansible_collection_mto79.system/blob/main/roles/bootstrap/README.md)| Bootstrap your system. | Make system ready for ansible.
 [mto79.system.cups](https://github.com/mto79/ansible_collection_mto79.system/blob/main/roles/cups/README.md)| Configure EPEL on your system. | RedHat based distros only.
 [mto79.system.epel](https://github.com/mto79/ansible_collection_mto79.system/blob/main/roles/epel/README.md)| Configure EPEL on your system. | RedHat based distros only.
-[mto79.system.hostname](https://github.com/mto79/ansible_collection_mto79.system/blob/main/roles/hostname/README.md)| Configure hostname.| Tests currently unavailable.
+[mto79.system.hostname](https://github.com/mto79/ansible_collection_mto79.system/blob/main/roles/hostname/README.md)| Configure hostname on system.| Tests currently unavailable.
 [mto79.system.selinux](https://github.com/mto79/ansible_collection_mto79.system/blob/main/roles/selinux/README.md)| Install and configure SELinux.| Tests currently unavailable.
 [mto79.system.timesync](https://github.com/mto79/ansible_collection_mto79.system/blob/main/roles/timesync/README.md)| Install and configure Timesync.| Tests currently unavailable.
 [mto79.system.timezone](https://github.com/mto79/ansible_collection_mto79.system/blob/main/roles/timezone/README.md)| Install and configure Timezone.| Tests currently unavailable.

@@ -4,7 +4,7 @@ galaxy_info:
   namespace: "mto79"
   company: "MTO79"
   description: "Ansible role to install and configure hostname"
-  role_name: "hostname"
+  role_name: "system_hostname"
   standalone: true
 
   # If the issue tracker for your role is not on github, uncomment the

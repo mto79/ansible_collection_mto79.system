@@ -1,11 +1,5 @@
 ---
-_system_hostname_setup_requirements:
-  default:
-    - "hostname"
-
-system_hostname_setup_requirements: >
-  {{ _system_hostname_requirements[ansible_facts['distribution'] ~ '-' ~ ansible_facts['distribution_major_version']] |
-  default(_system_hostname_setup_requirements[ansible_facts['distribution']] |
-  default(_system_hostname_setup_requirements['default'] )) }}
+system_hostname_setup_requirements:
+  - "hostname"
 
 ...

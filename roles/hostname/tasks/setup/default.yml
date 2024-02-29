@@ -16,7 +16,7 @@
     - "Reboot"
     - "Gather facts"
   when:
-    - ansible_connection not in [ "container", "docker", "community.docker.docker" ]
+    - ansible_connection not in [ 'container', 'docker', 'community.docker.docker' ]
   become: true
 
 ...

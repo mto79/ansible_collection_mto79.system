@@ -11,11 +11,12 @@
 - name: "Assert | Assert setup specific vars"
   when: __role_action == "setup"
   block:
+
     - name: "Assert | Test system_hostname"
       ansible.builtin.assert:
         that:
-          - system_hostname_setup_hostname is defined
-          - system_hostname_setup_hostname is string
+          - "system_hostname_setup_hostname is defined"
+          - "system_hostname_setup_hostname is string"
         quiet: true
 
 ...
