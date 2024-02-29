@@ -8,7 +8,7 @@ system_bootstrap_setup_install:
   raw: "LANG=C apt-get update && apt-get install -y {{ system_bootstrap_setup_packages }}"
   stdout_regex: " 0 newly installed"
 
-system_bootstrap_setup_os_family_map: ["Debian", "Ubuntu"]
+system_bootstrap_setup_os_family_map: ['Debian', 'Ubuntu']
 
 system_bootstrap_setup_search: ""
 

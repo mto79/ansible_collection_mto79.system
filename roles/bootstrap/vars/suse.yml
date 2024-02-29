@@ -9,7 +9,7 @@ system_bootstrap_setup_install:
   stdout_regex: "Nothing"
 
 system_bootstrap_setup_os_family_map: >
-  ["SLED", "openSUSE Tumbleweed", "openSUSE Leap", "SLES_SAP", "SUSE_LINUX", "SLES", "openSUSE", "SuSE"]
+  ['SLED', 'openSUSE Tumbleweed', 'openSUSE Leap', 'SLES_SAP', 'SUSE_LINUX', 'SLES', 'openSUSE', 'SuSE']
 
 system_bootstrap_setup_search: ""
 

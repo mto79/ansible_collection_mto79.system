@@ -27,6 +27,7 @@
       changed_when: false
 
   rescue:
+
     - name: "Setup | Gather bootstrap facts"
       ansible.builtin.include_tasks:
         file: "gather_facts.yml"
