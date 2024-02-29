@@ -1,16 +1,44 @@
-Ansible Role issue
-=========
+# Ansible role -  mto79.system.issue
 
 This is an Ansible role to install and configure issue.
-
 Include more information about issue in this section.
 
-Table of Contents
------------------
-- [Ansible Role issue](#ansible-role-issue)
+## Table of Contents
+
+- [Ansible role -  mto79.system.issue](#ansible-role----mto79systemissue)
   - [Table of Contents](#table-of-contents)
   - [Requirements](#requirements)
-  - [Role Variables](#role-variables)
-  - [Dependencies](#dependencies)
+  - [Role variables](#role-variables)
+    - [Setup](#setup)
+    - [Upstream](#upstream)
   - [Example Playbook](#example-playbook)
-  - [Role Testing](#role-testing)
+
+## [Requirements](#requirements)
+
+- The minimum version of Ansible required is 2.12.0.
+- The minimum version of Jinja template 2.11.3
+
+## [Role variables](#role-variables)
+
+### Setup
+
+| Variable | Type | Default | Description |
+| -------- | ---- | ------- | ----------- |
+| `system_issue_setup_msg` | String | `` | Optional /etc/issue |
+
+### Upstream
+
+| Variable | Type | Default | Description |
+| -------- | ---- | ------- | ----------- |
+
+## [Example Playbook](#example-playbook)
+
+```yaml
+    - hosts: "servers"
+      roles:
+        - role: "mto79.system.issue"
+          vars:
+            __role_action: "setup"
+          tags: ['system', 'issue']
+
+```

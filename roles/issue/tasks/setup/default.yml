@@ -2,6 +2,7 @@
 - name: "Setup | Execute the role and catch errors"
   become: true
   block:
+
     - name: "Setup | Set /etc/issue"
       ansible.builtin.copy:
         content: "{{ system_issue_setup_msg }}"
@@ -9,6 +10,7 @@
         mode: "0444"
 
   rescue:
+
     - name: "Setup | Handle errors"
       ansible.builtin.fail:
         msg: "Issue Role failed"
