@@ -7,9 +7,10 @@
   become: true
 
 - name: "Setup | Disable motd in ubuntu"
-  when: not system_motd_setup_update_scripts_use | bool
+  when: "not system_motd_setup_update_scripts_use | bool"
   become: true
   block:
+
     - name: "Setup | Find all files in /etc/update-motd.d"
       ansible.builtin.find:
         paths: "/etc/update-motd.d"
@@ -41,9 +42,10 @@
         - "motd-news.service"
 
 - name: "Setup | Enable motd in ubuntu"
-  when: system_motd_setup_update_scripts_use | bool
+  when: "system_motd_setup_update_scripts_use | bool"
   become: true
   block:
+
     - name: "Setup | Set update-motd files from templates."
       ansible.builtin.template:
         src: templates/setup/ubuntu/{{ item }}.j2
@@ -68,13 +70,11 @@
         - "motd-news.timer"
         - "motd-news.service"
 
-
 - name: "Setup | Reset failed state of motd-news.service"
   ansible.builtin.command:
     cmd: "systemctl reset-failed motd-news"
   changed_when: false
   become: true
-  tags:
-    - skip_ansible_lint
+  tags: "skip_ansible_lint"
 
 ...

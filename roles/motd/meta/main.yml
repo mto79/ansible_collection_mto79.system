@@ -3,7 +3,7 @@ galaxy_info:
   namespace: "mto79"
   company: "MTO79"
   description: "Ansible role to configure motd"
-  role_name: "motd"
+  role_name: "system_motd"
   standalone: true
 
   # If the issue tracker for your role is not on github, uncomment the
