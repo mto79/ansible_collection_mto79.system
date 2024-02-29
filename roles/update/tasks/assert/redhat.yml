@@ -1,23 +1,31 @@
 ---
-- name: "Assert | Test if system_update_setup_release is set correctly"
-  ansible.builtin.assert:
-    that:
-      - system_update_setup_release is defined
-      - system_update_setup_release is boolean
-    quiet: true
+- name: "Assert | Setup specific vars"
+  when: __role_action == "setup"
+  block:
 
-- name: "Assert | Test if system_update_setup_bugfix is set correctly"
-  ansible.builtin.assert:
-    that:
-      - system_update_setup_bugfix is defined
-      - system_update_setup_bugfix is boolean
-    quiet: true
+    - name: "Assert | Test if system_update_setup_release is set correctly"
+      ansible.builtin.assert:
+        that:
+          - "system_update_setup_release is defined"
+          - "system_update_setup_release is boolean"
+        quiet: true
 
-- name: "Assert | Test if system_update_setup_security is set correctly"
-  ansible.builtin.assert:
-    that:
-      - system_update_setup_security is defined
-      - system_update_setup_security is boolean
-    quiet: true
+    - name: "Assert | Test if system_update_setup_bugfix is set correctly"
+      ansible.builtin.assert:
+        that:
+          - "system_update_setup_bugfix is defined"
+          - "system_update_setup_bugfix is boolean"
+        quiet: true
+
+    - name: "Assert | Test if system_update_setup_security is set correctly"
+      ansible.builtin.assert:
+        that:
+          - "system_update_setup_security is defined"
+          - "system_update_setup_security is boolean"
+        quiet: true
+
+# - name: "Assert | Setup specific vars"
+#   when: __role_action == "upstream"
+#   block:
 
 ...

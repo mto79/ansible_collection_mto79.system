@@ -11,6 +11,7 @@
 - name: "Assert | Setup specific vars"
   when: __role_action == "setup"
   block:
+
     - name: "Assert | Test if system_timesync_setup_ntp_pools is set correctly"
       ansible.builtin.assert:
         that:

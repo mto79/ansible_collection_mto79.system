@@ -6,25 +6,25 @@
   with_items:
     - "{{ system_update_setup_packages_exclude }}"
   when:
-    - system_update_setup_packages_exclude is defined
-    - system_update_setup_packages_exclude | length > 0
+    - "system_update_setup_packages_exclude is defined"
+    - "system_update_setup_packages_exclude | length > 0"
 
 - name: "Setup | Get packages with hold"
   ansible.builtin.command: "apt-mark showhold"
-  register: system_update_setup_result_packages_holded
-  changed_when: system_update_setup_result_packages_holded.rc != 0
+  register: "_system_update_setup_result_packages_holded"
+  changed_when: "_system_update_setup_result_packages_holded.rc != 0"
 
 - name: "Setup | Show list packages with hold"
   ansible.builtin.debug:
     msg: "{{ item }}"
   with_items:
-    - "{{ system_update_setup_result_packages_holded.stdout_lines }}"
+    - "{{ _system_update_setup_result_packages_holded.stdout_lines }}"
 
 - name: "Setup | Unhold packages from being upgraded"
   ansible.builtin.dpkg_selections:
     name: "{{ item }}"
     selection: "install"
-  when: item not in system_update_setup_packages_exclude
+  when: "item not in system_update_setup_packages_exclude"
   with_items:
     - "{{ system_update_setup_result_packages_holded.stdout_lines }}"
 
@@ -34,6 +34,7 @@
 - name: "Setup | Configure apt"
   when: ansible_pkg_mgr == "apt"
   block:
+
     - name: "Setup | Update all software (apt)"
       ansible.builtin.apt:
         update_cache: true
@@ -43,47 +44,45 @@
       become: true
 
     - name: "Setup | Upgrade all packages"
-      when: system_update_setup_release | bool
+      when: "system_update_setup_release | bool"
       ansible.builtin.apt:
         upgrade: "{{ system_update_setup_upgrade_command | default('dist') }}"
       become: true
 
     - name: "Setup | Determine Security patches"
-      when: system_update_setup_security | bool
+      when: "system_update_setup_security | bool"
       ansible.builtin.shell:
         cmd: |
-          set -o pipefail grep security /etc/apt/sources.list | sudo tee /etc/apt/security.sources.list
+          set -o pipefail
+          grep security /etc/apt/sources.list | sudo tee /etc/apt/security.sources.list
         executable: "/bin/bash"
       changed_when: false
       become: true
 
     - name: "Setup | Install only Security updates"
-      when: system_update_setup_security | bool
-      ansible.builtin.shell: apt-get update && apt-get upgrade -o Dir::Etc::SourceList=/etc/apt/security.sources.list -y  # noqa command-instead-of-module
+      when: "system_update_setup_security | bool"
+      ansible.builtin.shell: "apt-get update && apt-get upgrade -o Dir::Etc::SourceList=/etc/apt/security.sources.list -y"  # noqa command-instead-of-module
       changed_when: true
       become: true
 
     - name: "Setup | Check if '/var/run/reboot-required' exists"
       ansible.builtin.stat:
-        path: /var/run/reboot-required
-      register: system_update_setup_stat_reboot_required
+        path: "/var/run/reboot-required"
+      register: "_system_update_setup_stat_reboot_required"
       become: true
 
     - name: "Setup | Reboot if '/var/run/reboot-required' exists"
       ansible.builtin.debug:
         msg: "/var/run/reboot-required exists, rebooting"
-      notify:
-        - "Reboot after update"
+      notify: "Reboot after update"
       changed_when:
-        - system_update_setup_stat_reboot_required.stat.exists
-        - system_update_setup_stat_reboot_required.stat.isreg
+        - "_system_update_setup_stat_reboot_required.stat.exists"
+        - "_system_update_setup_stat_reboot_required.stat.isreg"
       become: true
 
     - name: "Setup | Apt autoremove (apt)"
       ansible.builtin.apt:
         autoremove: "{{ system_update_setup_autoremove }}"
-      when:
-        - ansible_pkg_mgr == "apt"
-        - system_update_setup_autoremove
+      when: "system_update_setup_autoremove | bool"
       become: true
 ...

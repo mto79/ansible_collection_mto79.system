@@ -27,11 +27,14 @@ Name | Description | Tests
 [mto79.system.cups](https://github.com/mto79/ansible_collection_mto79.system/blob/main/roles/cups/README.md)| Configure EPEL on your system. | RedHat based distros only.
 [mto79.system.epel](https://github.com/mto79/ansible_collection_mto79.system/blob/main/roles/epel/README.md)| Configure EPEL on your system. | RedHat based distros only.
 [mto79.system.hostname](https://github.com/mto79/ansible_collection_mto79.system/blob/main/roles/hostname/README.md)| Configure hostname on system.| Tests currently unavailable.
+[mto79.system.hosts](https://github.com/mto79/ansible_collection_mto79.system/blob/main/roles/hosts/README.md)| Configure host file on your system.| Tests currently unavailable.
 [mto79.system.issue](https://github.com/mto79/ansible_collection_mto79.system/blob/main/roles/issue/README.md)| Configure /etc/issue on system.| Tests currently unavailable.
 [mto79.system.motd](https://github.com/mto79/ansible_collection_mto79.system/blob/main/roles/motd/README.md)| Configure MOTD on system.| Tests currently unavailable.
+[mto79.system.rhc](https://github.com/mto79/ansible_collection_mto79.system/blob/main/roles/rhc/README.md)| Remote Host configuratio (RedHat).| Tests currently unavailable.
 [mto79.system.selinux](https://github.com/mto79/ansible_collection_mto79.system/blob/main/roles/selinux/README.md)| Install and configure SELinux.| Tests currently unavailable.
 [mto79.system.timesync](https://github.com/mto79/ansible_collection_mto79.system/blob/main/roles/timesync/README.md)| Install and configure Timesync.| Tests currently unavailable.
 [mto79.system.timezone](https://github.com/mto79/ansible_collection_mto79.system/blob/main/roles/timezone/README.md)| Install and configure Timezone.| Tests currently unavailable.
+[mto79.system.update](https://github.com/mto79/ansible_collection_mto79.system/blob/main/roles/update/README.md)| Update your system.| Tests currently unavailable.
 [mto79.system.users](https://github.com/mto79/ansible_collection_mto79.system/blob/main/roles/users/README.md)| Install and configure Users.| Tests currently unavailable.
 <!--end collection content-->
 

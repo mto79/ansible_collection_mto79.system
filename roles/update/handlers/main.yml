@@ -2,7 +2,7 @@
 - name: "Reboot after update"
   ansible.builtin.reboot:
   when:
-    - system_update_setup_reboot | bool
+    - "system_update_setup_reboot | bool"
   become: true
 
 ...

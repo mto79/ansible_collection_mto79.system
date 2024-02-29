@@ -1,6 +1,0 @@
----
-- name: "Setup | Failover message"
-  ansible.builtin.debug:
-    msg: "Your system ({{ ansible_facts.system }}) is not supported."
-
-...
