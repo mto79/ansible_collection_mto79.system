@@ -2,6 +2,7 @@
 - name: "Upstream | Execute the role and catch errors"
   become: true
   block:
+
     - name: "Upstream | Include selinux role"
       ansible.builtin.include_role:
         name: "fedora.linux_system_roles.selinux"
@@ -20,15 +21,16 @@
         selinux_logins_purge: "{{ system_selinux_upstream_logins_purge | d(false) }}"
 
   rescue:
+
     # Fail if failed for a different reason than system_selinux_upstream_reboot_required.
     - name: "Upstream | Handle errors"
       ansible.builtin.fail:
         msg: "Include role fedora.linux_system_roles.selinux failed"
-      when: not system_selinux_upstream_reboot | bool
+      when: "not system_selinux_upstream_reboot | bool"
 
     - name: "Upstream | Restart managed host"
       ansible.builtin.reboot:
-      when: system_selinux_upstream_reboot | bool
+      when: "system_selinux_upstream_reboot | bool"
       become: true
 
     - name: "Upstream | Wait for managed host to come back"

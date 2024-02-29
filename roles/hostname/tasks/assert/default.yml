@@ -19,4 +19,8 @@
           - "system_hostname_setup_hostname is string"
         quiet: true
 
+# - name: "Assert | Assert setup specific vars"
+#   when: __role_action == "upstream"
+#   block:
+
 ...

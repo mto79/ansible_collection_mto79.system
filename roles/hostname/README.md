@@ -40,6 +40,7 @@ This is an Ansible role to configure the hostname on system.
     - hosts: servers
       roles:
         - role: "mto79.system.hostname"
-          vars: __role_action: "setup"
+          vars:
+            __role_action: "setup"
           tags: ['system', 'system-hostname']
 ```

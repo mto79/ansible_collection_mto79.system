@@ -4,7 +4,7 @@ galaxy_info:
   namespace: "mto79"
   company: "MTO79"
   description: "Ansible role to install and configure selinux"
-  role_name: "selinux"
+  role_name: "system_selinux"
   standalone: true
 
   # If the issue tracker for your role is not on github, uncomment the

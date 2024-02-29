@@ -7,4 +7,13 @@
       - __role_name | length > 0
       # Make sure you can't forget to replace the role name
       - "__role_name != ['temp', 'late'] | join('')"
+
+# - name: "Assert | Assert setup specific vars"
+#   when: __role_action == "setup"
+#   block:
+
+# - name: "Assert | Assert setup specific vars"
+#   when: __role_action == "upstream"
+#   block:
+
 ...

@@ -7,7 +7,7 @@
     - "Gather facts"
 
 - name: "Setup | Debian | Flush handlers"
-  ansible.builtin.meta: flush_handlers
+  ansible.builtin.meta: "flush_handlers"
 
 - name: "Setup | Debian | Stop service apparmor"
   ansible.builtin.systemd:
@@ -22,27 +22,27 @@
   become: true
 
 - name: "Setup | Debian | Run selinux-activate"
-  ansible.builtin.command: sudo selinux-activate
-  register: _system_selinux_setup_activate_output
-  changed_when: _system_selinux_setup_activate_output.rc != 0
+  ansible.builtin.command: "sudo selinux-activate"
+  register: "_system_selinux_setup_activate_output"
+  changed_when: "_system_selinux_setup_activate_output.rc != 0"
   become: true
 
 - name: "Setup | Debian | Restart managed host"
   ansible.builtin.reboot:
-  when: system_selinux_setup_reboot
+  when: "system_selinux_setup_reboot | bool"
   become: true
 
 - name: "Setup | Debian | Run selinux-config-enforcing"
-  ansible.builtin.command: sudo selinux-config-enforcing
-  register: _system_selinux_setup_config_enforcing_output
-  changed_when: _system_selinux_setup_config_enforcing_output.rc != 0
+  ansible.builtin.command: "sudo selinux-config-enforcing"
+  register: "_system_selinux_setup_config_enforcing_output"
+  changed_when: "_system_selinux_setup_config_enforcing_output.rc != 0"
   become: true
 
 - name: "Setup | Debian | Configure selinux"
-  when:
-    - ansible_selinux.status is defined
+  when: "ansible_selinux.status is defined"
   become: true
   block:
+
     - name: "Setup | Debian | Manage selinux"
       ansible.posix.selinux:
         state: "{{ system_selinux_setup_state }}"
@@ -50,7 +50,7 @@
 
     - name: "Setup | Debian | Restart managed host"
       ansible.builtin.reboot:
-      when: system_selinux_setup_reboot
+      when: "system_selinux_setup_reboot | bool"
 
     - name: "Setup | Debian | Manage selinux booleans"
       ansible.posix.seboolean:
@@ -60,7 +60,6 @@
       loop: "{{ system_selinux_setup_booleans }}"
       loop_control:
         label: "{{ item.name }}"
-      when:
-        - system_selinux_setup_booleans is defined
+      when: "system_selinux_setup_booleans is defined"
 
 ...

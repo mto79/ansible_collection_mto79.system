@@ -1,12 +1,11 @@
-# Ansible role -  mto79 .system.bootstrap
+# Ansible role -  mto79.system.bootstrap
 
 This is an Ansible role to install and configure bootstrap.
 Include more information about bootstrap in this section.
 
-Table of Contents
------------------
+## Table of Contents
 
-- [Ansible role -  mto79 .system.bootstrap](#ansible-role--- mto79 systembootstrap)
+- [Ansible role -  mto79.system.bootstrap](#ansible-role--- mto79systembootstrap)
   - [Table of Contents](#table-of-contents)
   - [Requirements](#requirements)
   - [Role variables](#role-variables)
@@ -39,10 +38,9 @@ Table of Contents
 ```yaml
     - hosts: servers
       roles:
-        - role: " mto79 .system.bootstrap"
+        - role: "mto79.system.bootstrap"
           vars:
-            __role_action:
-              - "setup"
+            __role_action: "setup"
           tags: ['system', 'bootstrap']
 
 ```
