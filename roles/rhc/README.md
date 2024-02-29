@@ -1,19 +1,16 @@
-Ansible Role rhc
-=========
+# Ansible role -  mto79.system.rhc
 
 This is an Ansible role to install and configure rhc.
-
 Include more information about rhc in this section.
 
-Table of Contents
------------------
+## Table of Contents
 
-- [Ansible Role rhc](#ansible-role-rhc)
+- [Ansible role -  mto79.system.rhc](#ansible-role----mto79systemrhc)
   - [Table of Contents](#table-of-contents)
   - [Requirements](#requirements)
   - [Role variables](#role-variables)
-    - [Setup,](#setup)
-    - [Upstream,](#upstream)
+    - [Setup](#setup)
+    - [Upstream](#upstream)
   - [Example Playbook](#example-playbook)
 
 ## [Requirements](#requirements)
@@ -23,31 +20,33 @@ Table of Contents
 
 ## [Role variables](#role-variables)
 
-### Setup,
+### Setup
+
 | Variable | Type | Default | Description |
 | -------- | ---- | ------- | ----------- |
-### Upstream,
+
+### Upstream
+
 | Variable | Type | Default | Description |
 | -------- | ---- | ------- | ----------- |
-|`system_rhc_upstream_auth` |  | |
-|`system_rhc_upstream_baseurl`  | |
-|`system_rhc_upstream_environments` | |
-|`system_rhc_upstream_insights` | |
-|`system_rhc_upstream_organization` | |
-|`system_rhc_upstream_ mto79` | |
-|`system_rhc_upstream_release` | | |
-|`system_rhc_upstream_repositories` | |
-|`system_rhc_upstream_server` | |
-|`system_rhc_upstream_state` | |
+|`system_rhc_upstream_auth` |  | | |
+|`system_rhc_upstream_baseurl`  | | | |
+|`system_rhc_upstream_environments` | | | |
+|`system_rhc_upstream_insights` | | | |
+|`system_rhc_upstream_organization` | | | |
+|`system_rhc_upstream_services` | | | |
+|`system_rhc_upstream_release` | | | |
+|`system_rhc_upstream_repositories` | | | |
+|`system_rhc_upstream_server` | | | |
+|`system_rhc_upstream_state` | | | |
 
 ## [Example Playbook](#example-playbook)
 
 ```yaml
-    - hosts: servers
+    - hosts: "servers"
       roles:
-        - role: " mto79 .system.rhc"
+        - role: "mto79.system.rhc"
           vars:
-            __role_action:
-              - "setup"
+            __role_action: "setup"
           tags: ['system', 'rhc']
 ```

@@ -1,9 +1,11 @@
 ---
 - name: "Upstream | Execute the role and catch errors"
+  become: true
   block:
+
     - name: "Setup | Include rhc role"
       ansible.builtin.include_role:
-        name: fedora.linux_system_roles.rhc
+        name: "fedora.linux_system_roles.rhc"
       vars:
         rhc_state: "{{ system_rhc_upstream_state | d('present') }}"
         rhc_auth: "{{ system_rhc_upstream_auth | d({}) }}"
@@ -17,6 +19,7 @@
         rhc_server: "{{ system_rhc_upstream_server | d(omit) }}"
 
   rescue:
+
     - name: "Upstream | Handle errors"
       ansible.builtin.fail:
         msg: "Include role fedora.linux_system_roles.rhc failed"
