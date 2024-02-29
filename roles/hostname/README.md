@@ -1,10 +1,10 @@
-# Ansible role -  mto79 .system.hostname
+# Ansible role -  mto79.system.hostname
 
 This is an Ansible role to configure the hostname on system.
 
 ## Table of Contents
 
-- [Ansible role -  mto79 .system.hostname](#ansible-role--- mto79 systemhostname)
+- [Ansible role -  mto79.system.hostname](#ansible-role--- mto79systemhostname)
   - [Table of Contents](#table-of-contents)
   - [Requirements](#requirements)
   - [Role variables](#role-variables)
@@ -25,9 +25,9 @@ This is an Ansible role to configure the hostname on system.
 
 | Variable                                     | Type       | Default           | Description |
 |----------------------------------------------|------------|-------------------|-------------|
-| `system_hostname`                            | String     | Any               | The hostname to set. By default whatever the inventory is set to. |
-| `system_hostname_reboot`                     | Boolean    | true              | Should the machine be rebooted when the hostname is changed? |
-| `system_hostname_requirements`               | List       | `hostname`        |  Package needed to set hostanme|
+| `system_hostname_setup_hostname`             | String     | Any               | The hostname to set. By default whatever the inventory is set to. |
+| `system_hostname_setup_reboot`               | Boolean    | true              | Should the machine be rebooted when the hostname is changed? |
+| `system_hostname_setup_requirements`         | List       | `hostname`        | Package needed to set hostanme|
 
 ### Upstream
 
@@ -39,9 +39,7 @@ This is an Ansible role to configure the hostname on system.
 ```yaml
     - hosts: servers
       roles:
-        - role: " mto79 .system.hostname"
-          vars:
-            __role_action:
-              - "setup"
+        - role: "mto79.system.hostname"
+          vars: __role_action: "setup"
           tags: ['system', 'system-hostname']
 ```

@@ -1,5 +1,5 @@
 ---
 system_hostname_setup_hostname: "{{ inventory_hostname_short }}"
-system_hostname_setup_reboot: true
+system_hostname_setup_reboot: false
 
 ...

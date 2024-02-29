@@ -1,7 +1,7 @@
 ---
 - name: "Reboot"
   ansible.builtin.reboot:
-  when: system_hostname_setup_reboot | bool
+  when: "system_hostname_setup_reboot | bool"
   become: true
 
 - name: "Gather facts"
