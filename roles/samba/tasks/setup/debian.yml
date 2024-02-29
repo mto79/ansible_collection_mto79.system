@@ -1,6 +1,6 @@
 ---
 - name: "Setup | Samba | Ensure SMB packages are installed"
-  anisble.builtin.apt:
+  ansible.builtin.apt:
     name: "{{ system_samba_setup_packages }}"
     state: "present"
   become: true
@@ -16,7 +16,7 @@
   notify: "Restart smbd"
   become: true
 
-- name: "Setup | Samba | Ensure smbd/winbind   are enabled and started"
+- name: "Setup | Samba | Ensure smbd/winbind are enabled and started"
   ansible.builtin.systemd:
     name: "{{ item }}"
     enabled: true

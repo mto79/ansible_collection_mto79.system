@@ -20,7 +20,7 @@
           - "system_issue_setup_msg | length > 0"
         quiet: true
 
-# - name: "Assert | Assert setup specific vars"
+# - name: "Assert | Setup specific vars"
 #   when: __role_action == "upstream"
 #   block:
 

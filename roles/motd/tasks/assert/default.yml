@@ -1,5 +1,5 @@
 ---
-- name: "Ensure __role_name is defined"
+- name: "Assert | Ensure __role_name is defined"
   ansible.builtin.assert:
     that:
       - "__role_name is defined"
@@ -8,7 +8,7 @@
       # Make sure you can't forget to replace the role name
       - "__role_name != ['temp', 'late'] | join('')"
 
-- name: "Assert | Assert setup specific vars"
+- name: "Assert | Setup specific vars"
   when: __role_action == "setup"
   block:
     - name: "Assert | Test system_motd_setup_msg"
@@ -18,7 +18,7 @@
           - "system_motd_setup_msg is string"
         quiet: true
 
-# - name: "Assert | Assert setup specific vars"
+# - name: "Assert | Setup specific vars"
 #   when: __role_action == "upstream"
 #   block:
 

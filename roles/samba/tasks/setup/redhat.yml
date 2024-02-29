@@ -1,6 +1,6 @@
 ---
 - name: "Setup | Samba | Ensure SMB packages are installed"
-  anisble.builtin.dnf:
+  ansible.builtin.dnf:
     name: "{{ system_samba_setup_packages }}"
     state: "present"
   become: true
@@ -13,19 +13,21 @@
     group: "root"
     mode: "0640"
     backup: true
-  when: system_samba_setup_config is defined
+  when: "system_samba_setup_config is defined"
   notify: "Restart smbd"
   become: true
 
 - name: "Setup | Samba | Ensure SELinux Booleans for samba are set"
   block:
-    - name: "Setup | Samba | Include  mto79  selinux role"
+
+    - name: "Setup | Samba | Include selinux role"
       ansible.builtin.include_role:
-        name: " mto79 .system.selinux"
+        name: "mto79.system.selinux"
       vars:
         selinux_booleans: "{{ system_samba_setup_selinux_booleans | d([]) }}"
 
   rescue:
+
     - name: "Setup | Samba | Handle errors"
       ansible.builtin.fail:
         msg: "Include mto79.system.selinux role failed"
@@ -40,6 +42,7 @@
 
 - name: "Setup | Samba | Ensure Firewalld for samba are set"
   block:
+
     - name: "Setup | Samba | Include  mto79  firewalld role"
       ansible.builtin.include_role:
         name: "mto79.system.firewall"
@@ -47,6 +50,7 @@
         firewall: "{{ system_samba_setup_firewall_services | d([]) }}"
 
   rescue:
+
     - name: "Setup | Samba | Handle errors"
       ansible.builtin.fail:
         msg: "Include mto79.system.firewall role failed"
@@ -65,7 +69,7 @@
   changed_when: false
   failed_when: false
   become: true
-  when: system_samba_setup_adcli_use_samba_data | bool
+  when: "system_samba_setup_adcli_use_samba_data | bool"
 
 - name: "Setup | Samba | Ensure smbd/winbind  are enabled and started"
   ansible.builtin.systemd:
@@ -73,5 +77,6 @@
     enabled: true
     state: "started"
   loop: "{{ system_samba_setup_services }}"
+  become: true
 
 ...

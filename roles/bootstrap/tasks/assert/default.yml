@@ -34,7 +34,7 @@
           - "system_bootstrap_setup_become is boolean"
         quiet: true
 
-# - name: "Assert | Assert setup specific vars"
+# - name: "Assert | Setup specific vars"
 #   when: __role_action == "upstream"
 #   block:
 
