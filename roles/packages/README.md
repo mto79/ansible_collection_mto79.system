@@ -1,8 +1,6 @@
-# Ansible role -  mto79 .system.packages
+# Ansible role -  mto79.system.packages
 
 This is an Ansible role to install and configure packages.
-
-Include more information about packages in this section.
 
 ## Table of Contents
 
@@ -39,11 +37,10 @@ Include more information about packages in this section.
 ## [Example Playbook](#example-playbook)
 
 ```yaml
-    - hosts: servers
+    - hosts: "servers"
       roles:
-        - role: " mto79 .system.packages"
+        - role: "mto79.system.packages"
           vars:
-            __role_action:
-              - "setup"
-          tags: ["system", "system-packages"]
+            __role_action: "setup"
+          tags: ['system', 'system-packages']
 ```
