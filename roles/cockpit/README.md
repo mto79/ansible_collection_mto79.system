@@ -1,17 +1,15 @@
-Ansible Role cockpit
-=========
+# Ansible role - mto79.system.cockpit
 
 This is an Ansible role to install and configure cockpit.
-
 Include more information about cockpit in this section.
 
-Table of Contents
------------------
+## Table of Contents
 
-- [Ansible Role cockpit](#ansible-role-cockpit)
+- [Ansible role - mto79.system.cockpit](#ansible-role---mto79systemcockpit)
   - [Table of Contents](#table-of-contents)
   - [Requirements](#requirements)
   - [Role variables](#role-variables)
+    - [Setup](#setup)
     - [Upstream](#upstream)
   - [Example Playbook](#example-playbook)
 
@@ -21,7 +19,14 @@ Table of Contents
 - The minimum version of Jinja template 2.11.3
 
 ## [Role variables](#role-variables)
+
+### Setup
+
+| Variable | Type | Default | Description |
+| -------- | ---- | ------- | ----------- |
+
 ### Upstream
+
 | Variable | Type | Default | Description |
 | -------- | ---- | ------- | ----------- |
 | `system_cockpit_upstream_packages` | String | `default` | Packages to install Cocokpit and it plugins.
@@ -37,12 +42,10 @@ Table of Contents
 Refer to the following example:
 
 ```yaml
-    - hosts: servers
+    - hosts: "servers"
       roles:
-        - role: " mto79 .system.cockpit"
+        - role: "mto79.system.cockpit"
           vars:
-            __role_action:
-              - "setup"
-              #- "upstream" # Uncomment to run upstream-specific tasks
-          tags: ['system', 'cockpit']
+            __role_action: "setup"
+          tags: ['system', 'system-cockpit']
 ```

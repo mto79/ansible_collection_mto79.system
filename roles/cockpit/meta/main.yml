@@ -4,7 +4,7 @@ galaxy_info:
   namespace: "mto79"
   company: "MTO79"
   description: "Ansible role to install and configure cockpit"
-  role_name: "cockpit"
+  role_name: "system_cockpit"
   standalone: true
 
   # If the issue tracker for your role is not on github, uncomment the
@@ -39,6 +39,7 @@ galaxy_info:
 
   galaxy_tags:
     - "mto79"
+    - "system"
     - "cockpit"
 
     # List tags for your role here, one per line. A tag is a keyword that describes

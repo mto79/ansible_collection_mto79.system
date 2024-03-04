@@ -44,6 +44,7 @@ system_packages_setup_items:
   - "wget"
   - "redhat-release"
   - "redhat-release-eula"
+  - "net-tools"
 
 system_packages_setup_pip_items: []
 

@@ -1,9 +1,10 @@
 ---
 - name: "Upstream | Execute the vendor role and catch errors"
   block:
+
     - name: "Upstream | Include vendor cockpit role"
       ansible.builtin.include_role:
-        name: fedora.linux_system_roles.cockpit
+        name: "fedora.linux_system_roles.cockpit"
       vars:
         cockpit_packages: "{{ system_cockpit_upstream_packages | default('default') }}"
         cockpit_enabled: "{{ system_cockpit_upstream_enabled | default(true) }}"
@@ -14,6 +15,7 @@
         cockpit_certificates: "{{ system_cockpit_upstream_certificates | default([]) }}"
 
   rescue:
+
     - name: "Upstream | Handle errors"
       ansible.builtin.fail:
         msg: "Include fedora.linux_system_roles.cockpit role failed"
