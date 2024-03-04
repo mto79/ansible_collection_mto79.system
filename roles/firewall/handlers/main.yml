@@ -2,16 +2,16 @@
 - name: "Reload firewall"
   ansible.builtin.service:
     name: "{{ system_firewall_setup_service }}"
-    state: reloaded
+    state: "reloaded"
   when:
-    - ansible_connection not in [ "container", "docker", "community.docker.docker" ]
-    - not ansible_check_mode | bool
+    - "ansible_connection not in [ 'container', 'docker', 'community.docker.docker' ]"
+    - "not ansible_check_mode | bool"
   become: true
 
 - name: "Reload firewalld"
   ansible.builtin.command: firewall-cmd --reload
-  register: "system_firewall_setup_reload_result"
-  changed_when: system_firewall_setup_reload_result.rc != 0
+  register: "_system_firewall_setup_reload_result"
+  changed_when: "_system_firewall_setup_reload_result.rc != 0"
   become: true
 
 ...

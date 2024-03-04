@@ -2,12 +2,13 @@
 - name: "Assert | Assert upstream specific vars"
   when: __role_action == "upstream"
   block:
+
     - name: "Assert | Test if system_firewall_upstream_  is set correctly"
       ansible.builtin.assert:
         that:
-          - system_firewall_upstream_  is defined
-          - system_firewall_upstream_  is iterable
-          - system_firewall_upstream_  | length > 0
+          - "system_firewall_upstream_services is defined"
+          - "system_firewall_upstream_services is iterable"
+          - "system_firewall_upstream_services | length > 0"
         quiet: true
 
 ...

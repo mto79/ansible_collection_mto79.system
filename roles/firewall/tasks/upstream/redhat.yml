@@ -2,6 +2,7 @@
 - name: "Upstream | Execute the upstream role and catch errors"
   become: true
   block:
+
     - name: "Upstream | Include upstream firewall role"
       ansible.builtin.include_role:
         name: "fedora.linux_system_roles.firewall"
@@ -9,6 +10,7 @@
         firewall: "{{ system_firewall_upstream_services | d([]) }}"
 
   rescue:
+
     - name: "Upstream | Handle errors"
       ansible.builtin.fail:
         msg: "Include fedora.linux_system_roles.firewall role failed"

@@ -3,18 +3,18 @@
   ansible.builtin.package:
     name: "{{ system_firewall_setup_packages_conflicting }}"
     state: "absent"
-  when: system_firewall_setup_packages_conflicting is defined
+  when: "system_firewall_setup_packages_conflicting is defined"
   become: true
 
 - name: "Setup | Install required software"
   ansible.builtin.package:
     name: "{{ system_firewall_setup_packages_required }}"
     state: "present"
-  when: system_firewall_setup_packages_required is defined
+  when: "system_firewall_setup_packages_required is defined"
   become: true
 
 - name: "Setup | Manage ufw"
-  when: system_firewall_setup_service == "ufw"
+  when: "system_firewall_setup_service == 'ufw'"
   block:
     - name: "Setup | Manage rules (ufw)"
       community.general.ufw:
@@ -33,16 +33,16 @@
         delete: "{{ item.delete | default(false) | bool }}"
       loop: "{{ system_firewall_setup_services }}"
       when:
-        - ansible_connection not in [ "container", "docker", "community.docker.docker" ]
-        - system_firewall_setup_services is defined
+        - "ansible_connection not in [ 'container', 'docker', 'community.docker.docker' ]"
+        - "system_firewall_setup_services is defined"
       become: true
 
 - name: "Setup | Reload firewall (ufw)"
   community.general.ufw:
     state: "reloaded"
   when:
-    - ansible_connection not in [ "container", "docker", "community.docker.docker" ]
-    - system_firewall_setup_service == "ufw"
+    - "ansible_connection not in [ 'container', 'docker', 'community.docker.docker' ]"
+    - "system_firewall_setup_service == 'ufw'"
   become: true
 
 - name: "Setup | Open ports (firewalld-port)"
@@ -52,10 +52,10 @@
     state: "enabled"
   loop: "{{ system_firewall_setup_services }}"
   when:
-    - ansible_connection not in [ "container", "docker", "community.docker.docker" ]
-    - system_firewall_setup_services is defined
-    - system_firewall_setup_service == "firewalld"
-    - item.name is number
+    - "ansible_connection not in [ 'container', 'docker', 'community.docker.docker' ]"
+    - "system_firewall_setup_services is defined"
+    - "system_firewall_setup_service == 'firewalld'"
+    - "item.name is number"
   loop_control:
     label: "{{ item.name }}"
   notify:
@@ -69,12 +69,12 @@
     state: "disabled"
   loop: "{{ system_firewall_setup_services }}"
   when:
-    - ansible_connection not in [ "container", "docker", "community.docker.docker" ]
-    - system_firewall_setup_services is defined
-    - system_firewall_setup_service == "firewalld"
-    - item.name is number
-    - item.state is defined
-    - item.state == "absent"
+    - "ansible_connection not in [ 'container', 'docker', 'community.docker.docker' ]"
+    - "system_firewall_setup_services is defined"
+    - "system_firewall_setup_service == 'firewalld'"
+    - "item.name is number"
+    - "item.state is defined"
+    - "item.state == 'absent'"
   loop_control:
     label: "{{ item.name }}"
   notify:
@@ -88,10 +88,10 @@
     state: "enabled"
   loop: "{{ system_firewall_setup_services }"
   when:
-    - ansible_connection not in [ "container", "docker", "community.docker.docker" ]
-    - system_firewall_setup_services  is defined
-    - system_firewall_setup_service == "firewalld"
-    - item.name is not number
+    - "ansible_connection not in [ 'container', 'docker', 'community.docker.docker' ]"
+    - "system_firewall_setup_services  is defined"
+    - "system_firewall_setup_service == 'firewalld'"
+    - "item.name is not number"
   loop_control:
     label: "{{ item.name }}"
   notify:
@@ -105,12 +105,12 @@
     state: "disabled"
   loop: "{{ system_firewall_setup_services }}"
   when:
-    - ansible_connection not in [ "container", "docker", "community.docker.docker" ]
-    - system_firewall_setup_  is defined
-    - system_firewall_setup_service == "firewalld"
-    - item.name is not number
-    - item.state is defined
-    - item.state == "absent"
+    - "ansible_connection not in [ 'container', 'docker', 'community.docker.docker' ]"
+    - "system_firewall_setup_services is defined"
+    - "system_firewall_setup_service == 'firewalld'"
+    - "item.name is not number"
+    - "item.state is defined"
+    - "item.state == 'absent'"
   loop_control:
     label: "{{ item.name }}"
   notify:
@@ -121,8 +121,8 @@
   community.general.ufw:
     state: "enabled"
   when:
-    - ansible_connection not in [ "container", "docker", "community.docker.docker" ]
-    - system_firewall_setup_service == "ufw"
+    - "ansible_connection not in [ 'container', 'docker', 'community.docker.docker' ]"
+    - "system_firewall_setup_service == 'ufw'"
   become: true
 
 - name: "Setup | Configure iptables"
@@ -132,9 +132,9 @@
     validate: "iptables-restore --test %s"
     mode: "0640"
   when:
-    - ansible_connection not in [ "container", "docker", "community.docker.docker" ]
-    - system_firewall_setup_  is defined
-    - system_firewall_setup_service == "iptables"
+    - "ansible_connection not in [ 'container', 'docker', 'community.docker.docker' ]"
+    - "system_firewall_setup_services is defined"
+    - "system_firewall_setup_service == 'iptables'"
   loop_control:
     label: "{{ item.name }}"
   notify:
@@ -147,8 +147,8 @@
     state: "started"
     enabled: true
   when:
-    - ansible_connection not in [ "container", "docker", "community.docker.docker" ]
-    - system_firewall_setup_service is defined
+    - "ansible_connection not in [ 'container', 'docker', 'community.docker.docker' ]"
+    - "system_firewall_setup_service is defined"
   become: true
 
 ...

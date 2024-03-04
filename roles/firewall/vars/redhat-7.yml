@@ -5,7 +5,7 @@ system_firewall_setup_packages_conflicting:
 system_firewall_setup_packages_required:
   - "firewalld"
   - "iptables"
-  - "iptables- "
+  - "iptables-services"
 
 system_firewall_setup_service: "firewalld"
 
