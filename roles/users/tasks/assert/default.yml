@@ -43,7 +43,7 @@
     - name: "Assert | Test if system_users_setup_group_list is set correctly"
       ansible.builtin.assert:
         that:
-          -" system_users_setup_group_list is iterable"
+          - "system_users_setup_group_list is iterable"
         quiet: true
       when:
         - "system_users_setup_group_list is defined"
