@@ -50,15 +50,15 @@
 - name: "Setup | Set Tuned profile {{ system_tuned_setup_profile }}"
   ansible.builtin.command: "tuned-adm profile {{ system_tuned_setup_profile }}"
   when:
-    - not system_tuned_setup_use_recommended_profile | bool
-    - system_tuned_setup_profile != ''
+    - "not system_tuned_setup_use_recommended_profile | bool"
+    - "system_tuned_setup_profile != ''"
   changed_when: false
   become: true
 
 - name: "Setup | Set recommended Tuned profile {{ system_tuned_setup_recommended_profile }}"
   ansible.builtin.command: "tuned-adm profile {{ system_tuned_setup_recommended_profile }}"
   when:
-    - system_tuned_setup_use_recommended_profile | bool
+    - "system_tuned_setup_use_recommended_profile | bool"
   changed_when: false
   become: true
 
