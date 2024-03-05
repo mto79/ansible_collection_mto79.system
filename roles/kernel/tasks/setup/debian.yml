@@ -1,12 +1,13 @@
 ---
 - name: "Setup | Include build tasks."
   ansible.builtin.include_tasks: "build.yml"
-  when: system_kernel_setup_build | bool
+  when: "system_kernel_setup_build | bool"
 
 - name: "Setup | Manage grub."
-  when: system_kernel_setup_grub | bool
+  when: "system_kernel_setup_grub | bool"
   become: true
   block:
+
     - name: "Setup | Add transparent_hugepage=never to GRUB_CMDLINE_LINUX"
       ansible.builtin.lineinfile:
         path: "/etc/default/grub"
@@ -14,10 +15,10 @@
         line: 'GRUB_CMDLINE_LINUX="quiet splash transparent_hugepage=never"'
         backrefs: true
 
-    - name: Update GRUB
+    - name: "Setup | Update GRUB"
       ansible.builtin.command: "update-grub"
       changed_when: false
       notify:
-        "Reboot"
+        - "Reboot"
 
 ...

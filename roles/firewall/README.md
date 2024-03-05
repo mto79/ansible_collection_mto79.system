@@ -38,6 +38,6 @@ Include more information about motd in this section.
         - role: "mto79.system.firewall"
           vars:
             __role_action: "setup"
-          tags: ['system', 'firewall']
+          tags: ['system', 'system-firewall']
 
 ```

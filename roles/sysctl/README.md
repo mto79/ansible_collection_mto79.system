@@ -1,9 +1,9 @@
-# Ansible role -  mto79 .system.sysctl
+# Ansible role -  mto79.system.sysctl
 
 This is an Ansible role to install and configure sysctl settings.
 
 ## Table of Contents
------------------
+
 - [Ansible role -  mto79 .system.sysctl](#ansible-role--- mto79 systemsysctl)
   - [Table of Contents](#table-of-contents)
   - [Requirements](#requirements)
@@ -38,11 +38,10 @@ This is an Ansible role to install and configure sysctl settings.
 ## [Example Playbook](#example-playbook)
 
 ```yaml
-    - hosts: servers
+    - hosts: "servers"
       roles:
-        - role: " mto79 .system.sysctl"
+        - role: "mto79.system.sysctl"
           vars:
-            __role_action:
-              - "setup"
+            __role_action: "setup"
           tags: ['system', 'sysctl']
 ```

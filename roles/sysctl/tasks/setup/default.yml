@@ -14,10 +14,10 @@
     reload: "{{ system_sysctl_setup_reload }}"
   loop: "{{ system_sysctl_setup_items }}"
   when:
-    - system_sysctl_setup_items is defined
-    - item.name is defined
-    - item.value is defined
-    - ansible_connection not in [ "container", "docker", "community.docker.docker" ]
+    - "system_sysctl_setup_items is defined"
+    - "item.name is defined"
+    - "item.value is defined"
+    - "ansible_connection not in [ 'container', 'docker', 'community.docker.docker' ]"
   loop_control:
     label: "{{ item.name }}"
   become: true

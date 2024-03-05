@@ -2,6 +2,7 @@
 - name: "Upstream | Execute the role and catch errors"
   become: true
   block:
+
     - name: "Upstream | Include kernel_settings role"
       ansible.builtin.include_role:
         name: "fedora.linux_system_roles.kernel_settings"
@@ -15,6 +16,7 @@
         kernel_settings_reboot_ok: "{{ system_sysctl_upstream_reboot_ok | d(false) }}"
 
   rescue:
+
     - name: "Upstream | Handle errors"
       ansible.builtin.fail:
         msg: "Include fedora.linux_system_roles.kernel_settings role failed"

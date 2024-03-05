@@ -8,4 +8,11 @@
     post_reboot_delay: 30
   become: true
 
+- name: "Restart dnf"
+  ansible.builtin.command:
+    cmd: "dnf clean all"
+  changed_when: false
+  listen: "Restart dnf"
+  become: true
+
 ...

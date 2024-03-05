@@ -11,6 +11,7 @@
 - name: "Assert | Setup specific vars"
   when: __role_action == "setup"
   block:
+
     - name: "Assert | Test system_motd_setup_msg"
       ansible.builtin.assert:
         that:

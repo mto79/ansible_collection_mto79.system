@@ -1,16 +1,26 @@
 ---
 - name: "Setup | Include build tasks."
   ansible.builtin.include_tasks: "build.yml"
-  when: system_kernel_setup_build | bool
+  when: "system_kernel_setup_build | bool"
 
 - name: "Setup | Manage grub."
-  when: system_kernel_setup_grub | bool
+  when: "system_kernel_setup_grub | bool"
   become: true
   block:
+
     - name: "Setup | Disable Transparent Hugepages on all kernels"
       ansible.builtin.command: "grubby --update-kernel=ALL --args='transparent_hugepage=never'"
       changed_when: false
       notify:
-        "Reboot"
+        - "Reboot"
+
+- name: "Setup | Set installonly_limit in /etc/dnf/dnf.conf"
+  ansible.builtin.lineinfile:
+    path: "/etc/dnf/dnf.conf"
+    regexp: "^installonly_limit="
+    line: "installonly_limit={{ system_kernel_setup_installonly_limit }}"
+    state: "present"
+  notify:
+    - "Restart dnf"
 
 ...

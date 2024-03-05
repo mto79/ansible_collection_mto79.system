@@ -29,7 +29,7 @@
     line: "{{ item.name }}={{ item.value }}"
     mode: "0640"
   loop: "{{ system_kernel_setup_parameters }}"
-  when: system_kernel_setup_parameters is defined
+  when: "system_kernel_setup_parameters is defined"
   become: true
 
 - name: "Setup | Make"

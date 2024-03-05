@@ -4,7 +4,7 @@ galaxy_info:
   namespace: "mto79"
   company: "MTO79"
   description: "Ansible role to install and configure users"
-  role_name: "users"
+  role_name: "system_users"
   standalone: true
 
   # If the issue tracker for your role is not on github, uncomment the
