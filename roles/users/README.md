@@ -1,13 +1,11 @@
-Ansible Role users
-=========
+# Ansible role - mto79.system.users
 
 This is an Ansible role to install and configure users.
-
 Include more information about users in this section.
 
-Table of Contents
------------------
-- [Ansible Role users](#ansible-role-users)
+## Table of Contents
+
+- [Ansible role - mto79.system.users](#ansible-role---mto79systemusers)
   - [Table of Contents](#table-of-contents)
   - [Requirements](#requirements)
   - [Role variables](#role-variables)
@@ -21,7 +19,9 @@ Table of Contents
 - The minimum version of Jinja template 2.11.3
 
 ## [Role variables](#role-variables)
+
 ### Setup
+
 | Variable | Type | Default | Description |
 | -------- | ---- | ------- | ----------- |
 |`system_users_setup_ssh_key_directory` |  `String` | `ssh_keys` | `The location to store ssh keys for user` |
@@ -30,6 +30,7 @@ Table of Contents
 |`system_users_setup_create_home` |  `Boolean` | `True` | `Should homedirectories be created?` |
 
 ### Upsream
+
 | Variable | Type | Default | Description |
 | -------- | ---- | ------- | ----------- |
 
@@ -38,9 +39,8 @@ Table of Contents
 ```yaml
     - hosts: servers
       roles:
-        - role: " mto79 .system.users"
+        - role: "mto79.system.users"
           vars:
-            __role_action:
-              - "setup"
-          tags: ['system', 'users']
+            __role_action: "setup"
+          tags: ['system', 'system-users']
 ```

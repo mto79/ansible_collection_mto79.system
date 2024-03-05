@@ -8,7 +8,7 @@
 
 - name: "Setup | Group | Check that the group is present | debug"
   ansible.builtin.debug:
-    var: ansible_facts['getent_group']
+    var: "ansible_facts['getent_group']"
 
 - name: "Setup | Group | Check if group in local /etc/group"
   ansible.builtin.lineinfile:
@@ -36,9 +36,9 @@
     src: "templates/setup/sudo_group.j2"
     dest: '/etc/sudoers.d/{{ group.name | replace(".", "dot") }}_group'
     mode: "0640"
-    validate: /usr/sbin/visudo -cf %s
+    validate: "/usr/sbin/visudo -cf %s"
   when:
-    - group.sudo_options is defined
+    - "group.sudo_options is defined"
   loop_control:
     label: "{{ group.name }}"
   become: true
@@ -48,7 +48,7 @@
     path: '/etc/sudoers.d/{{ group.name | replace(".", "dot") }}_group'
     state: "absent"
   when:
-    - group.sudo_options is not defined
+    - "group.sudo_options is not defined"
   loop_control:
     label: "{{ group.name }}"
   become: true

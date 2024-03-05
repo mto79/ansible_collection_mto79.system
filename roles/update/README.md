@@ -28,7 +28,7 @@ This is an Ansible role to update your system.
 
 | Variable | Default | Description |
 | -------- | ------- | ----------- |
-|
+
 ## [Example Playbook](#example-playbook)
 
 Refer to the following example:

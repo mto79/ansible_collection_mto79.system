@@ -5,17 +5,17 @@
     state: "directory"
     mode: "0750"
   when:
-    - user.manage_ssh_key is defined
-    - user.manage_ssh_key | bool
-  delegate_to: localhost
+    - "user.manage_ssh_key is defined"
+    - "user.manage_ssh_key | bool"
+  delegate_to: "localhost"
   become: false
 
 - name: "Setup | User | Salt and Hash password user when set in attributes."
   ansible.builtin.set_fact:
     system_users_setup_password_hash: "{{ user.password | string | password_hash('sha512') }}"
   when:
-    - user.password is defined
-    - user.password | length > 0
+    - "user.password is defined"
+    - "user.password | length > 0"
 
 - name: "Setup | User | Manage users {{ user.name }}"
   ansible.builtin.user:
@@ -43,7 +43,7 @@
     path: "/home/{{ user.name }}"
     state: "absent"
   when:
-    - user.state is defined and user.state == "absent"
+    - "user.state is defined and user.state == 'absent'"
   become: true
 
 - name: "Setup | User | Clear password facts {{ user.name }}"
@@ -56,8 +56,8 @@
   changed_when: false
   failed_when: false
   when:
-    - user.password is not defined
-    - system_users_setup_manage_user.changed
+    - "user.password is not defined"
+    - "system_users_setup_manage_user.changed"
   become: true
 
 - name: "Setup | User | Set sudo options for {{ user.name }}"
@@ -68,7 +68,7 @@
     validate: "/usr/sbin/visudo -cf %s"
   failed_when: false
   when:
-    - user.sudo_options is defined
+    - "user.sudo_options is defined"
   loop_control:
     label: "{{ user.name }}"
   become: true
@@ -78,7 +78,7 @@
     path: "/etc/sudoers.d/{{ user.name | replace('.', 'dot') }}_user"
     state: "absent"
   when:
-    - user.sudo_options is not defined
+    - "user.sudo_options is not defined"
   loop_control:
     label: "{{ user.name }}"
   become: true
@@ -95,8 +95,8 @@
     cmd: "{{ system_users_setup_ssh_keygen_command }}"
     creates: "{{ system_users_setup_ssh_key_directory }}/{{ user.name }}"
   when:
-    - user.manage_ssh_key is defined
-    - user.manage_ssh_key | bool
+    - "user.manage_ssh_key is defined"
+    - "user.manage_ssh_key | bool"
   loop_control:
     label: "{{ user.name }}"
   delegate_to: "localhost"
@@ -107,8 +107,8 @@
     cmd: "{{ system_users_setup_ssh_keygen_pubkey_command }} > {{ system_users_setup_ssh_key_directory }}/{{ user.name }}.pub"
     creates: "{{ system_users_setup_ssh_key_directory }}/{{ user.name }}.pub"
   when:
-    - user.manage_ssh_key is defined
-    - user.manage_ssh_key | bool
+    - "user.manage_ssh_key is defined"
+    - "user.manage_ssh_key | bool"
   loop_control:
     label: "{{ user.name }}"
   delegate_to: "localhost"
@@ -122,8 +122,8 @@
            > "{{ users_ssh_key_directory }}/{{ user.name }}.ppk"
     creates: "{{ users_ssh_key_directory }}/{{ user.name }}.ppk"
   when:
-    - user.manage_ssh_key is defined
-    - user.manage_ssh_key | bool
+    - "user.manage_ssh_key is defined"
+    - "user.manage_ssh_key | bool"
   delegate_to: "localhost"
   become: false
 
@@ -135,8 +135,8 @@
   become: true
   become_user: "{{ user.name }}"
   when:
-    - user.manage_ssh_key is defined
-    - user.manage_ssh_key
+    - "user.manage_ssh_key is defined"
+    - "user.manage_ssh_key"
 
 - name: "Setup | User | Deploy authorized keys for {{ user.name }}"
   ansible.posix.authorized_key:
@@ -147,8 +147,8 @@
   loop_control:
     label: "{{ user.name }}"
   when:
-    - user.state is defined and user.state != "absent"
-    - user.authorized_keys is defined
+    - "user.state is defined and user.state != 'absent'"
+    - "user.authorized_keys is defined"
   become: true
 
 - name: "Setup | User | Remove unauthorized keys for {{ user.name }}"
@@ -159,7 +159,7 @@
   loop: "{{ user.unauthorized_keys }}"
   loop_control:
     label: "{{ user.name }}"
-  when: user.unauthorized_keys is defined
+  when: "user.unauthorized_keys is defined"
   become: true
 
 - name: "Setup | User | Copy generated private ssh key for {{ user.name }}"
@@ -170,9 +170,9 @@
     owner: "{{ user.name }}"
     group: "{{ user.group | default(omit) }}"
   when:
-    - system_users_setup_manage_user is defined
-    - user.copy_private_key is defined
-    - user.copy_private_key | bool
+    - "system_users_setup_manage_user is defined"
+    - "user.copy_private_key is defined"
+    - "user.copy_private_key | bool"
   loop_control:
     label: "{{ user.name }}"
   become: true
@@ -180,12 +180,12 @@
 - name: "Setup | User | Check users password valid time"
   ansible.builtin.command:
     cmd: awk 'BEGIN { FS = ":" } $1 == "{{ user.name }}" { print $5 }' /etc/shadow
-  register: system_users_setup_pw_valid
+  register: "system_users_setup_pw_valid"
   changed_when: false
   check_mode: false
   when:
-    - user.state is defined and user.state != "absent" or
-      user.state is not defined
+    - "user.state is defined"
+    - "user.state != 'absent' or user.state is not defined"
   become: true
 
 - name: "Setup | User | Set users password valid time"
@@ -193,9 +193,9 @@
     cmd: chage -M "{{ user.password_validity_days }}" "{{ user.name }}"
   changed_when: false
   when:
-    - user.password_validity_days is defined
-    - system_users_setup_pw_valid.stdout is defined
-    - system_users_setup_pw_valid.stdout | int !=  user.password_validity_days | int
+    - "user.password_validity_days is defined"
+    - "system_users_setup_pw_valid.stdout is defined"
+    - "system_users_setup_pw_valid.stdout | int !=  user.password_validity_days | int"
   become: true
 
 ...

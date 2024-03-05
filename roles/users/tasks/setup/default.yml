@@ -6,7 +6,7 @@
   become: true
 
 - name: "Setup | Loop over system_users_setup_group_list"
-  when: system_users_setup_group_list is defined
+  when: "system_users_setup_group_list is defined"
   ansible.builtin.include_tasks:
     file: "setup/group.yml"
   loop: "{{ system_users_setup_group_list }}"
@@ -15,7 +15,7 @@
     loop_var: "group"
 
 - name: "Setup | Loop over system_users_setup_user_list"
-  when: system_users_setup_user_list is defined
+  when: "system_users_setup_user_list is defined"
   ansible.builtin.include_tasks:
     file: "setup/user.yml"
   loop: "{{ system_users_setup_user_list }}"
@@ -24,7 +24,7 @@
     loop_var: "user"
 
 - name: "Setup | Manage cron permission"
-  when: system_users_setup_cron_allow | bool
+  when: "system_users_setup_cron_allow | bool"
   ansible.builtin.template:
     src: "templates/setup/cron.allow.j2"
     dest: "/etc/cron.allow"
@@ -32,7 +32,7 @@
   become: true
 
 - name: "Setup | Check existence of /etc/cron.allow"
-  when: not system_users_setup_cron_allow | bool
+  when: "not system_users_setup_cron_allow | bool"
   ansible.builtin.file:
     path: "/etc/cron.allow"
     state: "absent"
