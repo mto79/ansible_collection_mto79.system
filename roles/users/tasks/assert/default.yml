@@ -1,6 +1,5 @@
 ---
 - name: "Assert | Ensure __role_name is defined"
-- name: "Assert | Ensure __role_name is defined"
   ansible.builtin.assert:
     that:
       - "__role_name is defined"
