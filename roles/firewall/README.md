@@ -1,7 +1,7 @@
 # Ansible role - mto79.system.firewall
 
 This is an Ansible role to install and configure firewall.
-Include more information about motd in this section.
+Include more information about firewall in this section.
 
 ## Table of Contents
 

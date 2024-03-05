@@ -2,7 +2,7 @@
 - name: "Setup | Change bashrc root"
   ansible.builtin.lineinfile:
     path: "/root/.bashrc"
-    regexp: '^#force_color_prompt=yes'
+    regexp: "^#force_color_prompt=yes"
     line: "force_color_prompt=yes"
   become: true
 
@@ -13,12 +13,12 @@
       "^    PS1='\\${debian_chroot:\\+\\(\\$debian_chroot\\)}\\\\\\[\\\\033\\
       [01;32m\\\\\\]\\\\u@\\\\h\\\\\\[\\\\033\\[00m\\\\\\]:\\\\\\[\\\\033\\[01;34m\\\\\\]\\\\w\\\\\\[\\\\033\\[00m\\\\\\]\\\\\\$ '"
     line: "    PS1='${debian_chroot:+($debian_chroot)}\\[\\033[01;31m\\]\\u\\[\\033[01;32m\\]@\\h\\[\\033[00m\\]:\\[\\033[01;34m\\]\\w\\[\\033[00m\\]\\$ '"
-    owner: root
-    group: root
+    owner: "root"
+    group: "root"
     mode: "0644"
   become: true
   tags:
-    - skip_ansible_lint
+    - "skip_ansible_lint"
 
 - name: "Setup | Source root bashrc"
   ansible.builtin.shell: "source /root/.bashrc"
@@ -48,7 +48,7 @@
   changed_when: false
   become: true
   tags:
-    - skip_ansible_lint
+    - "skip_ansible_lint"
 
 - name: "Setup | Change bash history options (merge history of multi bash session)"
   ansible.builtin.shell:
@@ -58,6 +58,6 @@
   changed_when: false
   become: true
   tags:
-    - skip_ansible_lint
+    - "skip_ansible_lint"
 
 ...
