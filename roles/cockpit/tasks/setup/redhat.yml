@@ -1,6 +1,19 @@
 ---
-- name: "Setup | Failover if no platform/version specific tasks are found"
-  ansible.builtin.debug:
-    msg: "No custom setup, only vendor implementation"
+- name: "Setup | PCP logging for cockpit"
+  become: true
+  when: "system_cockpit_setup_pmlogger | bool"
+  block:
+
+    - name: "Setup | Install pcp"
+      ansible.builtin.dnf:
+        name: "pcp"
+        state: "present"
+      become: true
+
+    - name: "Setup | Start and Enable pmlogger"
+      ansible.builtin.systemd:
+        name: "pmlogger"
+        state: "started"
+        enabled: "yes"
 
 ...
