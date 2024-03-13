@@ -1,7 +1,7 @@
 ---
 - name: "Reboot"
   ansible.builtin.reboot:
-    msg: "Rebooting for transparent_hugepage change"
+    msg: "Rebooting ..."
     connect_timeout: 5
     reboot_timeout: 300
     pre_reboot_delay: 0
