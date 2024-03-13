@@ -42,7 +42,7 @@
   ansible.builtin.dnf:
     name: "{{ item }}"
     state: "absent"
-  loop: "{{ i_system_kernel_setup_installed_kernels.stdout_lines }}"
+  loop: "{{ _system_kernel_setup_installed_kernels.stdout_lines }}"
   when: "item != _system_kernel_setup_latest_kernel"
 
 - name: "Setup | Grubby for rd.auto"
