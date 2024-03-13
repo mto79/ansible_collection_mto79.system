@@ -38,10 +38,11 @@
     msg: "Latest kernel version: {{ _system_kernel_setup_latest_kernel }}"
 
 - name: "Setup | Remove older kernels, keeping the latest one"
+  become: true
   ansible.builtin.debug:
     msg: "{{ item }}"
   loop: "{{ _system_kernel_setup_installed_kernels.stdout_lines }}"
-  when: item != _system_kernel_setup_latest_kernel
+  when: "item != _system_kernel_setup_latest_kernel"
 
 - name: "Setup | Grubby for rd.auto"
   ansible.builtin.command: "grubby --update-kernel=ALL --args='rd.auto=1'"
