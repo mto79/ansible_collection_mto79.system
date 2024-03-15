@@ -2,90 +2,90 @@
 - name: "Assert | Ensure __role_name is defined"
   ansible.builtin.assert:
     that:
-      - __role_name is defined
-      - __role_name is string
-      - __role_name | length > 0
+      - "__role_name is defined"
+      - "__role_name is string"
+      - "__role_name | length > 0"
       # Make sure you can't forget to replace the role name
       - "__role_name != ['temp', 'late'] | join('')"
 
-- name: "Assert | Definitions for Setup"
-  when: __role_name == "setup"
+- name: "Assert | Setup specific vars"
+  when: __role_action == "setup"
   block:
+
     - name: "Assert | Test if system_cron_setup_shell is set correctly"
       ansible.builtin.assert:
         that:
-          - system_cron_setup_shell is defined
-          - system_cron_setup_shell is string
+          - "system_cron_setup_shell is defined"
+          - "system_cron_setup_shell is string"
 
     - name: "Assert | Test if system_cron_setup_path is set correctly"
       ansible.builtin.assert:
         that:
-          - system_cron_setup_path is defined
-          - system_cron_setup_path is string
+          - "system_cron_setup_path is defined"
+          - "system_cron_setup_path is string"
 
     - name: "Assert | Test if system_cron_setup_mailto is set correctly"
       ansible.builtin.assert:
         that:
-          - system_cron_setup_mailto is defined
-          - system_cron_setup_mailto is string
+          - "system_cron_setup_mailto is defined"
+          - "system_cron_setup_mailto is string"
 
     - name: "Assert | Test if system_cron_setup_jobs is set correctly"
       ansible.builtin.assert:
         that:
-          - system_cron_setup_jobs is iterable
+          - "system_cron_setup_jobs is iterable"
       when:
-        - system_cron_setup_jobs is defined
+        - "system_cron_setup_jobs is defined"
 
     - name: "Assert | Test if item in system_cron_jobs is set correctly"
       ansible.builtin.assert:
         that:
-          - item.name is defined
-          - item.name is string
-          - item.job is defined
-          - item.job is string
+          - "item.name is defined"
+          - "item.name is string"
+          - "item.job is defined"
+          - "item.job is string"
       loop: "{{ system_cron_setup_jobs }}"
       loop_control:
         label: "{{ item.name }}"
-      when:
-        - system_cron_setup_jobs is defined
+      when: "system_cron_setup_jobs is defined"
 
     - name: "Assert | Test if item.minute is set correctly"
       ansible.builtin.assert:
         that:
-          - item.minute >= 0
-          - item.minute <= 59
+          - "item.minute >= 0"
+          - "item.minute <= 59"
       loop: "{{ system_cron_setup_jobs }}"
       loop_control:
         label: "{{ item.name }}"
       when:
-        - system_cron_setup_jobs is defined
-        - item.minute is defined
-        - item.minute is number
+        - "system_cron_setup_jobs is defined"
+        - "item.minute is defined"
+        - "item.minute is number"
 
     - name: "Assert | Test if item.hour is set correctly"
       ansible.builtin.assert:
         that:
-          - item.hour >= 0
-          - item.hour <= 23
+          - "item.hour >= 0"
+          - "item.hour <= 23"
       loop: "{{ system_cron_setup_jobs }}"
       loop_control:
         label: "{{ item.name }}"
       when:
-        - system_cron_setup_jobs is defined
-        - item.hour is defined
-        - item.hour is number
+        - "system_cron_setup_jobs is defined"
+        - "item.hour is defined"
+        - "item.hour is number"
 
     - name: "Assert | Test if item.weekday is set correctly"
       ansible.builtin.assert:
         that:
-          - item.weekday >= 0
-          - item.weekday <= 6
+          - "item.weekday >= 0"
+          - "item.weekday <= 6"
       loop: "{{ system_cron_setup_jobs }}"
       loop_control:
         label: "{{ item.name }}"
       when:
-        - system_cron_setup_jobs is defined
-        - item.weekday is defined
-        - item.weekday is number
+        - "system_cron_setup_jobs is defined"
+        - "item.weekday is defined"
+        - "item.weekday is number"
 
 ...

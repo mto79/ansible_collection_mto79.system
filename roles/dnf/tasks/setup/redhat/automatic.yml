@@ -14,8 +14,9 @@
 
 - name: "Setup | Perform auto reboot specific tasks"
   become: true
-  when: system_dnf_setup_automatic_reboot | bool
+  when: "system_dnf_setup_automatic_reboot | bool"
   block:
+
     - name: "Setup | Install dependencies needed for reboot"
       ansible.builtin.package:
         name: "{{ system_dnf_automatic_reboot_dependencies }}"
@@ -29,14 +30,14 @@
         group: "root"
         mode: "0644"
       loop:
-        - dnf-automatic-reboot.service
-        - dnf-automatic-reboot.timer
+        - "dnf-automatic-reboot.service"
+        - "dnf-automatic-reboot.timer"
       notify: "Reload systemd"
 
 - name: "Setup | Check status of dnf-automatic-install.timer"
   ansible.builtin.systemd:
     name: "dnf-automatic-install.timer"
-  register: _system_dnf_setup_automatic_install_timer
+  register: "_system_dnf_setup_automatic_install_timer"
 
 - name: "Setup | Start and enable systemd timer for dnf-automatic"
   ansible.builtin.service:
@@ -45,14 +46,14 @@
     enabled: true
   # run always if not in check mode or if the timer unit exists
   # regardless of the check mode state
-  when: not ansible_check_mode or
-        _system_dnf_setup_automatic_install_timer.status["LoadState"] == "loaded"
+  when: "not ansible_check_mode or
+        _system_dnf_setup_automatic_install_timer.status['LoadState'] == 'loaded'"
   become: true
 
 - name: "Setup | Check status of dnf-automatic-reboot.timer"
   ansible.builtin.systemd:
     name: "dnf-automatic-reboot.timer"
-  register: _system_dnf_setup_automatic_reboot_timer
+  register: "_system_dnf_setup_automatic_reboot_timer"
 
 - name: "Setup | Set timer state for auto reboot"
   ansible.builtin.systemd:
@@ -62,7 +63,8 @@
     masked: false
   # run always if not in check mode and the auto reboot is enabled
   # or if the timer unit exists regardless of the check mode state
-  when: (not ansible_check_mode and dnf_automatic_reboot) or
-        _system_dnf_setup_automatic_reboot_timer.status["LoadState"] == "loaded"
+  when: "(not ansible_check_mode and dnf_automatic_reboot) or
+        _system_dnf_setup_automatic_reboot_timer.status['LoadState'] == 'loaded'"
   become: true
+
 ...

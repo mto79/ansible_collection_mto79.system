@@ -3,8 +3,7 @@
   ansible.builtin.service:
     name: "{{ system_cron_setup_service }}"
     state: restarted
-  when:
-    - system_cron_setup_service | length
+  when: "system_cron_setup_service | length > 0"
   become: true
 
 ...
