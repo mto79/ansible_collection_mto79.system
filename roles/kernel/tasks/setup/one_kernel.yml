@@ -23,7 +23,7 @@
 
 - name: "Setup | Remove old kernel packages"
   become: true
-  ansible.builtin.command: "dnf remove --oldinstallonly"
+  ansible.builtin.command: "dnf remove --oldinstallonly -y"
   changed_when: false
 
 - name: "Setup | One kernel | Update bootloader"
