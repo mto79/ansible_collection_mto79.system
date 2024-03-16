@@ -6,7 +6,7 @@
 
 - name: "Setup | Bootloader | Identify boot type"
   ansible.builtin.set_fact:
-    _system_kernel_setup_bootloader_boot_type: "{{ 'UEFI' if _system_kernel_setup_bootloader_efi_check.exists else 'BIOS' }}"
+    _system_kernel_setup_bootloader_boot_type: "{{ 'UEFI' if _system_kernel_setup_bootloader_efi_check.stat.exists else 'BIOS' }}"
 
 - name: "Setup | Bootloader | Update bootloader (conditional)"
   block:
