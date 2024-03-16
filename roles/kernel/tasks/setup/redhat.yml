@@ -3,17 +3,6 @@
   ansible.builtin.include_tasks: "build.yml"
   when: "system_kernel_setup_build | bool"
 
-- name: "Setup | Manage grub."
-  when: "system_kernel_setup_grub | bool"
-  become: true
-  block:
-
-    - name: "Setup | Disable Transparent Hugepages on all kernels"
-      ansible.builtin.command: "grubby --update-kernel=ALL --args='transparent_hugepage=never'"
-      changed_when: false
-      notify:
-        - "Reboot"
-
 - name: "Setup | Set installonly_limit in /etc/dnf/dnf.conf"
   ansible.builtin.lineinfile:
     path: "/etc/dnf/dnf.conf"
@@ -23,31 +12,22 @@
   notify:
     - "Restart dnf"
 
-- name: "Setup | List all installed kernels"
-  ansible.builtin.command: "rpm -q kernel"
-  register: "_system_kernel_setup_installed_kernels"
-  changed_when: false
-  tags: "skip_ansible_lint"
+- name: "Setup | Keep only one kernel"
+  ansible.builtin.include_tasks: "one_kernel.yml"
+  when: "system_kernel_setup_keep_one_kernel | bool"
 
-- name: "Setup | Determine the latest kernel version"
-  ansible.builtin.set_fact:
-    _system_kernel_setup_latest_kernel: "{{ _system_kernel_setup_installed_kernels.stdout_lines | sort | last }}"
-
-- name: "Setup | Display the latest kernel version"
-  ansible.builtin.debug:
-    msg: "Latest kernel version: {{ _system_kernel_setup_latest_kernel }}"
-
-- name: "Setup | Remove older kernels, keeping the latest one"
+- name: "Setup | Manage grub."
   become: true
-  ansible.builtin.debug:
-    msg: "{{ item }}"
-  loop: "{{ _system_kernel_setup_installed_kernels.stdout_lines }}"
-  when: "item != _system_kernel_setup_latest_kernel"
+  block:
 
-- name: "Setup | Grubby for rd.auto"
-  ansible.builtin.command: "grubby --update-kernel=ALL --args='rd.auto=1'"
-  changed_when: false
-  notify:
-    - "Reboot"
+    - name: "Setup | Disable Transparent Hugepages on all kernels"
+      ansible.builtin.command: "grubby --update-kernel=/boot/vmlinuz-$(uname -r) --args='transparent_hugepage=never'"
+      when: "system_kernel_setup_grub_hugepage | bool"
+      changed_when: false
+
+    - name: "Setup | Grubby for rd.auto"
+      ansible.builtin.command: "grubby --update-kernel=/boot/vmlinuz-$(uname -r) --args=rd.auto"
+      when: "system_kernel_setup_grub_rdauto | bool"
+      changed_when: false
 
 ...

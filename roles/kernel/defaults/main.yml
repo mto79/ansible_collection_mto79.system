@@ -1,11 +1,14 @@
 ---
 system_kernel_setup_build: false
 system_kernel_setup_grub: false
+system_kernel_setup_grub_hugepage: false
+system_kernel_setup_grub_rdauto: false
 system_kernel_setup_version: "5.15.5"
 system_kernel_setup_build_location: /tmp
 system_kernel_setup_parameters:
   - name: "CONFIG_SMP"
     value: "y"
 system_kernel_setup_installonly_limit: "3"
+system_kernel_setup_keep_one_kernel: false
 
 ...

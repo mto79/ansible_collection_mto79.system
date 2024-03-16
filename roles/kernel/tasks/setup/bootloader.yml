@@ -1,0 +1,30 @@
+---
+- name: "Setup | Bootloader | Check if /sys/firmware/efi exists"
+  ansible.builtin.stat:
+    path: "/sys/firmware/efi"
+  register: "_system_kernel_setup_bootloader_efi_check"
+
+- name: "Setup | Bootloader | Identify boot type"
+  ansible.builtin.set_fact:
+    _system_kernel_setup_bootloader_boot_type: "{{ 'UEFI' if _system_kernel_setup_bootloader_efi_check else 'BIOS' }}"
+
+- name: "Setup | Bootloader | Update bootloader (conditional)"
+  block:
+
+    - name: "Setup | Bootloader | Update GRUB2 config (BIOS)"
+      become: true
+      ansible.builtin.command: "grub2-mkconfig -o /boot/grub2/grub.cfg"
+      when: "_system_kernel_setup_bootloader_boot_type == 'BIOS'"
+      changed_when: false
+
+    - name: "Setup | Bootloader | Update UEFI bootloader"
+      become: true
+      ansible.builtin.command: "grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg"
+      when: "_system_kernel_setup_bootloader_boot_type == 'UEFI'"
+      changed_when: false
+
+- name: "Setup | Bootloader | Display boot type information"
+  ansible.builtin.debug:
+    msg: "System boot type: {{ _system_kernel_setup_bootloader_boot_type }}"
+
+...
