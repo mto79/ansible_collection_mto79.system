@@ -1,18 +1,4 @@
 ---
-- name: "Setup | One kernel | List all installed kernels"
-  ansible.builtin.command: "rpm -q kernel"
-  register: "_system_kernel_setup_installed_kernels"
-  changed_when: false
-  tags: "skip_ansible_lint"
-
-- name: "Setup | One kernel | Determine the latest kernel version"
-  ansible.builtin.set_fact:
-    _system_kernel_setup_latest_kernel: "{{ _system_kernel_setup_installed_kernels.stdout_lines | sort | last }}"
-
-- name: "Setup | One kernel | Display the latest kernel version"
-  ansible.builtin.debug:
-    msg: "Latest kernel version: {{ _system_kernel_setup_latest_kernel }}"
-
 - name: "Setup | One kernel | Remove older kernels, keeping the latest one"
   become: true
   ansible.builtin.dnf:
