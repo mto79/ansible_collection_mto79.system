@@ -25,6 +25,7 @@ Name | Description | Tests
 --- | --- | ---
 [mto79.system.bootstrap](https://github.com/mto79/ansible_collection_mto79.system/blob/main/roles/bootstrap/README.md)| Bootstrap your system. | Make system ready for ansible.
 [mto79.system.cups](https://github.com/mto79/ansible_collection_mto79.system/blob/main/roles/cups/README.md)| Configure EPEL on your system. | RedHat based distros only.
+[mto79.system.dnf](https://github.com/mto79/ansible_collection_mto79.system/blob/main/roles/dnf/README.md)| Configure DNF on your system. | RedHat based distros only.
 [mto79.system.epel](https://github.com/mto79/ansible_collection_mto79.system/blob/main/roles/epel/README.md)| Configure EPEL on your system. | RedHat based distros only.
 [mto79.system.hostname](https://github.com/mto79/ansible_collection_mto79.system/blob/main/roles/hostname/README.md)| Configure hostname on system.| Tests currently unavailable.
 [mto79.system.hosts](https://github.com/mto79/ansible_collection_mto79.system/blob/main/roles/hosts/README.md)| Configure host file on your system.| Tests currently unavailable.
