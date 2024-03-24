@@ -46,6 +46,7 @@ system_packages_setup_items:
   - "redhat-release-eula"
   - "net-tools"
   - "python3-lxml"
+  - "rng-tools"
 
 system_packages_setup_pip_items: []
 
