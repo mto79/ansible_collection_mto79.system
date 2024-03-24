@@ -1,0 +1,11 @@
+---
+- name: "Setup | Configuration | Set localpkg_gpgcheck to 1"
+  ansible.builtin.lineinfile:
+    path: "/etc/dnf/dnf.conf"
+    state: "present"
+    regexp: "^localpkg_gpgcheck="
+    line: "localpkg_gpgcheck=1"
+  become: true
+  tags: ['security']
+
+...

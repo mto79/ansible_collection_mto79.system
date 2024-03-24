@@ -1,28 +1,28 @@
 ---
-- name: "Setup | Install dnf-automatic package"
+- name: "Setup | Automatic | Install dnf-automatic package"
   ansible.builtin.package:
     name: "{{ system_dnf_setup_automatic_package }}"
     state: "present"
   become: true
 
-- name: "Setup | Deploy dnf-automatic configuration file"
+- name: "Setup | Automatic | Deploy dnf-automatic configuration file"
   ansible.builtin.template:
     src: "templates/setup/automatic.conf.j2"
     dest: "/etc/dnf/automatic.conf"
     mode: "0644"
   become: true
 
-- name: "Setup | Perform auto reboot specific tasks"
+- name: "Setup | Automatic | Perform auto reboot specific tasks"
   become: true
   when: "system_dnf_setup_automatic_reboot | bool"
   block:
 
-    - name: "Setup | Install dependencies needed for reboot"
+    - name: "Setup | Automatic | Install dependencies needed for reboot"
       ansible.builtin.package:
         name: "{{ system_dnf_automatic_reboot_dependencies }}"
         state: "present"
 
-    - name: "Setup | Deploy service and timer units"
+    - name: "Setup | Automatic | Deploy service and timer units"
       ansible.builtin.template:
         src: "{{ item }}"
         dest: "/etc/systemd/system/{{ item }}"
@@ -34,12 +34,12 @@
         - "dnf-automatic-reboot.timer"
       notify: "Reload systemd"
 
-- name: "Setup | Check status of dnf-automatic-install.timer"
+- name: "Setup | Automatic | Check status of dnf-automatic-install.timer"
   ansible.builtin.systemd:
     name: "dnf-automatic-install.timer"
   register: "_system_dnf_setup_automatic_install_timer"
 
-- name: "Setup | Start and enable systemd timer for dnf-automatic"
+- name: "Setup | Automatic | Start and enable systemd timer for dnf-automatic"
   ansible.builtin.service:
     name: "dnf-automatic-install.timer"
     state: "started"
@@ -50,12 +50,12 @@
         _system_dnf_setup_automatic_install_timer.status['LoadState'] == 'loaded'"
   become: true
 
-- name: "Setup | Check status of dnf-automatic-reboot.timer"
+- name: "Setup | Automatic | Check status of dnf-automatic-reboot.timer"
   ansible.builtin.systemd:
     name: "dnf-automatic-reboot.timer"
   register: "_system_dnf_setup_automatic_reboot_timer"
 
-- name: "Setup | Set timer state for auto reboot"
+- name: "Setup | Automatic | Set timer state for auto reboot"
   ansible.builtin.systemd:
     name: "dnf-automatic-reboot.timer"
     state: "{{ system_dnf_setup_automatic_reboot | ternary('started', 'stopped') }}"

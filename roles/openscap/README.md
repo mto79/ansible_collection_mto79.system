@@ -25,7 +25,6 @@ Include more information about openscap in this section.
 | Variable | Type | Default | Description |
 | -------- | ---- | ------- | ----------- |
 
-
 ### Upstream
 
 | Variable | Type | Default | Description |

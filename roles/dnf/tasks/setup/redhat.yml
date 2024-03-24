@@ -7,4 +7,7 @@
   ansible.builtin.include_tasks: "redhat/automatic.yml"
   when: system_dnf_setup_automatic_use | bool
 
+- name: "Setup | Include configuration tasks."
+  ansible.builtin.include_tasks: "redhat/configuration.yml"
+
 ...
